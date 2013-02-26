@@ -16,6 +16,8 @@ import tim.game.factory.RoseObjectFactory;
  *
  */
 public abstract class Building extends Thing {
+	
+	private BuildingState state;
 
 	/**
 	 * 
@@ -25,5 +27,13 @@ public abstract class Building extends Thing {
 	}
 	
 	public abstract Requirement getRequirements();
+
+	public BuildingState getState() {
+		return state;
+	}
+
+	public void setState(BuildingState state) {
+		this.state = state;
+	}
 
 }

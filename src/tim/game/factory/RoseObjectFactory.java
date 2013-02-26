@@ -7,7 +7,9 @@ import tim.data.back.RoseObject;
 import tim.data.unit.Builder;
 import tim.data.unit.OilTruck;
 import tim.data.unit.Truck;
+import tim.data.unit.Worker;
 import tim.game.ai.PlayerAI;
+import tim.game.ai.SimplePlayerAI;
 
 /**
  * @author tfontaine
@@ -46,6 +48,13 @@ public class RoseObjectFactory {
 		} else if ("builder".equals(name)) {
 			roseObject = new Builder("builder");
 			roseObject.setType("builder");
+			roseObject.setImageName("builder");
+		} else if ("simplePlayer".equals(name)) {
+			roseObject = new SimplePlayerAI("simplePlayer");
+			roseObject.setImageName("player");
+		} else if ("worker".equals(name)) {
+			roseObject = new Worker("worker");
+			roseObject.setType("worker");
 			roseObject.setImageName("builder");
 		}
 		return roseObject;

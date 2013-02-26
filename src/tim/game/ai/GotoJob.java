@@ -28,7 +28,17 @@ public class GotoJob extends MoveJob {
 	@Override
 	protected void onDestination() {
 		finished = true;
+	}
+	
+	public void doAction() {
+		Node nextNode = path.getPathNodes().get(step);
+		back.moveUnit(unit, nextNode.getX(), nextNode.getY());
+		step++;
 		
+		//test on destination
+		if (destination.getX() == unit.getX() && destination.getY() == unit.getY()) {
+			finished = true;
+		}
 	}
 
 }

@@ -35,14 +35,6 @@ public class Dijkstra {
 			if (current.containsMapItem() && current.containsMapItemOfType(type)) {
 				return contstructPath(current);
 			}
-			if (current.getX() == 2 && current.getY() == 2) {
-				if (current.containsMapItem()) {
-					System.out.println("dijkstra contains map item");
-				}
-				if (current.containsMapItemOfType(type)) {
-					System.out.println("dijkstra contains map item of type:" + type);
-				}
-			}
 			for (Node node : current.getNeighbourList() ) {
 				int weight = node.getTravelWeight();
 				int distanceThroughU = current.getDistanceFromStart() + weight;

@@ -22,7 +22,7 @@ import tim.game.ImageMapper;
  *
  */
 public class ForeGround {
-		
+	
 	Back back;
 	ResourceManager resourceManager;
 	private int screenWidth;
@@ -72,6 +72,9 @@ public class ForeGround {
 			String name = mapItem.getImageName();
 			if (name == null) {
 				System.out.println("alert: " + mapItem.getName());
+			}
+			if (mapItem.getType() == null) {
+				System.out.println("alert type : " + mapItem.getName());
 			}
 			if (mapItem.getType() == null) {
 				System.out.println("name without type is: " + mapItem.getName());

@@ -122,6 +122,13 @@ public class Back {
 		return map.getMapItems();
 	}
 	
+	public void buildOnTile(int x, int y, Building building) {
+		map.getNode(x, y).setBuilding(building);
+		building.setX(x);
+		building.setY(y);
+		map.getMapItems().add(building);
+	}
+	
 	public void buildOnTile(int x, int y, Item item) {
 		map.getNode(x, y).setItem(item);
 		item.setX(x);
@@ -205,10 +212,14 @@ public class Back {
 	}
 	
 	public Path findNearestObject(Thing thing, String itemName) {
+		return findNearestObject(thing.getX(), thing.getY(), itemName);
+	}
+	
+	public Path findNearestObject(int startX, int startY, String itemName) {
 		removePath();
 		map.resetNodes();
 		Dijkstra dijkstra = new Dijkstra();
-		Path path = dijkstra.findClosestItem(thing.getX(), thing.getY(), map, itemName);
+		Path path = dijkstra.findClosestItem(startX, startY, map, itemName);
 		return path;
 	}
 	
