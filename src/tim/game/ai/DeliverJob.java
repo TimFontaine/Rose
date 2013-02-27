@@ -45,6 +45,7 @@ public class DeliverJob extends Job {
 		}
 		//worker? delivers to factory?
 		receiver.receiveResource(resourceName, amount);
+		transferer.giveResource(resourceName, amount);
 		finished = true;
 	}
 

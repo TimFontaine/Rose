@@ -70,6 +70,7 @@ public class Worker extends Unit implements TransferResource {
 			state = UnitState.ACTIVE;
 		}
 		if (state == UnitState.IDLE) {
+			//there is no job assignment
 			return;
 		}
 		job.doAction();
@@ -185,7 +186,14 @@ public class Worker extends Unit implements TransferResource {
 	 */
 	@Override
 	public void giveResource(String name, int amount) {
-		// TODO Auto-generated method stub
+		if ("iron".equals(name)) {
+			iron-=amount;
+		} else if ("oil".equals(name)) {
+			oil-=amount;
+		}
+		if (getIron() <0 || getOil() < 0) {
+			System.out.println("error:" + getName() + "has negative resources");
+		}
 		
 	}
 
