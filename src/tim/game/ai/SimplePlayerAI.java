@@ -4,8 +4,10 @@
 package tim.game.ai;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 
 import tim.data.ai.ActionType;
@@ -37,7 +39,7 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	int productionCapacity;
 	int productionUsed;
 	
-	List<PlayerOrder> playerOrders;
+	Queue<PlayerOrder> playerOrders;
 
 	/**
 	 * 
@@ -46,7 +48,7 @@ public class SimplePlayerAI extends RoseObject implements Player {
 		super(name);
 		units = new ArrayList<Unit>();
 		buildings = new ArrayList<Building>();
-		playerOrders = new ArrayList<PlayerOrder>();
+		playerOrders = new LinkedList<PlayerOrder>();
 	}
 
 	/* (non-Javadoc)
@@ -63,11 +65,12 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	 */
 	@Override
 	public void doLogic() {
+		playerOrders.clear();
 		definePriorities();
-		PlayerOrder order = null ;
 		if (priority == PlayerPriority.PRODUCTION_CAPACITY) {
 			ProductionPlanner planner = new ProductionPlanner();
-			order = planner.doAction(); 
+			PlayerOrder order = planner.doAction(); 
+			playerOrders.add(order);
 		}
 		
 		for (Building building: buildings) {
@@ -75,7 +78,7 @@ public class SimplePlayerAI extends RoseObject implements Player {
 			if (!building.getRequestMap().isEmpty()) {
 				Map<String, Integer> request = building.getRequestMap();
 				//build a new playerorder
-				order = new PlayerOrder();
+				PlayerOrder order = new PlayerOrder();
 				order.setAction(ActionType.RESOURCES);
 				order.setX(building.getX());
 				order.setY(building.getY());
@@ -87,13 +90,18 @@ public class SimplePlayerAI extends RoseObject implements Player {
 				if (request.containsKey("oil")) {
 					order.setIron(request.get("oil"));
 				} 
+				
+				playerOrders.add(order);
 			}
 		}
 		
 		for (Unit unit: units) {
 			if (unit.getState() == UnitState.IDLE) {
-				if (unit.getType().equals(order.getProcessorType())) {
-					((Worker)unit).setPlayerOrder(order);
+				if (!playerOrders.isEmpty()) {
+					PlayerOrder order = playerOrders.poll();
+					if (unit.getType().equals(order.getProcessorType())) {
+						((Worker)unit).setPlayerOrder(order);
+					}
 				}
 			}
 			unit.doLogic();

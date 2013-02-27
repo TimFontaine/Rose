@@ -61,15 +61,16 @@ public class Worker extends Unit implements TransferResource {
 	 */
 	@Override
 	public void doLogic() {
-		if ("worker0".equals(getName())) {
-			int k = 4;
-		}
+		
 		System.out.println("locic for:" + getName());
 		if (testNewOrder()) {
 			//test requirements for the playerorder
 			setRequirementList();
 			startNextJob();
 			state = UnitState.ACTIVE;
+		}
+		if (state == UnitState.IDLE) {
+			return;
 		}
 		job.doAction();
 		
