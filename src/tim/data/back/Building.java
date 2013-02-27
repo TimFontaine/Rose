@@ -26,8 +26,6 @@ public abstract class Building extends Thing implements TransferResource {
 		super(name);
 	}
 	
-	public abstract Requirement getRequirements();
-
 	public BuildingState getState() {
 		return state;
 	}

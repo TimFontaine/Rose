@@ -74,16 +74,6 @@ public class Factory extends Building {
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see tim.data.back.Building#getRequirements()
-	 */
-	@Override
-	public Requirement getRequirements() {
-		Requirement requirement = new Requirement();
-		
-		return requirement;
-	}
-
 
 	/* (non-Javadoc)
 	 * @see tim.data.unit.TransferResource#receiveResource(java.lang.String, int)
