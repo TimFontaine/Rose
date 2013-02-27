@@ -3,6 +3,8 @@
  */
 package tim.data.back;
 
+import java.awt.Point;
+
 
 /**
  * @author tfontaine
@@ -34,6 +36,10 @@ public class MapItem extends RoseObject {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	public Point getLocation() {
+		return new Point(x, y);
 	}
 
 }

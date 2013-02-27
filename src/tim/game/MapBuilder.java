@@ -65,7 +65,7 @@ public class MapBuilder {
 		building.setPlayer(playerAI);
 		building.setType("factory");
 		back.addItem(mine);
-		back.addBuilding(playerAI, building);
+		back.addBuilding(building);
 		back.addItem(oilwell);
 		
 

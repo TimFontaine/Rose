@@ -24,6 +24,8 @@ public abstract class Job {
 		back = Back.getInstance();
 	}
 	
+	public abstract void start();
+	
 	public abstract void doAction();
 
 	public boolean isFinished() {

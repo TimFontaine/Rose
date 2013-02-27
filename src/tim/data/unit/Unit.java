@@ -31,7 +31,7 @@ public abstract class Unit extends Thing {
 	Job job;
 	Task task;
 	
-	private int oil;
+	protected int oil;
 	private int resources;
 	private int moves;
 	
@@ -89,9 +89,9 @@ public abstract class Unit extends Thing {
 	}
 
 	public void setOil(int oil) {
-		if (this.oil <=0 && oil > 0) {
-			state = UnitState.ACTIVE;
-		}
+//		if (this.oil <=0 && oil > 0) {
+//			state = UnitState.ACTIVE;
+//		}
 		this.oil = oil;
 	}
 

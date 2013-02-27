@@ -7,8 +7,7 @@ package tim.data.ai;
  * @author tfontaine
  *
  */
-public enum PlayerPriority {
-	PRODUCTION_CAPACITY, 
-	ROADS,
+public enum ActionType {
+	BUILD,
 	RESOURCES;
 }

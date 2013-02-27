@@ -39,7 +39,7 @@ public class Path {
 	}
 	
 	public boolean hasNext(int step) {
-		if (pathNodes.size() > step) {
+		if (pathNodes.size() - 1 > step) {
 			return true;
 		}
 		return false;

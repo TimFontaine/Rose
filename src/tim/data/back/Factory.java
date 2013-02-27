@@ -5,6 +5,7 @@ package tim.data.back;
 
 import java.util.List;
 
+import tim.data.unit.TransferResource;
 import tim.data.unit.Unit;
 import tim.game.factory.RoseObjectFactory;
 
@@ -15,8 +16,8 @@ import tim.game.factory.RoseObjectFactory;
 public class Factory extends Building {
 
 	private int iron;
+	private int oil;
 	private static final int UNIT_COST = 100;
-	private List<Unit> waitingUnits;
 	
 	/**
 	 * @param name
@@ -42,21 +43,17 @@ public class Factory extends Building {
 		boolean test = testCanBuild();
 		if (test) {
 			buildUnit();
+		} else {
+			//resources needed
+			int iron_request = UNIT_COST - iron;
+			requestMap.put("iron", iron_request);
 		}
-//		if (!waitingUnits.isEmpty()) {
-//			Unit unit = waitingUnits.get(0);
-//			if (back.getMap().getNode(getX(), y).getUnit() == null) {
-//				back.addUnit(player, unit);
-//				waitingUnits.remove(unit);
-//			}
-//			
-//		}
 	}
 	
 	private void buildUnit() {
-		Unit unit = (Unit) RoseObjectFactory.getInstance().getRoseObject("builder");
-		unit.setName("builder");
-		unit.setType("builder");
+		Unit unit = (Unit) RoseObjectFactory.getInstance().getRoseObject("worker");
+		unit.setName("worker");
+		unit.setType("worker");
 		unit.setPlayer(player);
 		unit.setOil(100);
 		unit.setX(x);
@@ -64,13 +61,14 @@ public class Factory extends Building {
 //		if (back.getMap().getNode(x, y).getUnit() != null) {
 //			waitingUnits.add(unit);
 //		} else {
-			back.addUnit(player, unit);
+			back.addUnit(unit);
 //		}
 		iron-=UNIT_COST;
+		System.out.println("factory has build unit");
 	}
 
 	private boolean testCanBuild() {
-		if (iron > UNIT_COST) {
+		if (iron >= UNIT_COST) {
 			return true;
 		}
 		return false;
@@ -84,6 +82,29 @@ public class Factory extends Building {
 		Requirement requirement = new Requirement();
 		
 		return requirement;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see tim.data.unit.TransferResource#receiveResource(java.lang.String, int)
+	 */
+	@Override
+	public void receiveResource(String name, int amount) {
+		if ("iron".equals(name)) {
+			iron+=amount;
+		} else if ("oil".equals(name)) {
+			oil+=amount;
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.data.unit.TransferResource#giveResource(java.lang.String, int)
+	 */
+	@Override
+	public void giveResource(String name, int amount) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

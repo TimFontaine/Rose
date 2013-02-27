@@ -26,7 +26,6 @@ public class Node implements Comparable<Node>, Serializable{
 	private boolean visited;
 	
 	private List<Unit> units;
-	private Building building;
 	private Item item;
 	
 	private int travelWeight = 50;
@@ -151,7 +150,7 @@ public class Node implements Comparable<Node>, Serializable{
     }
     
     public boolean containsMapItem() {
-    	if (containsUnit() || building != null || item != null) {
+    	if (containsUnit() || item != null) {
     		return true;
     	}
     	return false;
@@ -163,9 +162,7 @@ public class Node implements Comparable<Node>, Serializable{
     			return true;
     		}
     	}
-    	if (building != null && building.getType().equals(type)) {
-    		return true;
-    	}
+    	
     	if (item != null && item.getType().equals(type)) {
     		return true;
     	}
@@ -173,11 +170,7 @@ public class Node implements Comparable<Node>, Serializable{
     }
     
     public String getMapItemName() {
-    	if (building != null) {
-    		return building.getName();
-    	} else {
-    		return item.getName();
-    	}
+   		return item.getName();
     }
     
     
@@ -237,14 +230,6 @@ public class Node implements Comparable<Node>, Serializable{
 
 	public void setVisited(boolean visited) {
 		this.visited = visited;
-	}
-
-	public Building getBuilding() {
-		return building;
-	}
-
-	public void setBuilding(Building building) {
-		this.building = building;
 	}
 
 	public Item getItem() {

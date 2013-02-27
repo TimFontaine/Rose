@@ -24,6 +24,7 @@ public class ProductionPlanner {
 		playerOrder.setIron(30);
 		playerOrder.setOil(20);
 		playerOrder.setProcessorType("worker");
+		playerOrder.setAction(ActionType.BUILD);
 		return playerOrder;
 	}
 

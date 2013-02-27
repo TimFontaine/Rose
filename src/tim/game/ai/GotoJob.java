@@ -15,14 +15,36 @@ import tim.data.unit.Unit;
  */
 public class GotoJob extends MoveJob {
 	
+	protected Point destination;
+	String mapItemType;
+	
 	/**
 	 * @param node 
 	 * 
 	 */
-	public GotoJob(Unit unit, Path path) {
-		this.path = path;
-		this.destination = path.getLast();
+	public GotoJob(Unit unit, Point destination) {
+		this.destination = destination;
 		this.unit = unit;
+	}
+	
+	public GotoJob(Unit unit, String mapItemType) {
+		this.mapItemType = mapItemType;
+		this.unit = unit;
+	}
+	
+	/* (non-Javadoc)
+	 * @see tim.game.ai.Job#start()
+	 */
+	@Override
+	public void start() {
+		if (destination == null && mapItemType == null) {
+			System.out.println("error: gotojob no destination or mapitemtype to goto set");
+		}
+		if (mapItemType != null) {
+			path = back.findNearestObject(unit, mapItemType);
+		} else if (destination != null) {
+			path = back.findShortestPath(unit.getX(), unit.getY(), destination.x, destination.y);
+		}
 	}
 
 	@Override
@@ -33,12 +55,15 @@ public class GotoJob extends MoveJob {
 	public void doAction() {
 		Node nextNode = path.getPathNodes().get(step);
 		back.moveUnit(unit, nextNode.getX(), nextNode.getY());
-		step++;
-		
 		//test on destination
-		if (destination.getX() == unit.getX() && destination.getY() == unit.getY()) {
+		if (!path.hasNext(step)) {
 			finished = true;
 		}
+		step++;
 	}
+
+	
+
+	
 
 }

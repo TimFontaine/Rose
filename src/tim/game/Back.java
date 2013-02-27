@@ -45,6 +45,8 @@ public class Back {
 
 	public static final int defaultSpeed = 10;
 	private java.util.Map<String, Integer> speed;
+	
+	private int itemId;
 	/**
 	 * 
 	 */
@@ -123,10 +125,11 @@ public class Back {
 	}
 	
 	public void buildOnTile(int x, int y, Building building) {
-		map.getNode(x, y).setBuilding(building);
+		map.getNode(x, y).setItem(building);
 		building.setX(x);
 		building.setY(y);
 		map.getMapItems().add(building);
+		activePlayer.addBuilding(building);
 	}
 	
 	public void buildOnTile(int x, int y, Item item) {
@@ -156,7 +159,7 @@ public class Back {
 			System.out.println("item build with speed:" + name + map.getNode(x, y).getTravelWeight());
 		}
 		map.getMapItems().add(building);
-		map.getNode(x, y).setBuilding(building);
+		map.getNode(x, y).setItem(building);
 	}
 	
 	private void checkWinConditions() {
@@ -323,21 +326,35 @@ public class Back {
 		this.playerList = playerList;
 	}
 
+	//for the mapbuilder
 	public void addUnit(Player player, Unit unit) {
 		back.getMapItems().add(unit);
 		player.addUnit(unit);
 		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
 	}
 	
-	public void addBuilding(Player player, Building building) {
-		back.getMapItems().add(building);
-		player.addBuilding(building);
-		map.getNode(building.getX(), building.getY()).setBuilding(building);
+	public void addUnit(Unit unit) {
+		String name = unit.getName() + itemId++;
+		unit.setName(name);
+		back.getMapItems().add(unit);
+		activePlayer.addUnit(unit);
+		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
 	}
+	
+//	public void addBuilding(Player player, Building building) {
+//		back.getMapItems().add(building);
+//		player.addBuilding(building);
+//		map.getNode(building.getX(), building.getY()).setBuilding(building);
+//	}
 	
 	public void addItem(Item item) {
 		back.getMapItems().add(item);
 		map.getNode(item.getX(), item.getY()).setItem(item);
+	}
+	
+	public void addBuilding(Building building) {
+		addItem(building);
+		building.getPlayer().addBuilding(building);
 	}
 
 	public Player getActivePlayer() {

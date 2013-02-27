@@ -3,6 +3,7 @@
  */
 package tim.game.ai;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ public class TransferJob extends MoveJob {
 	Task task;
 	Map<String, Path> map;
 	String destinationName;
+	
 	
 	
 	/**
@@ -89,6 +91,24 @@ public class TransferJob extends MoveJob {
 		event.setCode(EventCode.RESOURCE_DELIVERY);
 		event.setDescription("resource delivery");
 		back.getEvents().add(event);
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.ai.Job#start()
+	 */
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.ai.Job#getDestinaton()
+	 */
+	@Override
+	public Point getDestinaton() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

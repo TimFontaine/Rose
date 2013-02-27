@@ -3,8 +3,12 @@
  */
 package tim.game.ai;
 
+import java.awt.Point;
+
+import tim.data.back.Building;
 import tim.data.back.Node;
 import tim.data.back.Path;
+import tim.data.unit.TransferResource;
 import tim.data.unit.Unit;
 import tim.data.unit.Worker;
 
@@ -14,42 +18,54 @@ import tim.data.unit.Worker;
  */
 public class PickupJob extends Job {
 	
-	private Worker unit;
-	private Path path;
+	private TransferResource transferer;
 	private String resourceName;
 	private int amount;
 	
-	int step;
-
 	/**
 	 * 
 	 */
-	public PickupJob(Worker unit, Path path, String resourceName, int amount) {
-		this.unit = unit;
-		this.path = path;
+	public PickupJob(TransferResource transferer, int destinationX, int destinationY, String resourceName, int amount) {
+		init(resourceName, amount);
+//		path = back.findShortestPath(unit.getX(), unit.getY(), destinationX, destinationY);
+	}
+	
+	public PickupJob(TransferResource transferer, String resourceName, int amount) {
+		this.transferer = transferer;
+		init(resourceName, amount);
+//		path = back.findNearestObject(unit, itemName);
+	}
+	
+	
+	@Override
+	public void start() {
+	}
+	
+	
+	private void init(String resourceName, int amount) {
 		this.resourceName = resourceName;
 		this.amount = amount;
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see tim.game.ai.Job#doAction()
 	 */
 	@Override
 	public void doAction() {
-		//test on destination
-		if (unit.getX() == path.getLast().getX() && unit.getY() == path.getLast().getY()) {
-			//pickup resource;
-			if ("iron".equals(resourceName)) {
-				unit.setIron(unit.getIron() + amount);
-			} else if ("oil".equals(resourceName)) {
-				unit.setOil(unit.getOil() + amount);
-			}
-			this.finished = true;
-			return;
+		Node current = back.getNode(transferer.getLocation().x, transferer.getLocation().y);
+		TransferResource unit = (TransferResource) current.getItem();
+		if (unit == null || !(unit instanceof TransferResource)) {
+			System.out.println("error: pickupjob is on location with no TransferResource object");
 		}
-		Node nextNode = path.getPathNodes().get(step);
-		back.moveUnit(unit, nextNode.getX(), nextNode.getY());
-		step++;
+		//worker? receives from mine?
+		transferer.receiveResource(resourceName, amount);
+		finished = true;
+
 	}
+	
+	
+	
+
 
 }

@@ -3,15 +3,18 @@
  */
 package tim.data.unit;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import tim.data.ai.ActionType;
 import tim.data.ai.PlayerOrder;
 import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.game.ai.BuildJob;
+import tim.game.ai.DeliverJob;
 import tim.game.ai.GotoJob;
 import tim.game.ai.Job;
 import tim.game.ai.PickupJob;
@@ -20,7 +23,7 @@ import tim.game.ai.PickupJob;
  * @author tfontaine
  *
  */
-public class Worker extends Unit {
+public class Worker extends Unit implements TransferResource {
 	
 	private int iron;
 	private PlayerOrder playerOrder;
@@ -58,25 +61,41 @@ public class Worker extends Unit {
 	 */
 	@Override
 	public void doLogic() {
-		
-		if (playerOrder != null && jobList.isEmpty()) {
+		if ("worker0".equals(getName())) {
+			int k = 4;
+		}
+		System.out.println("locic for:" + getName());
+		if (testNewOrder()) {
 			//test requirements for the playerorder
 			setRequirementList();
-			job = jobList.poll();
+			startNextJob();
 			state = UnitState.ACTIVE;
 		}
 		job.doAction();
 		
 		if (job.isFinished()) {
-			//all done ?
-			if (jobList.isEmpty()) {
-				state = UnitState.IDLE;
-				return;
-			}
-			///pick the next job
-			job = jobList.poll();
+			handleEndJob();
 			
 		}
+	}
+	
+	private boolean testNewOrder() {
+		return playerOrder != null && jobList.isEmpty();
+	}
+	
+	private void handleEndJob() {
+		//all done ?
+		if (jobList.isEmpty()) {
+			state = UnitState.IDLE;
+			return;
+		}
+		startNextJob();
+	}
+	
+	private void startNextJob() {
+		///pick the next job
+		job = jobList.poll();
+		job.start();
 	}
 
 	/**
@@ -87,37 +106,47 @@ public class Worker extends Unit {
 		 * add for other stuff as task build
 		 */
 		
-		int locationX = getX();
-		int locationY = getY();
 		//test resource available
 		//oil
 		if (playerOrder.getOil() > this.getOil()) {
-			Path path = back.findNearestObject(locationX, locationY, "oilwell");
-			Job job = new PickupJob(this, path, "oil" ,playerOrder.getOil());
+//			Path path = back.findNearestObject(locationX, locationY, "oilwell");
+			Job gotoOil = new GotoJob(this, "oilwell");
+			Job job = new PickupJob(this, "oil" ,playerOrder.getOil());
+			jobList.add(gotoOil);
 			jobList.add(job);
-			Node latest = path.getLast();
-			locationX = latest.getX();
-			locationY = latest.getY();
 		}
 		//iron
 		if (playerOrder.getIron() > this.getIron()) {
-			Path path = back.findNearestObject(locationX, locationY, "mine");
-			Job job = new PickupJob(this, path, "iron", playerOrder.getIron());
+//			Path path = back.findNearestObject(locationX, locationY, "mine");
+			Job gotoMine = new GotoJob(this, "mine");
+			Job job = new PickupJob(this, "iron" ,playerOrder.getIron());
+			jobList.add(gotoMine);
 			jobList.add(job);
-			Node latest = path.getLast();
-			locationX = latest.getX();
-			locationY = latest.getY();
 		}
 		
 		//test on location;
 		if (getX() != playerOrder.getX() || getY() != playerOrder.getY()) {
-			Path path = back.findShortestPath(locationX, locationY, playerOrder.getX(), playerOrder.getY());
-			Job job = new GotoJob(this, path);
+//			Path path = back.findShortestPath(locationX, locationY, playerOrder.getX(), playerOrder.getY());
+			Job job = new GotoJob(this, new Point(playerOrder.getX(),playerOrder.getY()));
 			jobList.add(job);
 		}
 		
-		job = new BuildJob(this, playerOrder.getTypeName());
-		jobList.add(job);
+		if (playerOrder.getAction() == ActionType.BUILD) {
+			Job job = new BuildJob(this, playerOrder.getTypeName());
+			jobList.add(job);
+		} else if (playerOrder.getAction() == ActionType.RESOURCES) {
+			/**
+			 * TODO
+			 * refactor to flexible resources
+			 */
+			Job job = null;
+			if (playerOrder.getIron() > 0) {
+				job = new DeliverJob(this, "iron", playerOrder.getIron());
+			} else if (playerOrder.getOil() > 0) {
+				job = new DeliverJob(this, "oil", playerOrder.getIron());
+			}
+			jobList.add(job);
+		}
 
 	}
 
@@ -135,6 +164,28 @@ public class Worker extends Unit {
 
 	public void setPlayerOrder(PlayerOrder playerOrder) {
 		this.playerOrder = playerOrder;
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.data.unit.TransferResource#receiveResource(java.lang.String, int)
+	 */
+	@Override
+	public void receiveResource(String name, int amount) {
+		if ("iron".equals(name)) {
+			iron+=amount;
+		} else if ("oil".equals(name)) {
+			oil+=amount;
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.data.unit.TransferResource#giveResource(java.lang.String, int)
+	 */
+	@Override
+	public void giveResource(String name, int amount) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

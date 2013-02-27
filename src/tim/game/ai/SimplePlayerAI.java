@@ -5,7 +5,10 @@ package tim.game.ai;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+
+import tim.data.ai.ActionType;
 import tim.data.ai.PlayerOrder;
 import tim.data.ai.PlayerPriority;
 import tim.data.ai.ProductionPlanner;
@@ -25,9 +28,16 @@ import tim.game.Player;
 public class SimplePlayerAI extends RoseObject implements Player {
 	
 	List<Unit> units; 
+	List<Building> buildings;
 	
 	
 	PlayerPriority priority;
+	
+	//temp values
+	int productionCapacity;
+	int productionUsed;
+	
+	List<PlayerOrder> playerOrders;
 
 	/**
 	 * 
@@ -35,6 +45,8 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	public SimplePlayerAI(String name) {
 		super(name);
 		units = new ArrayList<Unit>();
+		buildings = new ArrayList<Building>();
+		playerOrders = new ArrayList<PlayerOrder>();
 	}
 
 	/* (non-Javadoc)
@@ -53,9 +65,29 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	public void doLogic() {
 		definePriorities();
 		PlayerOrder order = null ;
-		if (priority == PlayerPriority.PRODUCTION) {
+		if (priority == PlayerPriority.PRODUCTION_CAPACITY) {
 			ProductionPlanner planner = new ProductionPlanner();
 			order = planner.doAction(); 
+		}
+		
+		for (Building building: buildings) {
+			building.doLogic();
+			if (!building.getRequestMap().isEmpty()) {
+				Map<String, Integer> request = building.getRequestMap();
+				//build a new playerorder
+				order = new PlayerOrder();
+				order.setAction(ActionType.RESOURCES);
+				order.setX(building.getX());
+				order.setY(building.getY());
+				order.setTypeName(building.getType());
+				order.setProcessorType("worker");
+				if (request.containsKey("iron")) {
+					order.setIron(request.get("iron"));
+				} 
+				if (request.containsKey("oil")) {
+					order.setIron(request.get("oil"));
+				} 
+			}
 		}
 		
 		for (Unit unit: units) {
@@ -73,7 +105,13 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	 * 
 	 */
 	private void definePriorities() {
-		priority = PlayerPriority.PRODUCTION;
+		if (productionCapacity == 0) {//there is no production capacity
+			priority = PlayerPriority.PRODUCTION_CAPACITY;
+		} else if (productionCapacity < 5) {//it takes too long to get resources, build roads 
+			priority = PlayerPriority.ROADS;
+		} else { //only suply resources
+			priority = PlayerPriority.RESOURCES;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -108,7 +146,10 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	 */
 	@Override
 	public void addBuilding(Building building) {
-		// TODO Auto-generated method stub
+		buildings.add(building);
+		if ("factory".equals(building.getType())) {
+			productionCapacity+=6;
+		}
 
 	}
 

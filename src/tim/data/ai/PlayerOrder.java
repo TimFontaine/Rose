@@ -12,6 +12,7 @@ import tim.data.unit.Unit;
  */
 public class PlayerOrder {
 	
+	private ActionType action;
 	private String typeName;
 	private String processorType;
 	private int x;
@@ -84,6 +85,16 @@ public class PlayerOrder {
 
 	public void setProcessorType(String processorType) {
 		this.processorType = processorType;
+	}
+
+
+	public ActionType getAction() {
+		return action;
+	}
+
+
+	public void setAction(ActionType action) {
+		this.action = action;
 	}
 
 }

@@ -87,7 +87,6 @@ public class SimpleMapBuilder {
 		Unit unit = (Unit) factory.getRoseObject("worker");
 		unit.setX(10);
 		unit.setY(15);
-		
 		back.addUnit(playerAI, unit);
 //		back.addUnit(playerAI, unit);
 //		back.addUnit(playerAI, oilTruck);
