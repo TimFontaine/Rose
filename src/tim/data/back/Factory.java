@@ -21,12 +21,14 @@ public class Factory extends Building {
 	private int oil;
 	private static final int UNIT_COST = 100;
 	
+	private int producedUnits;
+	
 	/**
 	 * @param name
 	 */
 	public Factory(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
+		System.out.println("new factory");
 	}
 	
 	public int getIron() {
@@ -47,14 +49,17 @@ public class Factory extends Building {
 			buildUnit();
 		} else {
 			//resources needed
-			int iron_request = UNIT_COST - iron;
-			requestMap.put("iron", iron_request);
-			resourcesRequest = new ResourcesRequest();
-			resourcesRequest.setPriority(ResourcesRequest.MAX_PRIORITY);
-			resourcesRequest.setRequest(requestMap);
-			resourcesRequest.setRequestType(RequestType.RESOURCES);
-			resourcesRequest.setLocation(getLocation());
-			
+			System.out.println("producedunits is:" + producedUnits);
+//			if (producedUnits <1) {
+				System.out.println("created resourcerequest");
+				int iron_request = UNIT_COST - iron;
+				requestMap.put("iron", iron_request);
+				resourcesRequest = new ResourcesRequest();
+				resourcesRequest.setPriority(ResourcesRequest.MAX_PRIORITY);
+				resourcesRequest.setResource(requestMap);
+				resourcesRequest.setRequestType(RequestType.RESOURCES);
+				resourcesRequest.setLocation(getLocation());
+//			}
 		}
 	}
 	
@@ -73,6 +78,7 @@ public class Factory extends Building {
 //		}
 		iron-=UNIT_COST;
 		System.out.println("factory has build unit");
+		producedUnits++;
 	}
 
 	private boolean testCanBuild() {
@@ -103,6 +109,14 @@ public class Factory extends Building {
 	public void giveResource(String name, int amount) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public int getProducedUnits() {
+		return producedUnits;
+	}
+
+	public void setProducedUnits(int producedUnits) {
+		this.producedUnits = producedUnits;
 	}
 
 }

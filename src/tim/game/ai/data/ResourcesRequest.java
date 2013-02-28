@@ -4,8 +4,8 @@
 package tim.game.ai.data;
 
 import java.awt.Point;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author tfontaine
@@ -17,7 +17,8 @@ public class ResourcesRequest implements Comparable<ResourcesRequest> {
 	public static final int OPTIONAL = -1;
 	
 	private int priority;
-	private Map<String, Integer> request;
+	private Map<String, Integer> resource;
+	private Map<String, Object> info;//extra info as from/to location
 	private RequestType requestType;
 	private Point location;
 	
@@ -25,16 +26,9 @@ public class ResourcesRequest implements Comparable<ResourcesRequest> {
 	 * 
 	 */
 	public ResourcesRequest() {
-		// TODO Auto-generated constructor stub
+		info = new HashMap<String, Object>();
 	}
 
-	public Map<String, Integer> getRequest() {
-		return request;
-	}
-
-	public void setRequest(Map<String, Integer> request) {
-		this.request = request;
-	}
 
 	public int getPriority() {
 		return priority;
@@ -49,9 +43,9 @@ public class ResourcesRequest implements Comparable<ResourcesRequest> {
 	 */
 	@Override
 	public int compareTo(ResourcesRequest o) {
-		if (priority < o.getPriority()) {
+		if (priority > o.getPriority()) {
 			return -1;
-		} else if (priority > o.getPriority()) {
+		} else if (priority < o.getPriority()) {
 			return 1;
 		}
 		return 0;
@@ -71,6 +65,26 @@ public class ResourcesRequest implements Comparable<ResourcesRequest> {
 
 	public void setLocation(Point location) {
 		this.location = location;
+	}
+
+
+	public Map<String, Integer> getResource() {
+		return resource;
+	}
+
+
+	public void setResource(Map<String, Integer> resource) {
+		this.resource = resource;
+	}
+
+
+	public Map<String, Object> getInfo() {
+		return info;
+	}
+
+
+	public void setInfo(Map<String, Object> info) {
+		this.info = info;
 	}
 
 }

@@ -3,6 +3,9 @@
  */
 package tim.data.ai;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import tim.data.back.MapItem;
 import tim.data.unit.Unit;
 
@@ -21,13 +24,14 @@ public class PlayerOrder {
 	private int y;
 	private int oil;
 	private int iron;
+	private Map<String, Object> info;
 	
 
 	/**
 	 * 
 	 */
 	public PlayerOrder() {
-		
+		info = new HashMap<String, Object>();
 	}
 	
 	public String getTypeName() {
@@ -106,6 +110,14 @@ public class PlayerOrder {
 
 	public void setPriority(int priority) {
 		this.priority = priority;
+	}
+
+	public Map<String, Object> getInfo() {
+		return info;
+	}
+
+	public void setInfo(Map<String, Object> info) {
+		this.info = info;
 	}
 
 }

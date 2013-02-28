@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tim.game.ai.data.PlayerData;
 import tim.game.ai.data.RequestType;
 import tim.game.ai.data.ResourcesRequest;
 
@@ -17,17 +18,27 @@ import tim.game.ai.data.ResourcesRequest;
  *
  */
 public class ProductionPlanner {
+	
+	PlayerData data;
 
 	/**
+	 * @param data 
 	 * 
 	 */
-	public ProductionPlanner() {
-		// TODO Auto-generated constructor stub
+	public ProductionPlanner(PlayerData data) {
+		this.data = data;
 	}
 	
 	public Collection<ResourcesRequest> doAction() {
 		List<ResourcesRequest> requests = new ArrayList<ResourcesRequest>();
-		requests.add(createBuildRequest());
+		/**
+		 * TODO
+		 * do not build on the same location, find another spot
+		 */
+		if (data.capacity == 0) {
+			requests.add(createBuildRequest());
+		}
+		requests.add(createRoadRequest());
 		return requests;
 		
 	}
@@ -35,15 +46,30 @@ public class ProductionPlanner {
 	/**
 	 * @return
 	 */
-	private ResourcesRequest createBuildRequest() {
+	private ResourcesRequest createRoadRequest() {
 		ResourcesRequest request = new ResourcesRequest();
-		request.setRequestType(RequestType.PRODUCTION);
+		request.setRequestType(RequestType.ROAD);
 		Map<String,Integer> map = new HashMap<String, Integer>();
-		map.put("iron", 30);
-		map.put("oil", 20);
-		request.setRequest(map);
-		request.setPriority(50);
+		map.put("iron", 1);
+		map.put("oil", 1);
+		request.setResource(map);
+		request.setPriority(ResourcesRequest.OPTIONAL);
 		return request;
+	}
+
+	/**
+	 * @return
+	 */
+	private ResourcesRequest createBuildRequest() {
+			ResourcesRequest request = new ResourcesRequest();
+			request.setRequestType(RequestType.PRODUCTION);
+			Map<String,Integer> map = new HashMap<String, Integer>();
+			map.put("iron", 30);
+			map.put("oil", 20);
+			request.setResource(map);
+			request.setPriority(50);
+			
+			return request;
 	}
 
 	private PlayerOrder createBuildAction() {

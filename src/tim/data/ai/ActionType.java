@@ -9,5 +9,6 @@ package tim.data.ai;
  */
 public enum ActionType {
 	BUILD,
-	RESOURCES;
+	RESOURCES, 
+	ROAD;
 }

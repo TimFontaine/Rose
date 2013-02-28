@@ -341,6 +341,11 @@ public class Back {
 		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
 	}
 	
+	//add an item if it used by another item
+	public void addUsedItem(Item item) {
+		activePlayer.addUsedItem(item);
+	}
+	
 //	public void addBuilding(Player player, Building building) {
 //		back.getMapItems().add(building);
 //		player.addBuilding(building);

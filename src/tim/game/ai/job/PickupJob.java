@@ -60,6 +60,7 @@ public class PickupJob extends Job {
 		}
 		//worker? receives from mine?
 		transferer.receiveResource(resourceName, amount);
+		back.addUsedItem(current.getItem());
 		finished = true;
 
 	}

@@ -148,6 +148,11 @@ public class Worker extends Unit implements TransferResource {
 				job = new DeliverJob(this, "oil", playerOrder.getIron());
 			}
 			jobList.add(job);
+		} else if (playerOrder.getAction() == ActionType.ROAD) {
+			Point from = (Point) playerOrder.getInfo().get("start");
+			Point end = (Point) playerOrder.getInfo().get("end");
+			System.out.println("order to build road from " + from.x + ":" + from.y + "to"
+					+ end.x + ":" + end.y);
 		}
 
 	}

@@ -3,6 +3,7 @@
  */
 package tim.game.ai;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -21,12 +22,15 @@ import tim.data.ai.PlayerPriority;
 import tim.data.ai.ProductionPlanner;
 import tim.data.back.Building;
 import tim.data.back.Event;
+import tim.data.back.Item;
 import tim.data.back.RoseObject;
 import tim.data.unit.Unit;
 import tim.data.unit.UnitOrder;
 import tim.data.unit.UnitState;
 import tim.data.unit.Worker;
+import tim.game.Back;
 import tim.game.Player;
+import tim.game.ai.data.PlayerData;
 import tim.game.ai.data.RequestType;
 import tim.game.ai.data.ResourcesRequest;
 
@@ -38,6 +42,7 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	
 	List<Unit> units; 
 	List<Building> buildings;
+	List<Item> usedItems;
 	
 	
 	PlayerPriority priority;
@@ -48,6 +53,8 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	
 	Queue<PlayerOrder> playerOrders;
 	SortedSet<ResourcesRequest> requestsQueue;
+	
+	private PlayerData data;
 
 	/**
 	 * 
@@ -58,6 +65,8 @@ public class SimplePlayerAI extends RoseObject implements Player {
 		buildings = new ArrayList<Building>();
 		playerOrders = new LinkedList<PlayerOrder>();
 		requestsQueue = new TreeSet<ResourcesRequest>();
+		usedItems = new ArrayList<Item>();
+		data = new PlayerData();
 	}
 
 	/* (non-Javadoc)
@@ -76,32 +85,12 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	public void doLogic() {
 		playerOrders.clear();
 		requestsQueue.clear();
-		if (priority == PlayerPriority.PRODUCTION_CAPACITY) {
-			ProductionPlanner planner = new ProductionPlanner();
-			Collection<ResourcesRequest> requests = planner.doAction();
-			requestsQueue.addAll(requests);
-		}
+		ProductionPlanner planner = new ProductionPlanner(data);
+		Collection<ResourcesRequest> requests = planner.doAction();
+		requestsQueue.addAll(requests);
 		
 		for (Building building: buildings) {
 			building.doLogic();
-			if (!building.getRequestMap().isEmpty()) {
-				Map<String, Integer> request = building.getRequestMap();
-				//build a new playerorder
-				PlayerOrder order = new PlayerOrder();
-				order.setAction(ActionType.RESOURCES);
-				order.setX(building.getX());
-				order.setY(building.getY());
-				order.setTypeName(building.getType());
-				order.setProcessorType("worker");
-				if (request.containsKey("iron")) {
-					order.setIron(request.get("iron"));
-				} 
-				if (request.containsKey("oil")) {
-					order.setIron(request.get("oil"));
-				} 
-				
-				playerOrders.add(order);
-			}
 		}
 		
 		defineUnitPriorities();
@@ -113,6 +102,7 @@ public class SimplePlayerAI extends RoseObject implements Player {
 					 * TODO replace by lowering calculator
 					 */
 					request.setPriority(request.getPriority()-50);
+					System.out.println(request.getRequestType().toString()+ ":" + request.getPriority());
 					PlayerOrder order = translateRequest(request);
 					
 					
@@ -133,8 +123,8 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	private PlayerOrder translateRequest(ResourcesRequest request) {
 		PlayerOrder order = new PlayerOrder();
 		if (request.getRequestType() == RequestType.PRODUCTION) {
-			order.setIron(request.getRequest().get("iron"));
-			order.setOil(request.getRequest().get("oil"));
+			order.setIron(request.getResource().get("iron"));
+			order.setOil(request.getResource().get("oil"));
 			order.setX(14);
 			order.setY(14);
 			order.setTypeName("factory");
@@ -146,14 +136,36 @@ public class SimplePlayerAI extends RoseObject implements Player {
 			order.setY(request.getLocation().y);
 //			order.setTypeName(building.getType());
 			order.setProcessorType("worker");
-			if (request.getRequest().containsKey("iron")) {
-				order.setIron(request.getRequest().get("iron"));
+			if (request.getResource().containsKey("iron")) {
+				order.setIron(request.getResource().get("iron"));
 			} 
-			if (request.getRequest().containsKey("oil")) {
-				order.setIron(request.getRequest().get("oil"));
+			if (request.getResource().containsKey("oil")) {
+				order.setIron(request.getResource().get("oil"));
 			} 
+		} else if (request.getRequestType() == RequestType.ROAD) {
+			/**
+			 * TODO
+			 * make an intelligent road system
+			 */
+			Point start = getBuildingOfType("factory").getLocation();
+			Point end = usedItems.get(0).getLocation();
+			order.setAction(ActionType.ROAD);
+			order.getInfo().put("start", start);
+			order.getInfo().put("end", end);
+			order.setAction(ActionType.ROAD);
+			order.setProcessorType("worker");
+			
 		}
 		return order;
+	}
+	
+	private Building getBuildingOfType(String type) {
+		for (Building building: buildings) {
+			if (building.getType().equals(type)) {
+				return building;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -163,18 +175,20 @@ public class SimplePlayerAI extends RoseObject implements Player {
 		//1. gather all priorities
 		//1a. buildings only request for workers
 		for (Building building: buildings) {
-			requestsQueue.add(building.getResourcesRequest());
+			if (building.getResourcesRequest() != null) {
+				requestsQueue.add(building.getResourcesRequest());
+			}
 		}
 		
 		
 		
-		if (productionCapacity == 0) {//there is no production capacity
-			priority = PlayerPriority.PRODUCTION_CAPACITY;
-		} else if (productionCapacity < 5) {//it takes too long to get resources, build roads 
-			priority = PlayerPriority.ROADS;
-		} else { //only suply resources
-			priority = PlayerPriority.RESOURCES;
-		}
+//		if (productionCapacity == 0) {//there is no production capacity
+//			priority = PlayerPriority.PRODUCTION_CAPACITY;
+//		} else if (productionCapacity < 5) {//it takes too long to get resources, build roads 
+//			priority = PlayerPriority.ROADS;
+//		} else { //only suply resources
+//			priority = PlayerPriority.RESOURCES;
+//		}
 	}
 
 	/* (non-Javadoc)
@@ -212,8 +226,13 @@ public class SimplePlayerAI extends RoseObject implements Player {
 		buildings.add(building);
 		if ("factory".equals(building.getType())) {
 			productionCapacity+=6;
+			data.capacity+=10;
 		}
 
+	}
+	
+	public void addUsedItem(Item item) {
+		usedItems.add(item);
 	}
 
 }
