@@ -13,6 +13,7 @@ import tim.data.ai.ActionType;
 import tim.data.ai.PlayerOrder;
 import tim.data.back.Node;
 import tim.data.back.Path;
+import tim.game.ai.RoadJob;
 import tim.game.ai.job.BuildJob;
 import tim.game.ai.job.DeliverJob;
 import tim.game.ai.job.GotoJob;
@@ -127,10 +128,15 @@ public class Worker extends Unit implements TransferResource {
 		}
 		
 		//test on location;
-		if (getX() != playerOrder.getX() || getY() != playerOrder.getY()) {
-//			Path path = back.findShortestPath(locationX, locationY, playerOrder.getX(), playerOrder.getY());
-			Job job = new GotoJob(this, new Point(playerOrder.getX(),playerOrder.getY()));
-			jobList.add(job);
+		/**
+		 * remove playerorder getX and put it in info
+		 */
+		if (playerOrder.getAction() != ActionType.ROAD) {
+			if (getX() != playerOrder.getX() || getY() != playerOrder.getY()) {
+	//			Path path = back.findShortestPath(locationX, locationY, playerOrder.getX(), playerOrder.getY());
+				Job job = new GotoJob(this, new Point(playerOrder.getX(),playerOrder.getY()));
+				jobList.add(job);
+			}
 		}
 		
 		if (playerOrder.getAction() == ActionType.BUILD) {
@@ -152,7 +158,15 @@ public class Worker extends Unit implements TransferResource {
 			Point from = (Point) playerOrder.getInfo().get("start");
 			Point end = (Point) playerOrder.getInfo().get("end");
 			System.out.println("order to build road from " + from.x + ":" + from.y + "to"
-					+ end.x + ":" + end.y);
+					+ end.x + ":" + end.y + "for unit " + getName());
+			Job gotoStart = new GotoJob(this, from);
+			Job roadJob = new RoadJob(this, null);
+			if (getX() != from.x || getY() != from.y) {
+				jobList.add(gotoStart);
+			}
+			jobList.add(roadJob);
+			
+			
 		}
 
 	}

@@ -27,6 +27,7 @@ public class Node implements Comparable<Node>, Serializable{
 	
 	private List<Unit> units;
 	private Item item;
+	private Road road;
 	
 	private int travelWeight = 50;
 	
@@ -247,6 +248,15 @@ public class Node implements Comparable<Node>, Serializable{
 	public void setUnits(List<Unit> units) {
 		this.units = units;
 	}
+
+	public Road getRoad() {
+		return road;
+	}
+
+	public void setRoad(Road road) {
+		this.road = road;
+	}
+	
 
 	
 }

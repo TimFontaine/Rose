@@ -50,8 +50,8 @@ public class ProductionPlanner {
 		ResourcesRequest request = new ResourcesRequest();
 		request.setRequestType(RequestType.ROAD);
 		Map<String,Integer> map = new HashMap<String, Integer>();
-		map.put("iron", 1);
-		map.put("oil", 1);
+		map.put("iron", 0);
+		map.put("oil", 0);
 		request.setResource(map);
 		request.setPriority(ResourcesRequest.OPTIONAL);
 		return request;

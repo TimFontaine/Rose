@@ -19,6 +19,7 @@ import tim.data.back.Item;
 import tim.data.back.MapItem;
 import tim.data.back.Node;
 import tim.data.back.Path;
+import tim.data.back.Road;
 import tim.data.back.Thing;
 import tim.data.unit.Unit;
 import tim.pathfinding.AStar;
@@ -141,6 +142,10 @@ public class Back {
 		 * improve draw function later
 		 */
 		map.getMapItems().add(item);
+	}
+	
+	public void buildOnTile(int x, int y, Road road) {
+		map.getNode(x, y).setRoad(road);
 	}
 
 	public void buildOnTile(int x, int y, String name) {
