@@ -13,11 +13,11 @@ import tim.data.ai.ActionType;
 import tim.data.ai.PlayerOrder;
 import tim.data.back.Node;
 import tim.data.back.Path;
-import tim.game.ai.BuildJob;
-import tim.game.ai.DeliverJob;
-import tim.game.ai.GotoJob;
-import tim.game.ai.Job;
-import tim.game.ai.PickupJob;
+import tim.game.ai.job.BuildJob;
+import tim.game.ai.job.DeliverJob;
+import tim.game.ai.job.GotoJob;
+import tim.game.ai.job.Job;
+import tim.game.ai.job.PickupJob;
 
 /**
  * @author tfontaine

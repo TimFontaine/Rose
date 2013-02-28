@@ -1,7 +1,7 @@
 /**
  * 
  */
-package tim.game.ai;
+package tim.game.ai.job;
 
 import java.awt.Point;
 

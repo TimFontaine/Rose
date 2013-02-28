@@ -4,10 +4,15 @@
 package tim.game.ai;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 
 import tim.data.ai.ActionType;
@@ -22,6 +27,8 @@ import tim.data.unit.UnitOrder;
 import tim.data.unit.UnitState;
 import tim.data.unit.Worker;
 import tim.game.Player;
+import tim.game.ai.data.RequestType;
+import tim.game.ai.data.ResourcesRequest;
 
 /**
  * @author tfontaine
@@ -40,6 +47,7 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	int productionUsed;
 	
 	Queue<PlayerOrder> playerOrders;
+	SortedSet<ResourcesRequest> requestsQueue;
 
 	/**
 	 * 
@@ -49,6 +57,7 @@ public class SimplePlayerAI extends RoseObject implements Player {
 		units = new ArrayList<Unit>();
 		buildings = new ArrayList<Building>();
 		playerOrders = new LinkedList<PlayerOrder>();
+		requestsQueue = new TreeSet<ResourcesRequest>();
 	}
 
 	/* (non-Javadoc)
@@ -66,11 +75,11 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	@Override
 	public void doLogic() {
 		playerOrders.clear();
-		definePriorities();
+		requestsQueue.clear();
 		if (priority == PlayerPriority.PRODUCTION_CAPACITY) {
 			ProductionPlanner planner = new ProductionPlanner();
-			PlayerOrder order = planner.doAction(); 
-			playerOrders.add(order);
+			Collection<ResourcesRequest> requests = planner.doAction();
+			requestsQueue.addAll(requests);
 		}
 		
 		for (Building building: buildings) {
@@ -95,10 +104,18 @@ public class SimplePlayerAI extends RoseObject implements Player {
 			}
 		}
 		
+		defineUnitPriorities();
 		for (Unit unit: units) {
 			if (unit.getState() == UnitState.IDLE) {
-				if (!playerOrders.isEmpty()) {
-					PlayerOrder order = playerOrders.poll();
+				if (!requestsQueue.isEmpty()) {
+					ResourcesRequest request = requestsQueue.first();
+					/*
+					 * TODO replace by lowering calculator
+					 */
+					request.setPriority(request.getPriority()-50);
+					PlayerOrder order = translateRequest(request);
+					
+					
 					if (unit.getType().equals(order.getProcessorType())) {
 						((Worker)unit).setPlayerOrder(order);
 					}
@@ -110,9 +127,47 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	}
 
 	/**
+	 * @param request
+	 * @return
+	 */
+	private PlayerOrder translateRequest(ResourcesRequest request) {
+		PlayerOrder order = new PlayerOrder();
+		if (request.getRequestType() == RequestType.PRODUCTION) {
+			order.setIron(request.getRequest().get("iron"));
+			order.setOil(request.getRequest().get("oil"));
+			order.setX(14);
+			order.setY(14);
+			order.setTypeName("factory");
+			order.setProcessorType("worker");
+			order.setAction(ActionType.BUILD);
+		} else if (request.getRequestType() == RequestType.RESOURCES) {
+			order.setAction(ActionType.RESOURCES);
+			order.setX(request.getLocation().x);
+			order.setY(request.getLocation().y);
+//			order.setTypeName(building.getType());
+			order.setProcessorType("worker");
+			if (request.getRequest().containsKey("iron")) {
+				order.setIron(request.getRequest().get("iron"));
+			} 
+			if (request.getRequest().containsKey("oil")) {
+				order.setIron(request.getRequest().get("oil"));
+			} 
+		}
+		return order;
+	}
+
+	/**
 	 * 
 	 */
-	private void definePriorities() {
+	private void defineUnitPriorities() {
+		//1. gather all priorities
+		//1a. buildings only request for workers
+		for (Building building: buildings) {
+			requestsQueue.add(building.getResourcesRequest());
+		}
+		
+		
+		
 		if (productionCapacity == 0) {//there is no production capacity
 			priority = PlayerPriority.PRODUCTION_CAPACITY;
 		} else if (productionCapacity < 5) {//it takes too long to get resources, build roads 

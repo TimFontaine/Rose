@@ -6,6 +6,8 @@ package tim.game.ai;
 import java.util.ArrayList;
 import java.util.List;
 
+import tim.game.ai.job.Job;
+
 /**
  * @author tfontaine
  *

@@ -11,10 +11,10 @@ import tim.data.back.Path;
 import tim.data.back.Thing;
 import tim.game.Back;
 import tim.game.Player;
-import tim.game.ai.GotoJob;
-import tim.game.ai.Job;
 import tim.game.ai.Task;
 import tim.game.ai.TransferJob;
+import tim.game.ai.job.GotoJob;
+import tim.game.ai.job.Job;
 
 /**
  * @author tfontaine

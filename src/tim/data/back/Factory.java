@@ -7,6 +7,8 @@ import java.util.List;
 
 import tim.data.unit.TransferResource;
 import tim.data.unit.Unit;
+import tim.game.ai.data.RequestType;
+import tim.game.ai.data.ResourcesRequest;
 import tim.game.factory.RoseObjectFactory;
 
 /**
@@ -47,6 +49,12 @@ public class Factory extends Building {
 			//resources needed
 			int iron_request = UNIT_COST - iron;
 			requestMap.put("iron", iron_request);
+			resourcesRequest = new ResourcesRequest();
+			resourcesRequest.setPriority(ResourcesRequest.MAX_PRIORITY);
+			resourcesRequest.setRequest(requestMap);
+			resourcesRequest.setRequestType(RequestType.RESOURCES);
+			resourcesRequest.setLocation(getLocation());
+			
 		}
 	}
 	

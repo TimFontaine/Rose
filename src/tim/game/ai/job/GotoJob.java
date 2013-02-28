@@ -1,13 +1,14 @@
 /**
  * 
  */
-package tim.game.ai;
+package tim.game.ai.job;
 
 import java.awt.Point;
 
 import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.data.unit.Unit;
+import tim.game.ai.MoveJob;
 
 /**
  * @author tfontaine

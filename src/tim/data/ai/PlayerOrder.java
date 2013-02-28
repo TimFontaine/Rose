@@ -10,7 +10,7 @@ import tim.data.unit.Unit;
  * @author tfontaine
  *
  */
-public class PlayerOrder implements Comparable<PlayerOrder>{
+public class PlayerOrder {
 	
 	private int priority;
 	
@@ -30,18 +30,6 @@ public class PlayerOrder implements Comparable<PlayerOrder>{
 		
 	}
 	
-	@Override
-	public int compareTo(PlayerOrder order) {
-		if (priority > order.getPriority()) {
-			return 1;
-		} else if (priority < order.getPriority()) {
-			return -1;
-		} else {
-			return 0;
-		}
-	}
-
-
 	public String getTypeName() {
 		return typeName;
 	}

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import tim.game.Back;
 import tim.game.Player;
+import tim.game.ai.data.ResourcesRequest;
 
 /**
  * @author tfontaine
@@ -20,6 +21,7 @@ public abstract class Thing extends Item implements Serializable {
 	protected Player player;
 	
 	protected Map<String, Integer> requestMap;
+	protected ResourcesRequest resourcesRequest;
 	
 	public Thing(String name) {
 		super(name);
@@ -43,6 +45,14 @@ public abstract class Thing extends Item implements Serializable {
 
 	public void setRequestMap(Map<String, Integer> requestMap) {
 		this.requestMap = requestMap;
+	}
+
+	public ResourcesRequest getResourcesRequest() {
+		return resourcesRequest;
+	}
+
+	public void setResourcesRequest(ResourcesRequest resourcesRequest) {
+		this.resourcesRequest = resourcesRequest;
 	}
 	
 	

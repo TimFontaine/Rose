@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tim.data.back.Path;
-import tim.game.ai.GotoJob;
 import tim.game.ai.JobTask;
 import tim.game.ai.RoadJob;
+import tim.game.ai.job.GotoJob;
 import tim.pathfinding.Dijkstra;
 
 

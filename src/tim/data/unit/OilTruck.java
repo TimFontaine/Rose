@@ -8,7 +8,7 @@ import java.util.List;
 import tim.data.back.Event;
 import tim.data.back.EventCode;
 import tim.data.back.Path;
-import tim.game.ai.GotoJob;
+import tim.game.ai.job.GotoJob;
 
 /**
  * @author tfontaine

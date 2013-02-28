@@ -6,8 +6,8 @@ package tim.data.unit;
 import java.util.List;
 
 import tim.data.back.Path;
-import tim.game.ai.GotoJob;
 import tim.game.ai.TransferJob;
+import tim.game.ai.job.GotoJob;
 
 /**
  * @author tfontaine

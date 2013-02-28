@@ -13,6 +13,7 @@ import tim.game.factory.RoseObjectFactory;
 
 /**
  * @author tfontaine
+ * a building is a thing that can not move
  *
  */
 public abstract class Building extends Thing implements TransferResource {

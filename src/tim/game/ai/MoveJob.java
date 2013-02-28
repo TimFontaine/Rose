@@ -11,6 +11,7 @@ import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.data.unit.Unit;
 import tim.data.unit.UnitState;
+import tim.game.ai.job.Job;
 import tim.pathfinding.AStar;
 
 /**
