@@ -24,13 +24,13 @@ public class GotoJob extends MoveJob {
 	 * 
 	 */
 	public GotoJob(Unit unit, Point destination) {
+		super(unit);
 		this.destination2 = destination;
-		this.unit = unit;
 	}
 	
 	public GotoJob(Unit unit, String mapItemType) {
+		super(unit);
 		this.mapItemType = mapItemType;
-		this.unit = unit;
 	}
 	
 	/* (non-Javadoc)
@@ -48,20 +48,13 @@ public class GotoJob extends MoveJob {
 			
 		}
 	}
-
-	@Override
-	protected void onDestination() {
-		finished = true;
-	}
 	
 	public void doAction() {
-		Node nextNode = path.getPathNodes().get(step);
-		back.moveUnit(unit, nextNode.getX(), nextNode.getY());
+		move();
 		//test on destination
-		if (!path.hasNext(step)) {
-			finished = true;
+		if (testOnDestination()) {
+			onDestination();
 		}
-		step++;
 	}
 
 	

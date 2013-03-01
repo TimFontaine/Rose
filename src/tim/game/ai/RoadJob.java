@@ -3,6 +3,8 @@
  */
 package tim.game.ai;
 
+import java.awt.Point;
+
 import tim.data.back.Item;
 import tim.data.back.Node;
 import tim.data.back.Path;
@@ -21,15 +23,16 @@ public class RoadJob extends Job {
 	Unit unit;
 	Path path;
 	int step;
+	Point endLocation;
 
 	/**
 	 * @param path 
 	 * @param builder 
 	 * 
 	 */
-	public RoadJob(Unit unit, Path path) {
+	public RoadJob(Unit unit, Point locationEnd) {
 		this.unit = unit;
-		this.path = path;
+		this.endLocation = locationEnd;
 	}
 
 	/* (non-Javadoc)
@@ -37,7 +40,6 @@ public class RoadJob extends Job {
 	 */
 	@Override
 	public void doAction() {
-		System.out.println("road build");
 		Road road = new Road();
 		back.buildOnTile(unit.getLocation().x, unit.getLocation().y, road);
 	}
@@ -47,7 +49,7 @@ public class RoadJob extends Job {
 	 */
 	@Override
 	public void start() {
-		
+		path = back.findShortestPath(unit.getX(), unit.getY(), endLocation.x, endLocation.y);
 	}
 
 }

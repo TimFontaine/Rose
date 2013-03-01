@@ -3,6 +3,7 @@
  */
 package tim.data.back;
 
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,10 @@ public class Node implements Comparable<Node>, Serializable{
 	}
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	public Point getLocation() {
+		return new Point(x, y);
 	}
 
 	public boolean isGoal() {

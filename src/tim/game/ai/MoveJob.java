@@ -3,6 +3,7 @@
  */
 package tim.game.ai;
 
+import java.awt.Point;
 import java.util.List;
 
 import tim.data.back.Event;
@@ -23,59 +24,37 @@ public abstract class MoveJob extends Job {
 	protected Path path;
 	protected int step;
 	protected Unit unit;
-	protected Node destination;
 	
 	/**
 	 * 
 	 */
-	public MoveJob() {
+	public MoveJob(Unit unit) {
+		this.unit = unit;
 	}
 	
-	public void doAction() {
-		if (path == null) {
-			unit.setState(UnitState.IDLE);
+	public boolean testOnDestination()  {
+		if (unit.getName().equals("worker2")) {
+			System.out.println("path last:" + path.getLast().getLocation());
+			System.out.println("path first:" + path.first().getLocation());
+			System.out.println("unit post:" + unit.getLocation());
 		}
-		if (!unit.canMove()) {
-			return;
+		if (unit.getX() == 6 && unit.getY() == 8 && unit.getName().equals("worker2")) {
+			int k = 14;
 		}
-		if (unit.getState() == UnitState.ACTIVE) {
-			List<Node> list = path.getPathNodes();
-			Node next = list.get(step);
-			int result = back.moveUnit(unit, next.getX(), next.getY());
-			
-			if (result != EventCode.SUCCESS) {
-				if (result == EventCode.UNIT_CANNOT_MOVE) {
-				//oil is empty?
-					return;
-				} else if (result == EventCode.TILE_BLOCKED) {
-					System.out.println("tile is block, searching for new path");
-					//tile is blocked, find a new way
-					path = back.findShortestPath(unit.getX(), unit.getY(), destination.getX(), destination.getY());
-					step = 0;
-					if (path != null) {
-						doAction();
-					}
-					return;
-					
-				}
-			} else {
-				//move done, substract possible move for this turn
-				unit.useOil();
-				int moves = unit.getMoves() - Unit.MIN_MOVE_COST;
-				unit.setMoves(moves - Unit.MIN_MOVE_COST);
-				if (moves <= 0) {
-					System.out.println("unit is out of moves");
-					unit.setState(UnitState.TURN_FINISHED);
-				}
-				step++;
-			}
-			
-			if (next == destination) {
-				onDestination();
-			}
-		}	
+		if (unit.getLocation().equals(path.getLast().getLocation())){
+			return true;
+		}
+		return false;
 	}
 	
-	protected abstract void onDestination();
+	protected void onDestination() {
+		finished = true;
+	}
+	
+	protected void move() {
+		Node nextNode = path.getPathNodes().get(step);
+		back.moveUnit(unit, nextNode.getX(), nextNode.getY());
+		step++;
+	}
 
 }

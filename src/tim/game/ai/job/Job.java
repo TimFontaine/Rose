@@ -5,6 +5,7 @@ package tim.game.ai.job;
 
 import java.awt.Point;
 
+import tim.data.unit.Unit;
 import tim.game.Back;
 
 /**
@@ -16,6 +17,9 @@ public abstract class Job {
 	protected Back back;
 	protected boolean finished;
 	protected Point player;
+	protected Unit unit;
+	
+	protected boolean started;
 
 	/**
 	 * 
@@ -30,6 +34,10 @@ public abstract class Job {
 
 	public boolean isFinished() {
 		return finished;
+	}
+	
+	protected boolean started() {
+		return started;
 	}
 
 }
