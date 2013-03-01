@@ -200,9 +200,7 @@ public class Back {
 	}
 	
 	public Path findShortestPath(int startX, int startY, int endX, int endY) {
-		removePath();
-		back.getMap().shuffleNeighbours();
-		map.resetNodes();
+		initSearchMap();
 		AStar star = new AStar(map, new ClosestHeuristic());
 		Path path = star.findShortestPath(startX, startY, endX, endY);
 		return path;
@@ -227,8 +225,7 @@ public class Back {
 	}
 	
 	public Path findNearestObject(int startX, int startY, String itemName) {
-		removePath();
-		map.resetNodes();
+		initSearchMap();
 		Dijkstra dijkstra = new Dijkstra();
 		Path path = dijkstra.findClosestItem(startX, startY, map, itemName);
 		return path;
@@ -256,6 +253,12 @@ public class Back {
 		
 		map.setMapItemsList(newList);
 		
+	}
+	
+	private void initSearchMap() {
+		removePath();
+		back.getMap().shuffleNeighbours();
+		map.resetNodes();
 	}
 	
 
