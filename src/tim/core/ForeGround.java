@@ -69,7 +69,7 @@ public class ForeGround {
 		
 		List<MapItem> mapItems= back.getMapItems();
 		for (MapItem mapItem: mapItems) {
-			String name = mapItem.getImageName();
+			String name = mapItem.getType();
 			if (name == null) {
 				System.out.println("alert: " + mapItem.getName());
 			}
@@ -79,10 +79,10 @@ public class ForeGround {
 			if (mapItem.getType() == null) {
 				System.out.println("name without type is: " + mapItem.getName());
 			}
-			if (mapItem.getType().equals("road")) {
-				System.out.println("map item is road");
-			}
 			Image image = resourceManager.getImage(name);
+			if (image == null) {
+				System.out.println("no image for:" + name);
+			}
 			ImageIcon thingImageIcon = new ImageIcon(image);
 			int x = mapItem.getX() * 50;
 			int y = mapItem.getY() * 50;

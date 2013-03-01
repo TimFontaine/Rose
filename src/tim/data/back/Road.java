@@ -14,6 +14,7 @@ public class Road extends Item {
 	 */
 	public Road() {
 		super("road");
+		setType("road");
 	}
 
 }

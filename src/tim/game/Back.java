@@ -145,7 +145,10 @@ public class Back {
 	}
 	
 	public void buildOnTile(int x, int y, Road road) {
+		road.setX(x);
+		road.setY(y);
 		map.getNode(x, y).setRoad(road);
+		map.getMapItems().add(road);
 	}
 
 	public void buildOnTile(int x, int y, String name) {
