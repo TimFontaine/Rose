@@ -123,8 +123,10 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	private PlayerOrder translateRequest(ResourcesRequest request) {
 		PlayerOrder order = new PlayerOrder();
 		if (request.getRequestType() == RequestType.PRODUCTION) {
-			order.setIron(request.getResource().get("iron"));
-			order.setOil(request.getResource().get("oil"));
+//			order.setIron(request.getResource().get("iron"));
+//			order.setOil(request.getResource().get("oil"));
+			Map<String, Integer> resources = request.getResource();
+			order.setResources(resources);
 			order.setX(14);
 			order.setY(14);
 			order.setTypeName("factory");
@@ -136,12 +138,8 @@ public class SimplePlayerAI extends RoseObject implements Player {
 			order.setY(request.getLocation().y);
 //			order.setTypeName(building.getType());
 			order.setProcessorType("worker");
-			if (request.getResource().containsKey("iron")) {
-				order.setIron(request.getResource().get("iron"));
-			} 
-			if (request.getResource().containsKey("oil")) {
-				order.setIron(request.getResource().get("oil"));
-			} 
+			Map<String, Integer> resources = request.getResource();
+			order.setResources(resources);
 		} else if (request.getRequestType() == RequestType.ROAD) {
 			/**
 			 * TODO

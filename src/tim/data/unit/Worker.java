@@ -5,8 +5,10 @@ package tim.data.unit;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 import tim.data.ai.ActionType;
@@ -14,6 +16,7 @@ import tim.data.ai.PlayerOrder;
 import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.game.ai.RoadJob;
+import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.job.BuildJob;
 import tim.game.ai.job.DeliverJob;
 import tim.game.ai.job.GotoJob;
@@ -27,8 +30,8 @@ import tim.game.ai.job.PickupJob;
  */
 public class Worker extends Unit implements TransferResource {
 	
-	private int iron;
 	private PlayerOrder playerOrder;
+	private Map<String, Integer> resources;
 	
 	private Queue<Job> jobList;
 
@@ -38,6 +41,7 @@ public class Worker extends Unit implements TransferResource {
 	public Worker(String name) {
 		super(name);
 		jobList = new LinkedList<Job>();
+		resources = new HashMap<String, Integer>();
 	}
 
 	/* (non-Javadoc)
@@ -114,29 +118,27 @@ public class Worker extends Unit implements TransferResource {
 		 */
 		
 		//test resource available
-		//oil
-		if (playerOrder.getOil() > this.getOil()) {
-//			Path path = back.findNearestObject(locationX, locationY, "oilwell");
-			Job gotoOil = new GotoJob(this, "oilwell");
-			Job job = new PickupJob(this, "oil" ,playerOrder.getOil());
-			jobList.add(gotoOil);
-			jobList.add(job);
+		//for every resource in the playerorder create correct orders
+		if (playerOrder.getResources() != null) {
+			for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
+				int available = getAvailableResource(entry.getKey());
+				int required = entry.getValue();
+				if (available < required) {
+					int transfer = required - available;
+					String resourceLocation = ResourceInfo.getInstance().getLocation(entry.getKey());
+					Job gotoMine = new GotoJob(this,resourceLocation);
+					Job job = new PickupJob(this, entry.getKey() ,transfer);
+					jobList.add(gotoMine);
+					jobList.add(job);
+				}
+				
+			}
 		}
-		//iron
-		if (playerOrder.getIron() > this.getIron()) {
-//			Path path = back.findNearestObject(locationX, locationY, "mine");
-			Job gotoMine = new GotoJob(this, "mine");
-			Job job = new PickupJob(this, "iron" ,playerOrder.getIron());
-			jobList.add(gotoMine);
-			jobList.add(job);
-		}
-		
 		//test on location;
 		/**
 		 * remove playerorder getX and put it in info
 		 */
 		if (playerOrder.getAction() != ActionType.ROAD) {
-	//			Path path = back.findShortestPath(locationX, locationY, playerOrder.getX(), playerOrder.getY());
 				Job job = new GotoJob(this, new Point(playerOrder.getX(),playerOrder.getY()));
 				jobList.add(job);
 		}
@@ -149,13 +151,14 @@ public class Worker extends Unit implements TransferResource {
 			 * TODO
 			 * refactor to flexible resources
 			 */
-			Job job = null;
-			if (playerOrder.getIron() > 0) {
-				job = new DeliverJob(this, "iron", playerOrder.getIron());
-			} else if (playerOrder.getOil() > 0) {
-				job = new DeliverJob(this, "oil", playerOrder.getIron());
+			
+			//for all resources in the playerorder create deliver amount available
+			for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
+				Job job = null;
+				job = new DeliverJob(this, entry.getKey(), entry.getValue());
+				jobList.add(job);
 			}
-			jobList.add(job);
+			
 		} else if (playerOrder.getAction() == ActionType.ROAD) {
 			Point from = (Point) playerOrder.getInfo().get("start");
 			Point end = (Point) playerOrder.getInfo().get("end");
@@ -175,13 +178,12 @@ public class Worker extends Unit implements TransferResource {
 		}
 
 	}
-
-	public int getIron() {
-		return iron;
-	}
-
-	public void setIron(int iron) {
-		this.iron = iron;
+	
+	private int getAvailableResource(String name) {
+		if (resources.containsKey(name)) {
+			return resources.get(name);
+		}
+		return 0;
 	}
 
 	public PlayerOrder getPlayerOrder() {
@@ -197,11 +199,9 @@ public class Worker extends Unit implements TransferResource {
 	 */
 	@Override
 	public void receiveResource(String name, int amount) {
-		if ("iron".equals(name)) {
-			iron+=amount;
-		} else if ("oil".equals(name)) {
-			oil+=amount;
-		}
+		int available = getAvailableResource(name);
+		int total = available+amount;
+		resources.put(name, total);
 		
 	}
 
@@ -210,14 +210,9 @@ public class Worker extends Unit implements TransferResource {
 	 */
 	@Override
 	public void giveResource(String name, int amount) {
-		if ("iron".equals(name)) {
-			iron-=amount;
-		} else if ("oil".equals(name)) {
-			oil-=amount;
-		}
-		if (getIron() <0 || getOil() < 0) {
-			System.out.println("error:" + getName() + "has negative resources");
-		}
+		int available = getAvailableResource(name);
+		int total = available-amount;
+		resources.put(name, total);
 		
 	}
 

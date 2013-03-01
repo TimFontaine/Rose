@@ -22,8 +22,9 @@ public class PlayerOrder {
 	private String processorType;
 	private int x;
 	private int y;
-	private int oil;
-	private int iron;
+//	private int oil;
+//	private int iron;
+	private Map<String, Integer> resources;
 	private Map<String, Object> info;
 	
 
@@ -63,26 +64,6 @@ public class PlayerOrder {
 		this.y = y;
 	}
 
-	public int getOil() {
-		return oil;
-	}
-
-
-	public void setOil(int oil) {
-		this.oil = oil;
-	}
-
-
-	public int getIron() {
-		return iron;
-	}
-
-
-	public void setIron(int iron) {
-		this.iron = iron;
-	}
-
-
 	public String getProcessorType() {
 		return processorType;
 	}
@@ -118,6 +99,14 @@ public class PlayerOrder {
 
 	public void setInfo(Map<String, Object> info) {
 		this.info = info;
+	}
+
+	public Map<String, Integer> getResources() {
+		return resources;
+	}
+
+	public void setResources(Map<String, Integer> resources) {
+		this.resources = resources;
 	}
 
 }

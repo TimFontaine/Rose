@@ -72,18 +72,18 @@ public class ProductionPlanner {
 			return request;
 	}
 
-	private PlayerOrder createBuildAction() {
-		PlayerOrder playerOrder = new PlayerOrder();
-		playerOrder.setTypeName("factory");
-		playerOrder.setX(14);
-		playerOrder.setY(14);
-		playerOrder.setIron(30);
-		playerOrder.setOil(20);
-		playerOrder.setProcessorType("worker");
-		playerOrder.setAction(ActionType.BUILD);
-		playerOrder.setPriority(100);
-		return playerOrder;
-	}
+//	private PlayerOrder createBuildAction() {
+//		PlayerOrder playerOrder = new PlayerOrder();
+//		playerOrder.setTypeName("factory");
+//		playerOrder.setX(14);
+//		playerOrder.setY(14);
+//		playerOrder.setIron(30);
+//		playerOrder.setOil(20);
+//		playerOrder.setProcessorType("worker");
+//		playerOrder.setAction(ActionType.BUILD);
+//		playerOrder.setPriority(100);
+//		return playerOrder;
+//	}
 	
 
 }
