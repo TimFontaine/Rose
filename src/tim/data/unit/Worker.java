@@ -23,6 +23,7 @@ import tim.game.ai.job.GotoJob;
 import tim.game.ai.job.Job;
 import tim.game.ai.job.MultiStepJob;
 import tim.game.ai.job.PickupJob;
+import tim.game.ai.job.UseResourceJob;
 
 /**
  * @author tfontaine
@@ -72,6 +73,7 @@ public class Worker extends Unit implements TransferResource {
 		if (testNewOrder()) {
 			//test requirements for the playerorder
 			setRequirementList();
+			System.out.println(getName() + "has order" + playerOrder.getAction().toString());
 			startNextJob();
 			state = UnitState.ACTIVE;
 		}
@@ -85,9 +87,7 @@ public class Worker extends Unit implements TransferResource {
 			handleEndJob();
 			
 		}
-		if (getName().equals("worker2") && jobList.isEmpty()) {
-			int k = 5;
-		}
+		
 	}
 	
 	private boolean testNewOrder() {
@@ -121,9 +121,11 @@ public class Worker extends Unit implements TransferResource {
 		//for every resource in the playerorder create correct orders
 		if (playerOrder.getResources() != null) {
 			for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
+				System.out.println("Pickup:" + entry.getKey() + ":" + entry.getValue());
 				int available = getAvailableResource(entry.getKey());
 				int required = entry.getValue();
 				if (available < required) {
+					//there are not enough resources, pick them up
 					int transfer = required - available;
 					String resourceLocation = ResourceInfo.getInstance().getLocation(entry.getKey());
 					Job gotoMine = new GotoJob(this,resourceLocation);
@@ -138,24 +140,25 @@ public class Worker extends Unit implements TransferResource {
 		/**
 		 * remove playerorder getX and put it in info
 		 */
-		if (playerOrder.getAction() != ActionType.ROAD) {
-				Job job = new GotoJob(this, new Point(playerOrder.getX(),playerOrder.getY()));
+			if (getX() != playerOrder.getX() && getY() != playerOrder.getY()) {
+				Point start = (Point) playerOrder.getInfo().get("start");
+				Job job = new GotoJob(this, start);
 				jobList.add(job);
-		}
+			}
 		
 		if (playerOrder.getAction() == ActionType.BUILD) {
 			Job job = new BuildJob(this, playerOrder.getTypeName());
 			jobList.add(job);
-		} else if (playerOrder.getAction() == ActionType.RESOURCES) {
-			/**
-			 * TODO
-			 * refactor to flexible resources
-			 */
-			
+			for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
+				System.out.println("use resource job:" + entry.getKey() + ":" + entry.getValue());
+				Job delivery = new UseResourceJob(this, entry.getKey(), entry.getValue());
+				jobList.add(delivery);
+			}
+		} else if (playerOrder.getAction() == ActionType.RESOURCES) {			
 			//for all resources in the playerorder create deliver amount available
 			for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
-				Job job = null;
-				job = new DeliverJob(this, entry.getKey(), entry.getValue());
+				System.out.println("Delivery job:" + entry.getKey() + ":" + entry.getValue());
+				Job job = new DeliverJob(this, entry.getKey(), entry.getValue());
 				jobList.add(job);
 			}
 			

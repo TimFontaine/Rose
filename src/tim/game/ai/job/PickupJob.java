@@ -59,6 +59,7 @@ public class PickupJob extends Job {
 			System.out.println("error: pickupjob is on location with no TransferResource object");
 		}
 		//worker? receives from mine?
+		System.out.println("pickup up job " + ((Worker)transferer).getName());
 		transferer.receiveResource(resourceName, amount);
 		back.addUsedItem(current.getItem());
 		finished = true;

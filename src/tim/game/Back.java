@@ -372,6 +372,11 @@ public class Back {
 		addItem(building);
 		building.getPlayer().addBuilding(building);
 	}
+	
+	public void addBuilding(Player player, Building building) {
+		addItem(building);
+		player.addBuilding(building);
+	}
 
 	public Player getActivePlayer() {
 		return activePlayer;

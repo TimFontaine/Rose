@@ -3,6 +3,8 @@
  */
 package tim.game;
 
+import java.awt.Point;
+
 import tim.data.back.Building;
 import tim.data.back.Factory;
 import tim.data.back.Item;

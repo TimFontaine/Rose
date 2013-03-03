@@ -22,6 +22,7 @@ import tim.data.ai.PlayerPriority;
 import tim.data.ai.ProductionPlanner;
 import tim.data.back.Building;
 import tim.data.back.Event;
+import tim.data.back.Factory;
 import tim.data.back.Item;
 import tim.data.back.RoseObject;
 import tim.data.unit.Unit;
@@ -88,12 +89,12 @@ public class SimplePlayerAI extends RoseObject implements Player {
 		ProductionPlanner planner = new ProductionPlanner(data);
 		Collection<ResourcesRequest> requests = planner.doAction();
 		requestsQueue.addAll(requests);
-		
+		defineUnitPriorities();
 		for (Building building: buildings) {
 			building.doLogic();
 		}
 		
-		defineUnitPriorities();
+		
 		for (Unit unit: units) {
 			if (unit.getState() == UnitState.IDLE) {
 				if (!requestsQueue.isEmpty()) {
@@ -127,15 +128,13 @@ public class SimplePlayerAI extends RoseObject implements Player {
 //			order.setOil(request.getResource().get("oil"));
 			Map<String, Integer> resources = request.getResource();
 			order.setResources(resources);
-			order.setX(14);
-			order.setY(14);
+			order.getInfo().put("start", new Point(14,14));
 			order.setTypeName("factory");
 			order.setProcessorType("worker");
 			order.setAction(ActionType.BUILD);
 		} else if (request.getRequestType() == RequestType.RESOURCES) {
 			order.setAction(ActionType.RESOURCES);
-			order.setX(request.getLocation().x);
-			order.setY(request.getLocation().y);
+			order.getInfo().put("start", request.getLocation());
 //			order.setTypeName(building.getType());
 			order.setProcessorType("worker");
 			Map<String, Integer> resources = request.getResource();
@@ -173,8 +172,13 @@ public class SimplePlayerAI extends RoseObject implements Player {
 		//1. gather all priorities
 		//1a. buildings only request for workers
 		for (Building building: buildings) {
-			if (building.getResourcesRequest() != null) {
-				requestsQueue.add(building.getResourcesRequest());
+			if (building.getType().equals("factory")) {
+				FactoryManager manager = new FactoryManager();
+				manager.setFactory((Factory)building);
+				SortedSet<ResourcesRequest> set = manager.analyse();
+				requestsQueue.addAll(set);
+				
+				
 			}
 		}
 		

@@ -3,7 +3,10 @@
  */
 package tim.data.back;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import tim.data.unit.TransferResource;
 import tim.data.unit.Unit;
@@ -17,9 +20,7 @@ import tim.game.factory.RoseObjectFactory;
  */
 public class Factory extends Building {
 
-	private int iron;
-	private int oil;
-	private static final int UNIT_COST = 100;
+	private Map<String, Integer> resources;
 	
 	private int producedUnits;
 	
@@ -28,38 +29,15 @@ public class Factory extends Building {
 	 */
 	public Factory(String name) {
 		super(name);
+		setType("factory");
+		setResources(new HashMap<String, Integer>());
 		System.out.println("new factory");
-	}
-	
-	public int getIron() {
-		return iron;
-	}
-
-	public void setIron(int iron) {
-		this.iron = iron;
-	}
-	
-	public void receiveIron(int iron) {
-		this.iron += iron;
 	}
 	
 	public void doLogic() {
 		boolean test = testCanBuild();
 		if (test) {
-			buildUnit();
-		} else {
-			//resources needed
-			System.out.println("producedunits is:" + producedUnits);
-//			if (producedUnits <1) {
-				System.out.println("created resourcerequest");
-				int iron_request = UNIT_COST - iron;
-				requestMap.put("iron", iron_request);
-				resourcesRequest = new ResourcesRequest();
-				resourcesRequest.setPriority(ResourcesRequest.MAX_PRIORITY);
-				resourcesRequest.setResource(requestMap);
-				resourcesRequest.setRequestType(RequestType.RESOURCES);
-				resourcesRequest.setLocation(getLocation());
-//			}
+			//buildUnit();
 		}
 	}
 	
@@ -71,21 +49,37 @@ public class Factory extends Building {
 		unit.setOil(100);
 		unit.setX(x);
 		unit.setY(y);
-//		if (back.getMap().getNode(x, y).getUnit() != null) {
-//			waitingUnits.add(unit);
-//		} else {
-			back.addUnit(unit);
-//		}
-		iron-=UNIT_COST;
+		back.addUnit(unit);
+		handleResourseCost();
 		System.out.println("factory has build unit");
 		producedUnits++;
 	}
 
-	private boolean testCanBuild() {
-		if (iron >= UNIT_COST) {
-			return true;
+	private void handleResourseCost() {
+		Map<String,Integer> required = getResourcesRequest().getResource();
+		for (Map.Entry<String, Integer> resource : required.entrySet() ) {
+			int cost = resource.getValue();
+			int available = getResources().get(resource.getKey());
+			int rest = available - cost;
+			getResources().put(resource.getKey(), rest);
 		}
-		return false;
+		
+	}
+
+	private boolean testCanBuild() {
+		Map<String,Integer> required = getResourcesRequest().getResource();
+		for (Map.Entry<String, Integer> resource : required.entrySet() ) {
+			if (!getResources().containsKey(resource.getKey())) {
+				return false;
+			}
+			int cost = resource.getValue();
+			int available = getResources().get(resource.getKey());
+			int rest = available - cost;
+			if (rest < 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 
@@ -94,11 +88,7 @@ public class Factory extends Building {
 	 */
 	@Override
 	public void receiveResource(String name, int amount) {
-		if ("iron".equals(name)) {
-			iron+=amount;
-		} else if ("oil".equals(name)) {
-			oil+=amount;
-		}
+		resources.put(name, amount);
 		
 	}
 
@@ -117,6 +107,20 @@ public class Factory extends Building {
 
 	public void setProducedUnits(int producedUnits) {
 		this.producedUnits = producedUnits;
+	}
+
+	/**
+	 * @return the resources
+	 */
+	public Map<String, Integer> getResources() {
+		return resources;
+	}
+
+	/**
+	 * @param resources the resources to set
+	 */
+	public void setResources(Map<String, Integer> resources) {
+		this.resources = resources;
 	}
 
 }
