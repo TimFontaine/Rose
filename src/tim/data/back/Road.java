@@ -8,6 +8,8 @@ package tim.data.back;
  *
  */
 public class Road extends Item {
+	
+	public static final int EXTRA_SPEED = 2;
 
 	/**
 	 * @param name

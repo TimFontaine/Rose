@@ -31,12 +31,14 @@ public class Node implements Comparable<Node>, Serializable{
 	private Road road;
 	
 	private int travelWeight = 50;
+	private static final int default_travelWeight= 10;
 	
 	public Node(int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.distanceFromStart = Integer.MAX_VALUE;
 		units = new ArrayList<Unit>();
+		travelWeight = default_travelWeight;
 	}
 	
 	public void setNeighborList(List<Node> neighbors) {
@@ -260,6 +262,17 @@ public class Node implements Comparable<Node>, Serializable{
 
 	public void setRoad(Road road) {
 		this.road = road;
+		updateTravelWeight();
+	}
+
+	/**
+	 * 
+	 */
+	private void updateTravelWeight() {
+		travelWeight = default_travelWeight;
+		if (road != null) {
+			travelWeight = default_travelWeight / Road.EXTRA_SPEED;
+		}
 	}
 	
 
