@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import tim.data.back.Node;
 import tim.data.unit.Unit;
+import tim.game.factory.GameApplicationFactory;
 
 /**
  * @author tfontaine
@@ -32,8 +33,8 @@ public class TileInfoPanel extends JPanel {
 	JLabel unitOil;
 	
 
-	public TileInfoPanel(Mediator mediator) {
-		this.mediator = mediator;
+	public TileInfoPanel() {
+		this.mediator = GameApplicationFactory.getInstance().getMediator();
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		this.setLayout(layout);
 		this.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));

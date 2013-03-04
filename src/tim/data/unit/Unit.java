@@ -44,7 +44,6 @@ public abstract class Unit extends Thing {
 	 */
 	public Unit(String name) {
 		super(name);
-		back = Back.getInstance();
 		//setup job
 		task = new Task();
 		task.addDestination("mine");

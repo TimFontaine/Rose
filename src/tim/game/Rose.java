@@ -25,6 +25,7 @@ import tim.core.ResourceManager;
 import tim.data.front.MouseInfoItem;
 import tim.data.front.MouseState;
 import tim.data.front.ScreenInfo;
+import tim.game.factory.GameApplicationFactory;
 import tim.game.hud.Interface;
 import tim.game.hud.Mediator;
 
@@ -38,6 +39,8 @@ import tim.game.hud.Mediator;
  *
  */
 public class Rose extends Core {
+	
+	GameApplicationFactory applicationFactory;
 	
 	BackGround backGround;
 	ForeGround foreGround;
@@ -61,13 +64,14 @@ public class Rose extends Core {
 	 */
 	public Rose(GraphicsDevice gd) {
 		super(gd);
+		applicationFactory = GameApplicationFactory.getInstance();
 		backGround = new BackGround(getWidth(), getWidth());
 		foreGround = new ForeGround(getWidth(), getHeight());
 		actionMap = new HashMap<String, GameAction>();
 		ResourceManager resourceManager = ResourceManager.getInstance();
-		mediator = new Mediator();
+		mediator = applicationFactory.getMediator();
 		drawInterFace(null, this);
-		logic = new Logic(this, actionMap, mediator);
+		logic = new Logic(this, actionMap);
 		play = true;
 		
 		initGame();
@@ -134,7 +138,7 @@ public class Rose extends Core {
 	}
 
 	private void drawInterFace(Graphics2D g, JFrame window) {
-		gui = new Interface(this, mediator);
+		gui = new Interface(this);
 		gui.buildInterface();
 		
 	}
@@ -169,7 +173,7 @@ public class Rose extends Core {
 			gui.buildSystemMenu();
 		}
 		if (actionMap.get("nextTurn").isPressed() && human == 1) {
-			Back.getInstance().nextPlayer();
+			applicationFactory.getBack().nextPlayer();
 		}
 		
 	}

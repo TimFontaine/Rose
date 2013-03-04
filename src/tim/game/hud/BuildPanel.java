@@ -18,6 +18,7 @@ import tim.game.Logic;
 import tim.game.buttons.GameButton;
 import tim.game.buttons.LocateButton;
 import tim.game.buttons.SpeedmenuButton;
+import tim.game.factory.GameApplicationFactory;
 import tim.rose.buttons.actions.BuildAction;
 import tim.rose.buttons.actions.CalcpathAction;
 import tim.rose.buttons.actions.LocateAction;
@@ -33,8 +34,8 @@ public class BuildPanel extends JPanel implements ActionListener{
 	/**
 	 * 
 	 */
-	public BuildPanel(Mediator mediator) {
-		this.mediator = mediator;
+	public BuildPanel() {
+		this.mediator = GameApplicationFactory.getInstance().getMediator();
 		build();
 	}
 	
@@ -55,13 +56,13 @@ public class BuildPanel extends JPanel implements ActionListener{
 		
 		buildEventPanel();
 		
-		TileInfoPanel tileInfoPanel = new TileInfoPanel(mediator);
+		TileInfoPanel tileInfoPanel = new TileInfoPanel();
 		add(tileInfoPanel);
 	}
 	
 
 	private void buildEventPanel() {
-		EventPanel eventPanel = new EventPanel(mediator);
+		EventPanel eventPanel = new EventPanel();
 //		eventPanel.setSize(200, 100);
 //		eventPanel.setMaximumSize(new Dimension(200,100));
 //		eventPanel.setMinimumSize(new Dimension(200,100));
@@ -76,7 +77,7 @@ public class BuildPanel extends JPanel implements ActionListener{
 	}
 
 	private void buildOptionPanel(JPanel optionPanel) {
-		GameButton button = new SpeedmenuButton(this, mediator); 
+		GameButton button = new SpeedmenuButton(this); 
 		button.setIcon("options");
 		optionPanel.add(button);
 	}
@@ -127,7 +128,7 @@ public class BuildPanel extends JPanel implements ActionListener{
 		pathButton.setIcon("path");
 		pathPanel.add(pathButton);
 		
-		GameButton locateButton = new LocateButton(this, mediator);
+		GameButton locateButton = new LocateButton(this);
 		locateButton.setIcon("locate");
 //		locateButton.setRoseAction(new LocateAction());
 		pathPanel.add(locateButton);

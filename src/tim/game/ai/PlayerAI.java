@@ -20,6 +20,7 @@ import tim.data.unit.UnitOrder;
 import tim.data.unit.UnitState;
 import tim.game.Back;
 import tim.game.Player;
+import tim.game.factory.GameApplicationFactory;
 import tim.pathfinding.Dijkstra;
 
 /**
@@ -43,7 +44,7 @@ public class PlayerAI extends RoseObject implements Player {
 		activeUnits = new ArrayList<Unit>();
 		buildings = new ArrayList<Building>();
 		events = new ArrayList<Event>();
-		back = Back.getInstance();
+		back = GameApplicationFactory.getInstance().getBack();
 	}
 	
 	public void doLogic() {

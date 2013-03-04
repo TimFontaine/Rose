@@ -16,6 +16,7 @@ import tim.data.back.Thing;
 import tim.data.front.ScreenInfo;
 import tim.game.Back;
 import tim.game.ImageMapper;
+import tim.game.factory.GameApplicationFactory;
 
 /**
  * @author tfontaine
@@ -32,7 +33,7 @@ public class ForeGround {
 	 * 
 	 */
 	public ForeGround(int width, int height) {
-		back = Back.getInstance();
+		back = GameApplicationFactory.getInstance().getBack();
 		resourceManager = ResourceManager.getInstance();
 		this.screenWidth = width;
 		this.screenHeight = height;

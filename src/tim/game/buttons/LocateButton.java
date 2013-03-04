@@ -5,6 +5,7 @@ package tim.game.buttons;
 
 import java.awt.event.ActionListener;
 
+import tim.game.factory.GameApplicationFactory;
 import tim.game.hud.Mediator;
 
 /**
@@ -18,9 +19,9 @@ public class LocateButton extends GameButton {
 	/**
 	 * 
 	 */
-	public LocateButton(ActionListener listener, Mediator mediator) {
+	public LocateButton(ActionListener listener) {
 		super(listener);
-		this.mediator = mediator;
+		mediator = GameApplicationFactory.getInstance().getMediator();
 	}
 	
 	@Override

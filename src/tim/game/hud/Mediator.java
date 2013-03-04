@@ -13,6 +13,7 @@ import tim.data.back.Event;
 import tim.data.back.Node;
 import tim.game.Back;
 import tim.game.buttons.GameButton;
+import tim.game.factory.GameApplicationFactory;
 
 /**
  * @author tfontaine
@@ -30,7 +31,7 @@ public class Mediator {
 	 * 
 	 */
 	public Mediator() {
-		back = Back.getInstance();
+		back = GameApplicationFactory.getInstance().getBack();
 	}
 	
 	public void openSpeedMenu() {

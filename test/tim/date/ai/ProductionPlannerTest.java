@@ -9,6 +9,7 @@ import tim.data.back.Item;
 import tim.data.back.Mine;
 import tim.data.back.Oilwell;
 import tim.game.Back;
+import tim.game.factory.GameApplicationFactory;
 
 /**
  * @author tim
@@ -23,7 +24,7 @@ public class ProductionPlannerTest {
 	 * 
 	 */
 	public ProductionPlannerTest() {
-		back = Back.getInstance();
+		back = GameApplicationFactory.getInstance().getBack();
 		init();
 	}
 	

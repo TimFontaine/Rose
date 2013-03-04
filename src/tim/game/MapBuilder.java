@@ -15,6 +15,7 @@ import tim.data.unit.OilTruck;
 import tim.data.unit.Truck;
 import tim.data.unit.Unit;
 import tim.game.ai.PlayerAI;
+import tim.game.factory.GameApplicationFactory;
 import tim.game.factory.RoseObjectFactory;
 import tim.pathfinding.AStar;
 import tim.pathfinding.ClosestHeuristic;
@@ -26,12 +27,10 @@ import tim.pathfinding.ClosestHeuristic;
 public class MapBuilder {
 	
 	Back back;
-	MapBack mapBack;
 	
 
 	public MapBuilder() {
-		back = Back.getInstance();
-		mapBack = MapBack.getInstance();
+		back = GameApplicationFactory.getInstance().getBack();
 		init();
 	}
 	

@@ -17,6 +17,7 @@ import tim.core.ResourceManager;
 import tim.game.Back;
 import tim.game.Logic;
 import tim.game.buttons.GameButton;
+import tim.game.factory.GameApplicationFactory;
 
 
 
@@ -32,18 +33,19 @@ public class Interface implements ActionListener {
 	Back back;
 	Mediator mediator;
 	
-	public Interface(JFrame frame, Mediator mediator) {
+	public Interface(JFrame frame) {
 		this.frame = frame;
-		back = Back.getInstance();
+		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
+		back = applicationFactory.getBack();
 		resourceManager = ResourceManager.getInstance();
-		this.mediator = mediator;
+		this.mediator = applicationFactory.getMediator();
 		mediator.registerJFrame(frame);
 	}
 	
 	public void buildInterface() {
 		FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT);
 		frame.getContentPane().setLayout(null);
-		JPanel panel = new BuildPanel(mediator);
+		JPanel panel = new BuildPanel();
 		panel.setLayout(flowLayout);
 		panel.setBackground(Color.white);
 		panel.setSize(frame.getWidth(), 100);

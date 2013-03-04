@@ -23,6 +23,7 @@ import tim.data.front.MouseInfoItem;
 import tim.data.front.MouseState;
 import tim.data.front.ScreenInfo;
 import tim.game.buttons.GameButton;
+import tim.game.factory.GameApplicationFactory;
 import tim.game.hud.Interface;
 import tim.game.hud.Mediator;
 import tim.rose.buttons.actions.RoseAction;
@@ -46,12 +47,12 @@ public class Logic {
 	 * @param mediator 
 	 * 
 	 */
-	public Logic(JFrame frame, HashMap<String, GameAction> actionMap, Mediator mediator) {
+	public Logic(JFrame frame, HashMap<String, GameAction> actionMap) {
 		this.actionMap = actionMap;
-		this.back = Back.getInstance();
+		this.back = GameApplicationFactory.getInstance().getBack();
 		this.screenInfo = ScreenInfo.getInstance();
 		this.frame = frame;
-		this.mediator = mediator;
+		this.mediator = GameApplicationFactory.getInstance().getMediator();
 		queue = new ArrayList<GameButton>();
 		actionQueue = new ArrayList<RoseAction>();
 	}

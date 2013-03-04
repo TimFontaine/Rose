@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import tim.game.Back;
 import tim.game.Logic;
 import tim.game.buttons.GameButton;
+import tim.game.factory.GameApplicationFactory;
 
 /**
  * @author tfontaine
@@ -39,7 +40,7 @@ public class TravelSpeedMenu extends JPanel implements ActionListener {
 	 * 
 	 */
 	public TravelSpeedMenu(Mediator mediator) {
-		back = Back.getInstance();
+		back = GameApplicationFactory.getInstance().getBack();
 		this.mediator = mediator;
 		build();
 	}

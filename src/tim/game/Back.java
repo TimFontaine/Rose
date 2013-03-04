@@ -32,7 +32,6 @@ import tim.pathfinding.Dijkstra;
  */
 public class Back {
 	
-	private static Back back;
 	Point player;
 	private int x;
 	private int y;
@@ -51,7 +50,7 @@ public class Back {
 	/**
 	 * 
 	 */
-	private Back() {
+	public Back() {
 		map = new Map();
 		events = new ArrayList<Event>();
 		setPlayerList(new ArrayList<Player>());
@@ -66,14 +65,6 @@ public class Back {
 		speed.put("default", defaultSpeed);
 		speed.put("road", 50);
 		speed.put("double-road", 70);
-	}
-	
-	public static Back getInstance() {
-		if (back == null) {
-			back = new Back();
-		}
-			
-		return back;
 	}
 	
 	public void move(Direction direction, int amount) {
@@ -160,7 +151,7 @@ public class Back {
 		building.setImageName(name);
 		System.out.println("item build:" + name);
 		if (name.equals("block")) {
-			MapBack.getInstance().getNode(building.getX(), building.getY()).setObstacle(true);
+			getNode(building.getX(), building.getY()).setObstacle(true);
 		}
 		if (speed.get(name) != null) {
 			map.getNode(x, y).setTravelWeight(speed.get(name));
@@ -184,7 +175,7 @@ public class Back {
 	
 	public Path calcPath(Point start) {
 		removePath();
-		back.getMap().shuffleNeighbours();
+		getMap().shuffleNeighbours();
 		map.resetNodes();
 		AStar star = new AStar(map, new ClosestHeuristic());
 //		Path path = star.findShortestPath(start.x, start.y, flag.getX(), flag.getY());
@@ -257,7 +248,7 @@ public class Back {
 	
 	private void initSearchMap() {
 		removePath();
-		back.getMap().shuffleNeighbours();
+		getMap().shuffleNeighbours();
 		map.resetNodes();
 	}
 	
@@ -339,7 +330,7 @@ public class Back {
 
 	//for the mapbuilder
 	public void addUnit(Player player, Unit unit) {
-		back.getMapItems().add(unit);
+		getMapItems().add(unit);
 		player.addUnit(unit);
 		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
 	}
@@ -347,7 +338,7 @@ public class Back {
 	public void addUnit(Unit unit) {
 		String name = unit.getName() + itemId++;
 		unit.setName(name);
-		back.getMapItems().add(unit);
+		getMapItems().add(unit);
 		activePlayer.addUnit(unit);
 		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
 	}
@@ -364,7 +355,7 @@ public class Back {
 //	}
 	
 	public void addItem(Item item) {
-		back.getMapItems().add(item);
+		getMapItems().add(item);
 		map.getNode(item.getX(), item.getY()).setItem(item);
 	}
 	

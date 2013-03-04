@@ -7,6 +7,7 @@ import java.awt.Point;
 
 import tim.data.unit.Unit;
 import tim.game.Back;
+import tim.game.factory.GameApplicationFactory;
 
 /**
  * @author tfontaine
@@ -25,7 +26,7 @@ public abstract class Job {
 	 * 
 	 */
 	public Job() {
-		back = Back.getInstance();
+		back = GameApplicationFactory.getInstance().getBack();
 	}
 	
 	public abstract void start();

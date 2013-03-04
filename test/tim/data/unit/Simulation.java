@@ -5,6 +5,8 @@ package tim.data.unit;
 
 import java.util.Map;
 
+import org.junit.Before;
+
 import tim.data.back.Factory;
 import tim.data.back.Item;
 import tim.data.back.Mine;
@@ -13,6 +15,7 @@ import tim.game.Back;
 import tim.game.Player;
 import tim.game.ai.DummyPlayer;
 import tim.game.ai.SimplePlayerAI;
+import tim.game.factory.MockApplicationFactory;
 import tim.game.factory.RoseObjectFactory;
 
 /**
@@ -33,8 +36,9 @@ public class Simulation {
 		// TODO Auto-generated constructor stub
 	}
 	
+	@Before
 	public void init() {
-		back = Back.getInstance();
+		back = MockApplicationFactory.getInstance().getBack();
 		RoseObjectFactory factory = RoseObjectFactory.getInstance();
 		back.getMap().setupTiles(30,30, Back.defaultSpeed);
 		 player = new SimplePlayerAI("player");

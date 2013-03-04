@@ -10,6 +10,7 @@ import java.util.Map;
 import tim.game.Back;
 import tim.game.Player;
 import tim.game.ai.data.ResourcesRequest;
+import tim.game.factory.GameApplicationFactory;
 
 /**
  * @author tfontaine
@@ -25,7 +26,7 @@ public abstract class Thing extends Item implements Serializable {
 	
 	public Thing(String name) {
 		super(name);
-		back = Back.getInstance();
+		back = GameApplicationFactory.getInstance().getBack();
 		requestMap = new HashMap<String, Integer>();
 	}
 

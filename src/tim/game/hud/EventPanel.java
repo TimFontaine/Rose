@@ -13,6 +13,7 @@ import javax.swing.JTextArea;
 
 import tim.game.buttons.GameButton;
 import tim.game.buttons.SpeedmenuButton;
+import tim.game.factory.GameApplicationFactory;
 
 /**
  * @author tfontaine
@@ -22,7 +23,8 @@ public class EventPanel extends JPanel {
 	
 	JTextArea area;
 
-	public EventPanel(Mediator mediator) {
+	public EventPanel() {
+		Mediator mediator = GameApplicationFactory.getInstance().getMediator();
 		mediator.registerEventPanel(this);
 		build();
 	}
