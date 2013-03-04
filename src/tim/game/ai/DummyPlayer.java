@@ -3,6 +3,9 @@
  */
 package tim.game.ai;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tim.data.back.Building;
 import tim.data.back.Event;
 import tim.data.back.Item;
@@ -15,12 +18,14 @@ import tim.game.Player;
  *
  */
 public class DummyPlayer implements Player {
+	
+	List<Building> buildings;
 
 	/**
 	 * 
 	 */
 	public DummyPlayer() {
-		// TODO Auto-generated constructor stub
+		buildings = new ArrayList<Building>();
 	}
 
 	/* (non-Javadoc)
@@ -73,8 +78,7 @@ public class DummyPlayer implements Player {
 	 */
 	@Override
 	public void addBuilding(Building building) {
-		// TODO Auto-generated method stub
-
+		buildings.add(building);
 	}
 
 	/* (non-Javadoc)

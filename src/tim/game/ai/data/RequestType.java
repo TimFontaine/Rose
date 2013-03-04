@@ -10,5 +10,6 @@ package tim.game.ai.data;
 public enum RequestType {
 	RESOURCES,
 	ROAD,
-	PRODUCTION
+	PRODUCTION,
+	BUILD;
 }

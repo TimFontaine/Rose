@@ -16,7 +16,7 @@ import tim.game.ai.MoveJob;
  */
 public class GotoJob extends MoveJob {
 	
-	protected Point destination2;
+	protected Point destination;
 	String mapItemType;
 	
 	/**
@@ -25,7 +25,7 @@ public class GotoJob extends MoveJob {
 	 */
 	public GotoJob(Unit unit, Point destination) {
 		super(unit);
-		this.destination2 = destination;
+		this.destination = destination;
 	}
 	
 	public GotoJob(Unit unit, String mapItemType) {
@@ -38,13 +38,17 @@ public class GotoJob extends MoveJob {
 	 */
 	@Override
 	public void start() {
-		if (destination2 == null && mapItemType == null) {
+		if (unit.getLocation().equals(destination)) {
+			//we are on the destination
+			finished = true;
+		}
+		if (destination == null && mapItemType == null) {
 			System.out.println("error: gotojob no destination or mapitemtype to goto set");
 		}
 		if (mapItemType != null) {
 			path = back.findNearestObject(unit, mapItemType);
-		} else if (destination2 != null) {
-			path = back.findShortestPath(unit.getX(), unit.getY(), destination2.x, destination2.y);
+		} else if (destination != null) {
+			path = back.findShortestPath(unit.getX(), unit.getY(), destination.x, destination.y);
 			
 		}
 	}

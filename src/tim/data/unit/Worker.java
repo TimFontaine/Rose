@@ -77,16 +77,22 @@ public class Worker extends Unit implements TransferResource {
 			startNextJob();
 			state = UnitState.ACTIVE;
 		}
+		
+		//the start function can set the job on finished 
+		if (job.isFinished()) {
+			handleEndJob();
+		}
 		if (state == UnitState.IDLE) {
 			//there is no job assignment
 			return;
 		}
+		
 		job.doAction();
 		
-		if (job.isFinished()) {
-			handleEndJob();
-			
-		}
+//		if (job.isFinished()) {
+//			handleEndJob();
+//			
+//		}
 		
 	}
 	
@@ -117,6 +123,42 @@ public class Worker extends Unit implements TransferResource {
 		 * add for other stuff as task build
 		 */
 		
+		getRequiredResources();
+		Point start = (Point) playerOrder.getInfo().get("start");
+		testOnLocation(start);
+		//test on location;
+		switch(playerOrder.getAction()) {
+			case BUILD:
+				placeBuilding();
+				useResources();
+				break;
+			case RESOURCES:
+				deliverRequestResources();
+				break;
+			case ROAD:
+				Point end = (Point) playerOrder.getInfo().get("end");
+				System.out.println("order to build road from " + start.x + ":" + start.y + "to"
+						+ end.x + ":" + end.y + "for unit " + getName());
+				MultiStepJob buildRoad = new MultiStepJob(this, end);
+				Job roadJob = new RoadJob(this, null);
+				buildRoad.setExtraJob(roadJob);
+				
+				jobList.add(buildRoad);
+				break;
+		}
+		
+		if (playerOrder.getAction() == ActionType.BUILD) {
+			
+		} else if (playerOrder.getAction() == ActionType.RESOURCES) {			
+		} else if (playerOrder.getAction() == ActionType.ROAD) {
+		}
+
+	}
+	
+	/**
+	 * 
+	 */
+	private void getRequiredResources() {
 		//test resource available
 		//for every resource in the playerorder create correct orders
 		if (playerOrder.getResources() != null) {
@@ -136,50 +178,12 @@ public class Worker extends Unit implements TransferResource {
 				
 			}
 		}
-		//test on location;
-		/**
-		 * remove playerorder getX and put it in info
-		 */
-			if (getX() != playerOrder.getX() && getY() != playerOrder.getY()) {
-				Point start = (Point) playerOrder.getInfo().get("start");
-				Job job = new GotoJob(this, start);
-				jobList.add(job);
-			}
 		
-		if (playerOrder.getAction() == ActionType.BUILD) {
-			Job job = new BuildJob(this, playerOrder.getTypeName());
-			jobList.add(job);
-			for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
-				System.out.println("use resource job:" + entry.getKey() + ":" + entry.getValue());
-				Job delivery = new UseResourceJob(this, entry.getKey(), entry.getValue());
-				jobList.add(delivery);
-			}
-		} else if (playerOrder.getAction() == ActionType.RESOURCES) {			
-			//for all resources in the playerorder create deliver amount available
-			for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
-				System.out.println("Delivery job:" + entry.getKey() + ":" + entry.getValue());
-				Job job = new DeliverJob(this, entry.getKey(), entry.getValue());
-				jobList.add(job);
-			}
-			
-		} else if (playerOrder.getAction() == ActionType.ROAD) {
-			Point from = (Point) playerOrder.getInfo().get("start");
-			Point end = (Point) playerOrder.getInfo().get("end");
-			System.out.println("order to build road from " + from.x + ":" + from.y + "to"
-					+ end.x + ":" + end.y + "for unit " + getName());
-			Job gotoStart = new GotoJob(this, from);
-			MultiStepJob buildRoad = new MultiStepJob(this, end);
-			Job roadJob = new RoadJob(this, null);
-			buildRoad.setExtraJob(roadJob);
-			
-			if (getX() != from.x || getY() != from.y) {
-				jobList.add(gotoStart);
-			}
-			jobList.add(buildRoad);
-			
-			
-		}
+	}
 
+	private void testOnLocation(Point start) {
+		Job job = new GotoJob(this, start);
+		jobList.add(job);
 	}
 	
 	private int getAvailableResource(String name) {
@@ -187,6 +191,28 @@ public class Worker extends Unit implements TransferResource {
 			return resources.get(name);
 		}
 		return 0;
+	}
+	
+	private void placeBuilding() {
+		Job job = new BuildJob(this, playerOrder.getTypeName());
+		jobList.add(job);
+	}
+	
+	private void useResources() {
+		for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
+			System.out.println("use resource job:" + entry.getKey() + ":" + entry.getValue());
+			Job delivery = new UseResourceJob(this, entry.getKey(), entry.getValue());
+			jobList.add(delivery);
+		}
+	}
+	
+	private void deliverRequestResources() {
+		//for all resources in the playerorder create deliver amount available
+		for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
+			System.out.println("Delivery job:" + entry.getKey() + ":" + entry.getValue());
+			Job job = new DeliverJob(this, entry.getKey(), entry.getValue());
+			jobList.add(job);
+		}
 	}
 
 	public PlayerOrder getPlayerOrder() {
