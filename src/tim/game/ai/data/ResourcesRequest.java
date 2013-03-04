@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
+import tim.data.ai.ActionType;
+
 /**
  * @author tfontaine
  *
@@ -19,7 +21,7 @@ public class ResourcesRequest implements Comparable<ResourcesRequest> {
 	private int priority;
 	private Map<String, Integer> resource;
 	private Map<String, Object> info;//extra info as from/to location
-	private RequestType requestType;
+	private ActionType actionType;
 	private Point location;
 	
 	/**
@@ -51,12 +53,12 @@ public class ResourcesRequest implements Comparable<ResourcesRequest> {
 		return 0;
 	}
 
-	public RequestType getRequestType() {
-		return requestType;
+	public ActionType getActionType() {
+		return actionType;
 	}
 
-	public void setRequestType(RequestType requestType) {
-		this.requestType = requestType;
+	public void setActionType(ActionType actionType) {
+		this.actionType = actionType;
 	}
 
 	public Point getLocation() {
