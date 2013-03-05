@@ -19,7 +19,7 @@ public class ResourceInfo {
 	public enum AvailableResources {
 		OIL(0),
 		IRON(1),
-		MUNITION(2);
+		MUNITION(2); 
 		
 		private int num;
 		public int getNum() {

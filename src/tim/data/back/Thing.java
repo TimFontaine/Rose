@@ -75,7 +75,7 @@ public abstract class Thing extends Item implements Serializable {
 	}
 	
 	public int getAvailableResource(int key) {
-		return resources[key];
+		return resources[key]; 
 	}
 	
 	
