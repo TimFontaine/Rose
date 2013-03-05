@@ -7,6 +7,7 @@ import java.awt.Point;
 
 import tim.data.back.Building;
 import tim.data.unit.Unit;
+import tim.game.ai.data.Grid;
 import tim.game.factory.BuildingFactory;
 
 /**
@@ -15,8 +16,8 @@ import tim.game.factory.BuildingFactory;
  */
 public class BuildJob extends Job {
 	
-	Unit unit;
 	String buildingType;
+	Grid grid;
 
 	/**
 	 * 

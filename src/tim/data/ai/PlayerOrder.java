@@ -20,8 +20,6 @@ public class PlayerOrder {
 	private ActionType action;
 	private String typeName;
 	private String processorType;
-	private int x;
-	private int y;
 //	private int oil;
 //	private int iron;
 	private Map<String, Integer> resources;
@@ -33,6 +31,10 @@ public class PlayerOrder {
 	 */
 	public PlayerOrder() {
 		info = new HashMap<String, Object>();
+	}
+	
+	public void addInfo(String key, Object value) {
+		info.put(key, value);
 	}
 	
 	public String getTypeName() {

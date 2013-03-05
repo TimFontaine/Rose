@@ -64,17 +64,27 @@ public class MultiStepJob extends MoveJob {
 			return;
 		}
 		if (turnJob) {
-			move();
-			turnJob = false;
+			doStep();
 		} else {
-			extraJob.doAction();
-			turnJob = true;
+			doExtraJob();
 		}
 		//turn false == extrajob is done on last position, turn true, only move is done
 		if (testOnDestination() && turnJob == false) {
 			onDestination();
 		}
 		
+	}
+	
+	private void doStep() {
+		move();
+		turnJob = false;
+	}
+	
+	private void doExtraJob() {
+		extraJob.doAction();
+		if (extraJob.isFinished()) {
+			doStep();
+		}
 	}
 
 	public int getEvaluation() {

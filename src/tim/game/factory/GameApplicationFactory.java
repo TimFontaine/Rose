@@ -3,7 +3,10 @@
  */
 package tim.game.factory;
 
+import java.util.Map;
+
 import tim.game.Back;
+import tim.game.ai.data.PlayerData;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.hud.Mediator;
 
@@ -18,6 +21,9 @@ public class GameApplicationFactory {
 	private Back back;
 	private Mediator mediator;
 	private ResourceInfo resourceInfo;
+	
+	//playerData stored with the data and playerName
+	private Map<String, PlayerData> playerData;
 
 	/**
 	 * 
@@ -45,7 +51,6 @@ public class GameApplicationFactory {
 	public Mediator getMediator() {
 		return mediator;
 	}
-	
 	
 	public Back getBack() {
 		return back;

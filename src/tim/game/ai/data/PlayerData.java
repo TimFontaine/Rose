@@ -9,8 +9,6 @@ package tim.game.ai.data;
  */
 public class PlayerData {
 	
-	public int capacity;
-
 	/**
 	 * 
 	 */

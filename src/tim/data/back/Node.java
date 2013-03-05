@@ -164,6 +164,13 @@ public class Node implements Comparable<Node>, Serializable{
     	return false;
     }
     
+    public boolean containsItem() {
+    	if (item != null) {
+    		return true;
+    	}
+    	return false;
+    }
+    
     public boolean containsMapItemOfType(String type) {
     	for (Unit unit : units) {
     		if (unit.getType().equals(type)) {
@@ -263,6 +270,13 @@ public class Node implements Comparable<Node>, Serializable{
 	public void setRoad(Road road) {
 		this.road = road;
 		updateTravelWeight();
+	}
+	
+	public boolean containsRoad() {
+		if (getRoad() != null) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

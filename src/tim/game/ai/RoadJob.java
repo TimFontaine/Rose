@@ -23,16 +23,14 @@ public class RoadJob extends Job {
 	Unit unit;
 	Path path;
 	int step;
-	Point endLocation;
 
 	/**
 	 * @param path 
 	 * @param builder 
 	 * 
 	 */
-	public RoadJob(Unit unit, Point locationEnd) {
+	public RoadJob(Unit unit) {
 		this.unit = unit;
-		this.endLocation = locationEnd;
 	}
 
 	/* (non-Javadoc)
@@ -40,6 +38,10 @@ public class RoadJob extends Job {
 	 */
 	@Override
 	public void doAction() {
+		Node node = back.getNode(unit.getX(), unit.getY());
+		if (node.containsRoad()) {
+			finished = true;
+		}
 		Road road = new Road();
 		back.buildOnTile(unit.getLocation().x, unit.getLocation().y, road);
 	}
@@ -49,7 +51,6 @@ public class RoadJob extends Job {
 	 */
 	@Override
 	public void start() {
-		path = back.findShortestPath(unit.getX(), unit.getY(), endLocation.x, endLocation.y);
 	}
 
 }

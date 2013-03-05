@@ -11,7 +11,9 @@ import java.util.Map.Entry;
 import tim.data.unit.TransferResource;
 import tim.data.unit.Unit;
 import tim.game.ai.data.RequestType;
+import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.data.ResourcesRequest;
+import tim.game.factory.GameApplicationFactory;
 import tim.game.factory.RoseObjectFactory;
 
 /**
@@ -24,6 +26,10 @@ public class Factory extends Building {
 	
 	private int producedUnits;
 	
+	private Unit unitToProduce;
+	
+	private Map<String, Integer> requiredResources;
+	
 	/**
 	 * @param name
 	 */
@@ -31,13 +37,21 @@ public class Factory extends Building {
 		super(name);
 		setType("factory");
 		setResources(new HashMap<String, Integer>());
+		requiredResources = new HashMap<String, Integer>();
 		System.out.println("new factory");
 	}
 	
 	public void doLogic() {
+		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
+		ResourceInfo info = applicationFactory.getResourceInfo();
+		requiredResources = info.getResourcesForThing("worker");
 		boolean test = testCanBuild();
 		if (test) {
-			//buildUnit();
+			buildUnit();
+		} else {
+			
+			
+			
 		}
 	}
 	
@@ -56,7 +70,7 @@ public class Factory extends Building {
 	}
 
 	private void handleResourseCost() {
-		Map<String,Integer> required = getResourcesRequest().getResource();
+		Map<String,Integer> required = requiredResources;
 		for (Map.Entry<String, Integer> resource : required.entrySet() ) {
 			int cost = resource.getValue();
 			int available = getResources().get(resource.getKey());
@@ -67,7 +81,7 @@ public class Factory extends Building {
 	}
 
 	private boolean testCanBuild() {
-		Map<String,Integer> required = getResourcesRequest().getResource();
+		Map<String,Integer> required = requiredResources;
 		for (Map.Entry<String, Integer> resource : required.entrySet() ) {
 			if (!getResources().containsKey(resource.getKey())) {
 				return false;
@@ -80,6 +94,14 @@ public class Factory extends Building {
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * a list of the required resources to continue the action
+	 * @return map with the name and amount of each required resource
+	 */
+	public Map<String, Integer> getRequiredResources() {
+		return requiredResources;
 	}
 
 
@@ -121,6 +143,14 @@ public class Factory extends Building {
 	 */
 	public void setResources(Map<String, Integer> resources) {
 		this.resources = resources;
+	}
+
+	public Unit getUnitToProduce() {
+		return unitToProduce;
+	}
+
+	public void setUnitToProduce(Unit unitToProduce) {
+		this.unitToProduce = unitToProduce;
 	}
 
 }

@@ -24,6 +24,7 @@ import tim.data.back.Building;
 import tim.data.back.Event;
 import tim.data.back.Factory;
 import tim.data.back.Item;
+import tim.data.back.Node;
 import tim.data.back.RoseObject;
 import tim.data.unit.Unit;
 import tim.data.unit.UnitOrder;
@@ -31,9 +32,11 @@ import tim.data.unit.UnitState;
 import tim.data.unit.Worker;
 import tim.game.Back;
 import tim.game.Player;
+import tim.game.ai.data.Grid;
 import tim.game.ai.data.PlayerData;
 import tim.game.ai.data.RequestType;
 import tim.game.ai.data.ResourcesRequest;
+import tim.game.factory.GameApplicationFactory;
 
 /**
  * @author tfontaine
@@ -56,6 +59,7 @@ public class SimplePlayerAI extends RoseObject implements Player {
 	SortedSet<ResourcesRequest> requestsQueue;
 	
 	private PlayerData data;
+	private List<Grid> grids;
 
 	/**
 	 * 
@@ -68,6 +72,31 @@ public class SimplePlayerAI extends RoseObject implements Player {
 		requestsQueue = new TreeSet<ResourcesRequest>();
 		usedItems = new ArrayList<Item>();
 		data = new PlayerData();
+		grids = new ArrayList<Grid>();
+		
+		setupGrids();
+	}
+
+	/**
+	 * 
+	 */
+	private void setupGrids() {
+		//define a grid for the base;
+		Grid grid = new Grid();
+		//assign nodes to a grid;
+		Node[][] nodes = new Node[3][3];
+		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
+		//this is the upper left of the grid
+		Point gridPoint = new Point(13,13);
+		Back back = applicationFactory.getBack();
+		//fill the grid nodes
+		for (int i = 0; i <nodes.length; i++) {
+			for (int j = 0; j< nodes[0].length; j++) {
+				nodes[i][j] =  back.getNode(gridPoint.x + i, gridPoint.y +j);
+			}
+		}
+		grid.setNodes(nodes);
+		grids.add(grid);
 	}
 
 	/* (non-Javadoc)

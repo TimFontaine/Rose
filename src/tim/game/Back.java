@@ -368,7 +368,7 @@ public class Back {
 		addItem(building);
 		player.addBuilding(building);
 	}
-
+	
 	public Player getActivePlayer() {
 		return activePlayer;
 	}

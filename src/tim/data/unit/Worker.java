@@ -89,10 +89,10 @@ public class Worker extends Unit implements TransferResource {
 		
 		job.doAction();
 		
-//		if (job.isFinished()) {
-//			handleEndJob();
-//			
-//		}
+		if (job.isFinished()) {
+			handleEndJob();
+			
+		}
 		
 	}
 	
@@ -140,7 +140,7 @@ public class Worker extends Unit implements TransferResource {
 				System.out.println("order to build road from " + start.x + ":" + start.y + "to"
 						+ end.x + ":" + end.y + "for unit " + getName());
 				MultiStepJob buildRoad = new MultiStepJob(this, end);
-				Job roadJob = new RoadJob(this, null);
+				Job roadJob = new RoadJob(this);
 				buildRoad.setExtraJob(roadJob);
 				
 				jobList.add(buildRoad);
@@ -194,7 +194,7 @@ public class Worker extends Unit implements TransferResource {
 	}
 	
 	private void placeBuilding() {
-		Job job = new BuildJob(this, playerOrder.getTypeName());
+		Job job = new BuildJob(this, playerOrder.getAction().getInfo());
 		jobList.add(job);
 	}
 	

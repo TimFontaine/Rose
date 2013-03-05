@@ -36,6 +36,11 @@ public class ResourceInfo {
 		workerCost.put("oil", 10);
 		resources.put("farm", farmCost);
 		
+		Map<String, Integer> factoryCost = new HashMap<String, Integer>();
+		workerCost.put("iron", 20);
+		workerCost.put("oil", 10);
+		resources.put("factory", factoryCost);
+		
 		
 	}
 	

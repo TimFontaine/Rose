@@ -6,7 +6,9 @@ package tim.data.ai;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import tim.data.back.Building;
@@ -26,15 +28,23 @@ public class SimpleProductionPlanner {
 	private List<Building> buildings;
 	
 	private SortedSet<ResourcesRequest> requests;
+	
+	private SortedMap<String, Integer> buildMap;
+	
 
 	/**
 	 * Option 1 build farm
-	 * Option 2 build worker 
+	 * Option 2 build worker
+	 * Option 3 build factory 
 	 */
 	public SimpleProductionPlanner() {
 		applicationFactory = GameApplicationFactory.getInstance();
 		resourceInfo = applicationFactory.getResourceInfo();
 		requests = new TreeSet<ResourcesRequest>();
+		buildMap = new TreeMap<String, Integer>();
+		
+		buildMap.put("factory", 1);
+		buildMap.put("farm", 2);
 		
 	}
 	
@@ -51,7 +61,7 @@ public class SimpleProductionPlanner {
 	private void examineBuildings() {
 		for (Building building : buildings) {
 			//assert building is a factory
-			//a factory can product a new worker
+			//a factory can produce a new worker
 			Map<String,Integer> required = resourceInfo.getResourcesForThing("worker");
 			ResourcesRequest request = new ResourcesRequest();
 			request.setRequestType(RequestType.PRODUCTION);
@@ -62,15 +72,17 @@ public class SimpleProductionPlanner {
 	}
 
 	/**
-	 * 
+	 * factory + farm required
 	 */
 	private void expandProduction() {
-		Map<String,Integer> required = resourceInfo.getResourcesForThing("farm");
-		ResourcesRequest request = new ResourcesRequest();
-		request.setRequestType(RequestType.PRODUCTION);
-		request.setResource(required);
-		request.setPriority(100);
-		requests.add(request);
+		for (SortedMap.Entry<String,Integer> entry  : buildMap.entrySet()) {
+			Map<String,Integer> required = resourceInfo.getResourcesForThing(entry.getKey());
+			ResourcesRequest request = new ResourcesRequest();
+			request.setRequestType(RequestType.PRODUCTION);
+			request.setResource(required);
+			request.setPriority(entry.getValue());
+			requests.add(request);
+		}
 	}
 
 	public List<Building> getBuildings() {

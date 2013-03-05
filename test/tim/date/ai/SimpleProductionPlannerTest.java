@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
-import javax.management.modelmbean.RequiredModelMBean;
 
 import org.junit.Before;
 import org.junit.Test;

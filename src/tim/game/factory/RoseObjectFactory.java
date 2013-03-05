@@ -9,6 +9,7 @@ import tim.data.unit.OilTruck;
 import tim.data.unit.Truck;
 import tim.data.unit.Worker;
 import tim.game.ai.PlayerAI;
+import tim.game.ai.SimpleGoalAI;
 import tim.game.ai.SimplePlayerAI;
 
 /**
@@ -56,6 +57,8 @@ public class RoseObjectFactory {
 			roseObject = new Worker("worker");
 			roseObject.setType("worker");
 			roseObject.setImageName("builder");
+		} else if ("simpleGoalPlayer".equals(name)) {
+			roseObject = new SimpleGoalAI();
 		}
 		return roseObject;
 	}
