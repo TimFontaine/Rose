@@ -79,9 +79,9 @@ public class Worker extends Unit implements TransferResource {
 		}
 		
 		//the start function can set the job on finished 
-		if (job.isFinished()) {
-			handleEndJob();
-		}
+//		if (job.isFinished()) {
+//			handleEndJob();
+//		}
 		if (state == UnitState.IDLE) {
 			//there is no job assignment
 			return;

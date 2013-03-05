@@ -57,6 +57,7 @@ public class Base extends Grid {
 			ResourceInfo info = GameApplicationFactory.getInstance().getResourceInfo();
 			Map<String, Integer> resources = info.getResourcesForThing("factory");
 			goal.setResources(resources);
+			goal.setDestination(getFreeNode().getLocation());
 			setGoal(goal);
 			return goal;
 		} else {
@@ -76,6 +77,7 @@ public class Base extends Grid {
 						//player or Base can give factory orders
 						Map<String,Integer> resources = calcRequiredResources(item);
 						addResources(totalResources, resources);
+						goal.setDestination(item.getLocation());
 					}
 					
 				}

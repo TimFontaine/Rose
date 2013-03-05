@@ -32,13 +32,13 @@ public class ResourceInfo {
 		resources.put("worker", workerCost);
 		
 		Map<String, Integer> farmCost = new HashMap<String, Integer>();
-		workerCost.put("iron", 20);
-		workerCost.put("oil", 10);
+		farmCost.put("iron", 20);
+		farmCost.put("oil", 10);
 		resources.put("farm", farmCost);
 		
 		Map<String, Integer> factoryCost = new HashMap<String, Integer>();
-		workerCost.put("iron", 20);
-		workerCost.put("oil", 10);
+		factoryCost.put("iron", 20);
+		factoryCost.put("oil", 10);
 		resources.put("factory", factoryCost);
 		
 		
