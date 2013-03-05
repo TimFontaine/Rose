@@ -3,6 +3,7 @@
  */
 package tim.data.back;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,19 +31,25 @@ public class Factory extends Building {
 	
 	private Map<String, Integer> requiredResources;
 	
+	
+	
+	GameApplicationFactory applicationFactory;
+	
 	/**
 	 * @param name
 	 */
 	public Factory(String name) {
 		super(name);
 		setType("factory");
+		applicationFactory = GameApplicationFactory.getInstance();
 		setResources(new HashMap<String, Integer>());
 		requiredResources = new HashMap<String, Integer>();
+		ResourceInfo resourceInfo = applicationFactory.getResourceInfo();
 		System.out.println("new factory");
+		
 	}
 	
 	public void doLogic() {
-		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		ResourceInfo info = applicationFactory.getResourceInfo();
 		requiredResources = info.getResourcesForThing("worker");
 		boolean test = testCanBuild();

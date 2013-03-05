@@ -9,6 +9,7 @@ import java.util.Map;
 
 import tim.game.Back;
 import tim.game.Player;
+import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.data.ResourcesRequest;
 import tim.game.factory.GameApplicationFactory;
 
@@ -24,10 +25,17 @@ public abstract class Thing extends Item implements Serializable {
 	protected Map<String, Integer> requestMap;
 	protected ResourcesRequest resourcesRequest;
 	
+	protected int[] resources;
+	
 	public Thing(String name) {
 		super(name);
-		back = GameApplicationFactory.getInstance().getBack();
+		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
+		back = applicationFactory.getBack();
 		requestMap = new HashMap<String, Integer>();
+		
+		ResourceInfo info = applicationFactory.getResourceInfo();
+		resources = new int[info.NUM_RESOURCES];
+		
 	}
 
 	public abstract void doLogic();
@@ -56,7 +64,19 @@ public abstract class Thing extends Item implements Serializable {
 		this.resourcesRequest = resourcesRequest;
 	}
 	
+	public void addResource(int key, int amount) {
+		int available = resources[key];
+		resources[key] = available + amount;
+	}
 	
+	public void retreiveResource(int key, int amount) {
+		int available = resources[key];
+		resources[key] = available - amount;
+	}
+	
+	public int getAvailableResource(int key) {
+		return resources[key];
+	}
 	
 	
 	

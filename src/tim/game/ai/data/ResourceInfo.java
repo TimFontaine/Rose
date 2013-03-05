@@ -16,6 +16,27 @@ public class ResourceInfo {
 	private Map<String, Map<String, Integer>> resources;
 	private static ResourceInfo INSTANCE;
 
+	public enum AvailableResources {
+		OIL(0),
+		IRON(1),
+		MUNITION(2);
+		
+		private int num;
+		public int getNum() {
+			return num;
+		}
+		public void setNum(int num) {
+			this.num = num;
+		}
+		AvailableResources(int num) {
+			this.num = num;
+		}
+	}
+
+	public int NUM_RESOURCES = 3;
+	
+	private int[][] res;
+	
 	/**
 	 * 
 	 */
@@ -41,7 +62,6 @@ public class ResourceInfo {
 		factoryCost.put("oil", 10);
 		resources.put("factory", factoryCost);
 		
-		
 	}
 	
 	public static ResourceInfo getInstance() {
@@ -54,7 +74,7 @@ public class ResourceInfo {
 	public  String getLocation(String name) {
 		return location.get(name);
 	}
-
+	
 	/**
 	 * @return the itemCost
 	 */
