@@ -9,6 +9,7 @@ import java.util.Map;
 
 import tim.game.Back;
 import tim.game.Player;
+import tim.game.ai.ResourcesData;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.data.ResourcesRequest;
 import tim.game.factory.GameApplicationFactory;
@@ -25,11 +26,12 @@ public abstract class Thing extends Item implements Serializable {
 	protected Map<String, Integer> requestMap;
 	protected ResourcesRequest resourcesRequest;
 	
-	protected int[] resources;
 	protected int maxStorage = 100;
 	protected int totalStorage;
 	
 	private ResourceInfo resourceInfo;
+	
+	protected ResourcesData resourcesData;
 	
 	public Thing(String name) {
 		super(name);
@@ -38,7 +40,7 @@ public abstract class Thing extends Item implements Serializable {
 		requestMap = new HashMap<String, Integer>();
 		
 		resourceInfo = applicationFactory.getResourceInfo();
-		resources = new int[resourceInfo.NUM_RESOURCES];
+		resourcesData = new ResourcesData();
 		
 	}
 
@@ -68,60 +70,12 @@ public abstract class Thing extends Item implements Serializable {
 		this.resourcesRequest = resourcesRequest;
 	}
 	
-	public void addResource(int key, int amount) {
-		int available = resources[key];
-		resources[key] = available + amount;
-		updateTotalStorage(amount);
-	}
-	
-	public void retreiveResource(int key, int amount) {
-		int available = resources[key];
-		resources[key] = available - amount;
-		//debug
-		if (resources[key] <0 ) {
-			System.out.println("error:" + this.getName() + "has negative resources for" + 
-			resourceInfo.getResourceByKey(key) + ":" + resources[key]);
-		}
-		updateTotalStorage(-amount);
-	}
-	
-	public void retreiveMultipleResources(int[] resourseSet) {
-		for (int i = 0; i < resourseSet.length; i++ ) {
-			retreiveResource(i, resourseSet[i]);
-		}
-	}
-	
-	
-	public boolean hasResourcesAvailable(int[] required) {
-		for (int key=0; key<required.length;key++) {
-			int amount = required[key];
-			if (resources[key] < amount) {
-				return false;
-			}
-		}
-		return true;
-		
-		
-	}
-	
-	public int getAvailableResource(int key) {
-		return resources[key]; 
-	}
-	
-	public int getFreeStorage() {
-		return maxStorage - totalStorage;
+	public ResourcesData getResourcesData() {
+		return resourcesData;
 	}
 
-	private void updateTotalStorage(int amount) {
-		totalStorage += amount;
-	}
-
-	public int[] getResources() {
-		return resources;
-	}
-
-	public void setResources(int[] resources) {
-		this.resources = resources;
+	public void setResourcesData(ResourcesData resourcesData) {
+		this.resourcesData = resourcesData;
 	}
 	
 }

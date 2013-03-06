@@ -25,10 +25,6 @@ public class Factory extends Building {
 
 	private int producedUnits;
 	
-	private Unit unitToProduce;
-	
-	private int[] resourceShortage;
-	
 	GameApplicationFactory applicationFactory;
 	ResourceInfo resourceInfo;
 	
@@ -50,7 +46,6 @@ public class Factory extends Building {
 		boolean test = testCanBuild(requiredResources);
 		if (test) {
 			buildUnit(requiredResources);
-			resourceShortage = null;
 		} else {
 			
 			
@@ -67,7 +62,7 @@ public class Factory extends Building {
 		unit.setX(x);
 		unit.setY(y);
 		back.addUnit(unit);
-		retreiveMultipleResources(requiredResources);
+		getResourcesData().retreiveMultipleResources(requiredResources);
 		System.out.println("factory has build unit");
 		producedUnits++;
 	}
@@ -92,16 +87,17 @@ public class Factory extends Building {
 		
 		for (int key = 0; key <requiredResources.length;key++) {
 			int cost = requiredResources[key];
-			int available = resources[key];
+			int available = resourcesData.getAvailableResource(key);
 			int rest = cost - available;
 			if (rest >0) {
-				if (resourceShortage == null) {
-					resourceShortage = new int[resourceInfo.NUM_RESOURCES];
-				}
-				resourceShortage[key] = rest;
+//				if (resourceShortage == null) {
+//					resourceShortage = new int[resourceInfo.NUM_RESOURCES];
+//				}
+//				resourceShortage[key] = rest;
 				return false;
 			}
 		}
+		
 		return true;
 	}
 	
@@ -116,22 +112,6 @@ public class Factory extends Building {
 
 	public void setProducedUnits(int producedUnits) {
 		this.producedUnits = producedUnits;
-	}
-
-	public Unit getUnitToProduce() {
-		return unitToProduce;
-	}
-
-	public void setUnitToProduce(Unit unitToProduce) {
-		this.unitToProduce = unitToProduce;
-	}
-
-	public int[] getResourceShortage() {
-		return resourceShortage;
-	}
-
-	public void setResourceShortage(int[] resourceShortage) {
-		this.resourceShortage = resourceShortage;
 	}
 
 }

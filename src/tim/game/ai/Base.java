@@ -124,7 +124,7 @@ public class Base extends Grid {
 	 */
 	private int[] calcRequiredResources(int[] requirement,  Thing thing) {
 		int[] required = new int[resourceInfo.NUM_RESOURCES];
-		int available[] = thing.getResources();
+		int available[] = thing.getResourcesData().getResources();
 		for (int key= 0; key < requirement.length;key++) {
 			int availableRes = available[key];
 			int needed = requirement[key];

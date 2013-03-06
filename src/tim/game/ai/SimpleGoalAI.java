@@ -77,7 +77,7 @@ public class SimpleGoalAI extends BasicPlayer {
 		for (Building building : buildings) {
 			if (building instanceof Factory) {
 				Factory factory = (Factory) building;
-				factory.setUnitToProduce(new Worker("worker1"));
+//				factory.setUnitToProduce(new Worker("worker1"));
 			}
 			building.doLogic();
 		}

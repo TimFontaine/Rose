@@ -39,7 +39,7 @@ public class BuildJob extends Job {
 	public void doAction() {
 		Building building = BuildingFactory.constructBuilding(buildingType);
 		//test on shortage of resources
-		if (unit.hasResourcesAvailable(requiredResources)) {
+		if (unit.getResourcesData().hasResourcesAvailable(requiredResources)) {
 			building.setState(BuildingState.IDLE);
 		} else {
 			building.setState(BuildingState.CONSTRUCTING);
