@@ -76,13 +76,23 @@ public class Worker extends Unit {
 			state = UnitState.ACTIVE;
 		}
 		
-		//the start function can set the job on finished 
-//		if (job.isFinished()) {
-//			handleEndJob();
-//		}
+		
+	
+		//this should not occur
 		if (state == UnitState.IDLE) {
 			//there is no job assignment
 			return;
+		}
+		
+		//this is an error
+		if (job == null) {
+			System.out.println("job is null");
+		}
+
+		//the start function can set the job on finished
+		//e.x gotoJob is on destination already
+		if (job.isFinished()) {
+			handleEndJob();
 		}
 		
 		job.doAction();
@@ -159,6 +169,9 @@ public class Worker extends Unit {
 	private void getRequiredResources() {
 		//test resource available
 		//for every resource in the playerorder create correct orders
+		//bug? if total resources is 0, skip goto source
+		int totalResources = 0;
+		
 		int[] orderResources = playerOrder.getResources();
 		if (orderResources != null) {
 			for (int key=0; key<orderResources.length;key++) {
@@ -170,6 +183,10 @@ public class Worker extends Unit {
 					//there are not enough resources, pick them up
 					int transfer = required - available;
 					String resourceLocation = resourceInfo.getLocation(key);
+					if (resourceLocation == null) {
+						int k = 0;
+						System.out.println("error no resourcelocation");
+					}
 					Job gotoMine = new GotoJob(this,resourceLocation);
 					Job job = new PickupJob(this, key ,transfer);
 					jobList.add(gotoMine);

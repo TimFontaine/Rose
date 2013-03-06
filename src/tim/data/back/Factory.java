@@ -27,9 +27,10 @@ public class Factory extends Building {
 	
 	private Unit unitToProduce;
 	
-	private int[] requiredResources;
+	private int[] resourceShortage;
 	
 	GameApplicationFactory applicationFactory;
+	ResourceInfo resourceInfo;
 	
 	/**
 	 * @param name
@@ -38,18 +39,18 @@ public class Factory extends Building {
 		super(name);
 		setType("factory");
 		applicationFactory = GameApplicationFactory.getInstance();
-		ResourceInfo resourceInfo = applicationFactory.getResourceInfo();
-		requiredResources = new int[resourceInfo.NUM_RESOURCES];
+		resourceInfo = applicationFactory.getResourceInfo();
 		System.out.println("new factory");
 		
 	}
 	
 	public void doLogic() {
 		ResourceInfo info = applicationFactory.getResourceInfo();
-		requiredResources = info.getResourcesForThing("worker");
-		boolean test = testCanBuild();
+		int[] requiredResources = info.getResourcesForThing("worker");
+		boolean test = testCanBuild(requiredResources);
 		if (test) {
-			buildUnit();
+			buildUnit(requiredResources);
+			resourceShortage = null;
 		} else {
 			
 			
@@ -57,7 +58,7 @@ public class Factory extends Building {
 		}
 	}
 	
-	private void buildUnit() {
+	private void buildUnit(int[] requiredResources) {
 		Unit unit = (Unit) RoseObjectFactory.getInstance().getRoseObject("worker");
 		unit.setName("worker");
 		unit.setType("worker");
@@ -83,12 +84,21 @@ public class Factory extends Building {
 //		
 //	}
 
-	private boolean testCanBuild() {
+	private boolean testCanBuild(int[] requiredResources) {
+		//test that the factory is finished constructing
+		if (getState() == BuildingState.CONSTRUCTING) {
+			return false;
+		}
+		
 		for (int key = 0; key <requiredResources.length;key++) {
 			int cost = requiredResources[key];
 			int available = resources[key];
-			int rest = available - cost;
-			if (rest <0) {
+			int rest = cost - available;
+			if (rest >0) {
+				if (resourceShortage == null) {
+					resourceShortage = new int[resourceInfo.NUM_RESOURCES];
+				}
+				resourceShortage[key] = rest;
 				return false;
 			}
 		}
@@ -99,9 +109,6 @@ public class Factory extends Building {
 	 * a list of the required resources to continue the action
 	 * @return map with the name and amount of each required resource
 	 */
-	public int[] getRequiredResources() {
-		return requiredResources;
-	}
 
 	public int getProducedUnits() {
 		return producedUnits;
@@ -119,8 +126,12 @@ public class Factory extends Building {
 		this.unitToProduce = unitToProduce;
 	}
 
-	public void setRequiredResources(int[] requiredResources) {
-		this.requiredResources = requiredResources;
+	public int[] getResourceShortage() {
+		return resourceShortage;
+	}
+
+	public void setResourceShortage(int[] resourceShortage) {
+		this.resourceShortage = resourceShortage;
 	}
 
 }

@@ -41,6 +41,7 @@ public class GotoJob extends MoveJob {
 		if (unit.getLocation().equals(destination)) {
 			//we are on the destination
 			finished = true;
+			return;
 		}
 		if (destination == null && mapItemType == null) {
 			System.out.println("error: gotojob no destination or mapitemtype to goto set");
@@ -49,7 +50,6 @@ public class GotoJob extends MoveJob {
 			path = back.findNearestObject(unit, mapItemType);
 		} else if (destination != null) {
 			path = back.findShortestPath(unit.getX(), unit.getY(), destination.x, destination.y);
-			
 		}
 	}
 	

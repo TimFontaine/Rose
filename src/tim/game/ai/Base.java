@@ -12,6 +12,7 @@ import tim.data.ai.ActionType;
 import tim.data.back.Factory;
 import tim.data.back.Item;
 import tim.data.back.Node;
+import tim.data.back.Thing;
 import tim.game.ai.data.Goal;
 import tim.game.ai.data.Grid;
 import tim.game.ai.data.ResourceInfo;
@@ -78,23 +79,31 @@ public class Base extends Grid {
 					Item item = node.getItem();
 					if (item instanceof Factory) {
 						//player or Base can give factory orders
-						int[] resources = calcRequiredResources(item);
+						//for now let the factory produce workers
+						//1. get the required resources to build unit(worker)
+						int[] required = resourceInfo.getResourcesForThing("worker");
+						//2. calc the extra resources that are not available
+						int[] resources = calcRequiredResources(required, (Thing)item);
+						//resources required
 						addResources(totalResources, resources);
+						}
 						goal.setDestination(item.getLocation());
 					}
 					
 				}
+				goal.setResources(totalResources);
+				goal.setActionType(actionType);
+				setGoal(goal);
+				return goal;
 			}
-			goal.setResources(totalResources);
-			goal.setActionType(actionType);
-			setGoal(goal);
-			return goal;
 			
-		}
+			
 //		Goal goal = new Goal();
 //		goal.setActionType(ActionType.NONE);
 //		return goal;
 	}
+	
+	
 
 	/**
 	 * @param totalResources
@@ -113,10 +122,17 @@ public class Base extends Grid {
 	/**
 	 * @param string
 	 */
-	private int[] calcRequiredResources(Item item) {
-		Factory factory = (Factory) item;
-		int[] resources = factory.getRequiredResources();
-		return resources;
+	private int[] calcRequiredResources(int[] requirement,  Thing thing) {
+		int[] required = new int[resourceInfo.NUM_RESOURCES];
+		int available[] = thing.getResources();
+		for (int key= 0; key < requirement.length;key++) {
+			int availableRes = available[key];
+			int needed = requirement[key];
+			if (availableRes - needed < 0) {
+				required[key] = needed - availableRes;
+			}
+		}
+ 		return required;
 	}
 
 }

@@ -26,6 +26,10 @@ public abstract class Thing extends Item implements Serializable {
 	protected ResourcesRequest resourcesRequest;
 	
 	protected int[] resources;
+	protected int maxStorage = 100;
+	protected int totalStorage;
+	
+	private ResourceInfo resourceInfo;
 	
 	public Thing(String name) {
 		super(name);
@@ -33,8 +37,8 @@ public abstract class Thing extends Item implements Serializable {
 		back = applicationFactory.getBack();
 		requestMap = new HashMap<String, Integer>();
 		
-		ResourceInfo info = applicationFactory.getResourceInfo();
-		resources = new int[info.NUM_RESOURCES];
+		resourceInfo = applicationFactory.getResourceInfo();
+		resources = new int[resourceInfo.NUM_RESOURCES];
 		
 	}
 
@@ -67,11 +71,18 @@ public abstract class Thing extends Item implements Serializable {
 	public void addResource(int key, int amount) {
 		int available = resources[key];
 		resources[key] = available + amount;
+		updateTotalStorage(amount);
 	}
 	
 	public void retreiveResource(int key, int amount) {
 		int available = resources[key];
 		resources[key] = available - amount;
+		//debug
+		if (resources[key] <0 ) {
+			System.out.println("error:" + this.getName() + "has negative resources for" + 
+			resourceInfo.getResourceByKey(key) + ":" + resources[key]);
+		}
+		updateTotalStorage(-amount);
 	}
 	
 	public void retreiveMultipleResources(int[] resourseSet) {
@@ -80,10 +91,37 @@ public abstract class Thing extends Item implements Serializable {
 		}
 	}
 	
+	
+	public boolean hasResourcesAvailable(int[] required) {
+		for (int key=0; key<required.length;key++) {
+			int amount = required[key];
+			if (resources[key] < amount) {
+				return false;
+			}
+		}
+		return true;
+		
+		
+	}
+	
 	public int getAvailableResource(int key) {
 		return resources[key]; 
 	}
 	
-	
+	public int getFreeStorage() {
+		return maxStorage - totalStorage;
+	}
+
+	private void updateTotalStorage(int amount) {
+		totalStorage += amount;
+	}
+
+	public int[] getResources() {
+		return resources;
+	}
+
+	public void setResources(int[] resources) {
+		this.resources = resources;
+	}
 	
 }
