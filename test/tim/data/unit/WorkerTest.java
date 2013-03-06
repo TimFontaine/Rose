@@ -3,9 +3,15 @@
  */
 package tim.data.unit;
 
+import static org.junit.Assert.*;
+
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import tim.data.ai.ActionType;
 import tim.data.ai.PlayerOrder;
@@ -23,34 +29,42 @@ import tim.game.factory.RoseObjectFactory;
  */
 public class WorkerTest {
 
-	Back back;
+	static Back back;
 	Worker worker;
 	DummyPlayer player;
 	Map<String, Integer> resources;
+	Factory factory;
 	
 	/**
 	 * 
 	 */
 	public WorkerTest() {
-		init();
-		simulateGetDeliver();
-		simulateLoopGetDeliver();
 	}
 	
-	public void init() {
+	@BeforeClass
+	public static void sstartUp() {
 		back = Back.getInstance();
+	}
+	
+	
+	@Before
+	public void init() {
 		RoseObjectFactory factory = RoseObjectFactory.getInstance();
 		back.getMap().setupTiles(30,30, Back.defaultSpeed);
 		 player = new DummyPlayer();
 		initMap();
 		
-		back.addPlayer(player);
-		
 		worker = new Worker("worker0");
 		worker.setType("worker");
 		worker.setX(10);
 		worker.setY(10);
+		
+		initPlayerOrder();
+		back.addPlayer(player);
+		
+	
 		back.addUnit(player, worker);
+		back.nextPlayer();
 		
 		
 	}
@@ -69,18 +83,15 @@ public class WorkerTest {
 		oilwell.setType("oilwell");
 		back.addItem(oilwell);
 		
-		Factory factory = new Factory("factory0");
+		factory = new Factory("factory0");
 		factory.setX(16);
 		factory.setY(16);
 		factory.setType("factory");
 		back.addBuilding(player, factory);
 		
 	}
-
-	private void simulateGetDeliver(){
-		back.nextPlayer();
-		back.nextStep();
-		
+	
+	private void initPlayerOrder() {
 		PlayerOrder order = new PlayerOrder();
 		order.setAction(ActionType.RESOURCES);
 		order.getInfo().put("start", new Point(16,16));
@@ -90,18 +101,31 @@ public class WorkerTest {
 		order.setResources(resources);
 		
 		worker.setPlayerOrder(order);
+	}
+
+	@Test
+	public void simulateGetDeliver(){
+//		back.nextStep();
+		simulate();
 		
+		Point destination = factory.getLocation();
+		assertEquals(destination, worker.getLocation());
+		assertTrue(factory.getResources().containsKey("iron"));
+		assertEquals(new Integer(30), factory.getResources().get("iron"));
+		System.out.println("location" + worker.getX() + ":" + worker.getY());
+	}
+	
+	@Test
+	public void simulateLoopGetDeliver(){
+		simulate();
+		simulate();
+	}
+	
+	private void simulate() {
 		do {
 			worker.doLogic();
 			System.out.println("worker has done logic");
 		} while (worker.getState() == UnitState.ACTIVE);
-		System.out.println("location" + worker.getX() + ":" + worker.getY());
-	}
-	
-	private void simulateLoopGetDeliver(){
-		resources.put("iron", 30);
-		resources.put("oil", 10);
-		simulateGetDeliver();
 	}
 	
 	

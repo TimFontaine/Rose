@@ -40,8 +40,6 @@ public abstract class Unit extends Thing {
 	
 	protected UnitOrder order;
 	
-	protected ResourceInfo resourceInfo;
-	
 	
 	/**
 	 * 
@@ -54,8 +52,6 @@ public abstract class Unit extends Thing {
 		task.addDestination("factory");
 		
 		state= UnitState.IDLE;
-		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
-		resourceInfo = applicationFactory.getResourceInfo();
 	}
 	
 	public abstract void initJob();

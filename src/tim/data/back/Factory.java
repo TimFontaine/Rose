@@ -25,24 +25,18 @@ public class Factory extends Building {
 
 	private int producedUnits;
 	
-	GameApplicationFactory applicationFactory;
-	ResourceInfo resourceInfo;
-	
 	/**
 	 * @param name
 	 */
 	public Factory(String name) {
 		super(name);
 		setType("factory");
-		applicationFactory = GameApplicationFactory.getInstance();
-		resourceInfo = applicationFactory.getResourceInfo();
 		System.out.println("new factory");
 		
 	}
 	
 	public void doLogic() {
-		ResourceInfo info = applicationFactory.getResourceInfo();
-		int[] requiredResources = info.getResourcesForThing("worker");
+		int[] requiredResources = resourceInfo.getResourcesForThing("worker");
 		boolean test = testCanBuild(requiredResources);
 		if (test) {
 			buildUnit(requiredResources);

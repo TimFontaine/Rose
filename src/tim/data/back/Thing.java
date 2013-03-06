@@ -23,13 +23,12 @@ public abstract class Thing extends Item implements Serializable {
 	protected Back back;
 	protected Player player;
 	
-	protected Map<String, Integer> requestMap;
 	protected ResourcesRequest resourcesRequest;
 	
 	protected int maxStorage = 100;
 	protected int totalStorage;
 	
-	private ResourceInfo resourceInfo;
+	protected ResourceInfo resourceInfo;
 	
 	protected ResourcesData resourcesData;
 	
@@ -52,14 +51,6 @@ public abstract class Thing extends Item implements Serializable {
 
 	public void setPlayer(Player player) {
 		this.player = player;
-	}
-
-	public Map<String, Integer> getRequestMap() {
-		return requestMap;
-	}
-
-	public void setRequestMap(Map<String, Integer> requestMap) {
-		this.requestMap = requestMap;
 	}
 
 	public ResourcesRequest getResourcesRequest() {
