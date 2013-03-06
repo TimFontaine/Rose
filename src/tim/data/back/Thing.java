@@ -74,6 +74,12 @@ public abstract class Thing extends Item implements Serializable {
 		resources[key] = available - amount;
 	}
 	
+	public void retreiveMultipleResources(int[] resourseSet) {
+		for (int i = 0; i < resourseSet.length; i++ ) {
+			retreiveResource(i, resourseSet[i]);
+		}
+	}
+	
 	public int getAvailableResource(int key) {
 		return resources[key]; 
 	}

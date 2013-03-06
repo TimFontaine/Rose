@@ -13,8 +13,10 @@ import tim.game.Back;
 import tim.game.Player;
 import tim.game.ai.Task;
 import tim.game.ai.TransferJob;
+import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.job.GotoJob;
 import tim.game.ai.job.Job;
+import tim.game.factory.GameApplicationFactory;
 
 /**
  * @author tfontaine
@@ -32,12 +34,14 @@ public abstract class Unit extends Thing {
 	Task task;
 	
 	protected int oil;
-	private int resources;
 	private int moves;
 	
 	protected UnitState state;
 	
 	protected UnitOrder order;
+	
+	protected ResourceInfo resourceInfo;
+	
 	
 	/**
 	 * 
@@ -50,6 +54,8 @@ public abstract class Unit extends Thing {
 		task.addDestination("factory");
 		
 		state= UnitState.IDLE;
+		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
+		resourceInfo = applicationFactory.getResourceInfo();
 	}
 	
 	public abstract void initJob();
@@ -108,14 +114,6 @@ public abstract class Unit extends Thing {
 
 	public void setOrder(UnitOrder order) {
 		this.order = order;
-	}
-
-	public int getResources() {
-		return resources;
-	}
-
-	public void setResources(int resources) {
-		this.resources = resources;
 	}
 
 	public int getMoves() {

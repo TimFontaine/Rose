@@ -17,7 +17,7 @@ import tim.game.factory.RoseObjectFactory;
  * a building is a thing that can not move
  *
  */
-public abstract class Building extends Thing implements TransferResource {
+public abstract class Building extends Thing {
 	
 	private BuildingState state;
 	private ResourcesRequest waitingOrder;

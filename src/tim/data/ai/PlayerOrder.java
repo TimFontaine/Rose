@@ -22,7 +22,7 @@ public class PlayerOrder {
 	private String processorType;
 //	private int oil;
 //	private int iron;
-	private Map<String, Integer> resources;
+	private int[] resources;
 	private Map<String, Object> info;
 	
 
@@ -83,11 +83,11 @@ public class PlayerOrder {
 		this.info = info;
 	}
 
-	public Map<String, Integer> getResources() {
+	public int[] getResources() {
 		return resources;
 	}
 
-	public void setResources(Map<String, Integer> resources) {
+	public void setResources(int[] resources) {
 		this.resources = resources;
 	}
 

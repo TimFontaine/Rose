@@ -17,7 +17,7 @@ public class Goal {
 	private ActionType actionType;
 	private int priority;
 	private String processor;
-	private Map<String,Integer> resources;
+	private int[] resources;
 	private Point destination;
 	
 	/**
@@ -50,14 +50,6 @@ public class Goal {
 		this.processor = processor;
 	}
 
-	public Map<String,Integer> getResources() {
-		return resources;
-	}
-
-	public void setResources(Map<String,Integer> resources) {
-		this.resources = resources;
-	}
-
 	/**
 	 * @return the destination
 	 */
@@ -70,6 +62,14 @@ public class Goal {
 	 */
 	public void setDestination(Point destination) {
 		this.destination = destination;
+	}
+
+	public int[] getResources() {
+		return resources;
+	}
+
+	public void setResources(int[] resources) {
+		this.resources = resources;
 	}
 
 }

@@ -29,10 +29,9 @@ import tim.game.ai.job.UseResourceJob;
  * @author tfontaine
  *
  */
-public class Worker extends Unit implements TransferResource {
+public class Worker extends Unit {
 	
 	private PlayerOrder playerOrder;
-	private Map<String, Integer> resources;
 	
 	private Queue<Job> jobList;
 
@@ -42,7 +41,6 @@ public class Worker extends Unit implements TransferResource {
 	public Worker(String name) {
 		super(name);
 		jobList = new LinkedList<Job>();
-		resources = new HashMap<String, Integer>();
 	}
 
 	/* (non-Javadoc)
@@ -161,22 +159,24 @@ public class Worker extends Unit implements TransferResource {
 	private void getRequiredResources() {
 		//test resource available
 		//for every resource in the playerorder create correct orders
-		if (playerOrder.getResources() != null) {
-			for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
-				System.out.println("Pickup:" + entry.getKey() + ":" + entry.getValue());
-				int available = getAvailableResource(entry.getKey());
-				int required = entry.getValue();
+		int[] orderResources = playerOrder.getResources();
+		if (orderResources != null) {
+			for (int key=0; key<orderResources.length;key++) {
+				ResourceInfo info = ResourceInfo.getInstance();
+				System.out.println("Pickup:" + info.getResourceByKey(key) + ":" + orderResources[key]);
+				int available = resources[key];
+				int required = orderResources[key];
 				if (available < required) {
 					//there are not enough resources, pick them up
 					int transfer = required - available;
-					String resourceLocation = ResourceInfo.getInstance().getLocation(entry.getKey());
+					String resourceLocation = resourceInfo.getLocation(key);
 					Job gotoMine = new GotoJob(this,resourceLocation);
-					Job job = new PickupJob(this, entry.getKey() ,transfer);
+					Job job = new PickupJob(this, key ,transfer);
 					jobList.add(gotoMine);
 					jobList.add(job);
 				}
-				
 			}
+			
 		}
 		
 	}
@@ -186,32 +186,27 @@ public class Worker extends Unit implements TransferResource {
 		jobList.add(job);
 	}
 	
-	private int getAvailableResource(String name) {
-		if (resources.containsKey(name)) {
-			return resources.get(name);
-		}
-		return 0;
-	}
-	
 	private void placeBuilding() {
 		Job job = new BuildJob(this, playerOrder.getAction().getInfo());
 		jobList.add(job);
 	}
 	
 	private void useResources() {
-		for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
-			System.out.println("use resource job:" + entry.getKey() + ":" + entry.getValue());
-			Job delivery = new UseResourceJob(this, entry.getKey(), entry.getValue());
+		for (int i =0; i<playerOrder.getResources().length; i++) {
+			int[] resources = playerOrder.getResources();
+			System.out.println("use resource job:" + ResourceInfo.getInstance().getResourceByKey(i) + ":" + resources[i]);
+			Job delivery = new UseResourceJob(this, i, resources[i]);
 			jobList.add(delivery);
 		}
 	}
 	
 	private void deliverRequestResources() {
 		//for all resources in the playerorder create deliver amount available
-		for (Map.Entry<String, Integer> entry : playerOrder.getResources().entrySet()) {
-			System.out.println("Delivery job:" + entry.getKey() + ":" + entry.getValue());
-			Job job = new DeliverJob(this, entry.getKey(), entry.getValue());
-			jobList.add(job);
+		for (int i =0; i<playerOrder.getResources().length; i++) {
+			int[] resources = playerOrder.getResources();
+			System.out.println("Delivery job:"  + ResourceInfo.getInstance().getResourceByKey(i) + ":" + resources[i]);
+			Job delivery = new DeliverJob(this, i, resources[i]);
+			jobList.add(delivery);
 		}
 	}
 
@@ -221,28 +216,6 @@ public class Worker extends Unit implements TransferResource {
 
 	public void setPlayerOrder(PlayerOrder playerOrder) {
 		this.playerOrder = playerOrder;
-	}
-
-	/* (non-Javadoc)
-	 * @see tim.data.unit.TransferResource#receiveResource(java.lang.String, int)
-	 */
-	@Override
-	public void receiveResource(String name, int amount) {
-		int available = getAvailableResource(name);
-		int total = available+amount;
-		resources.put(name, total);
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see tim.data.unit.TransferResource#giveResource(java.lang.String, int)
-	 */
-	@Override
-	public void giveResource(String name, int amount) {
-		int available = getAvailableResource(name);
-		int total = available-amount;
-		resources.put(name, total);
-		
 	}
 
 }

@@ -14,15 +14,15 @@ import tim.data.unit.Worker;
  */
 public class UseResourceJob extends Job {
 	
-	String resource;
+	int resourceKey;
 	int amount;
 
 	/**
 	 * 
 	 */
-	public UseResourceJob(Unit unit, String resource, int amount) {
+	public UseResourceJob(Unit unit, int resourceKey, int amount) {
 		this.unit = unit;
-		this.resource = resource;
+		this.resourceKey = resourceKey;
 		this.amount = amount;
 	}
 
@@ -40,8 +40,7 @@ public class UseResourceJob extends Job {
 	 */
 	@Override
 	public void doAction() {
-		Worker w = ((Worker)unit);
-		w.giveResource(resource, amount);
+		unit.retreiveResource(resourceKey, amount);
 		finished = true;
 	}
 

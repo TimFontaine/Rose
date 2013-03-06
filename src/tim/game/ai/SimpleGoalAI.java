@@ -116,7 +116,7 @@ public class SimpleGoalAI extends BasicPlayer {
 	 */
 	private void addUnitToGrid(Unit unit, Grid grid) {
 		PlayerOrder order = new PlayerOrder();
-		Map<String, Integer> resources = grid.getGoal().getResources();
+		int[] resources = grid.getGoal().getResources();
 		order.addInfo("start", grid.getGoal().getDestination());
 		order.setResources(resources);
 		order.setAction(grid.getGoal().getActionType());

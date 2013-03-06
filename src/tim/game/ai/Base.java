@@ -26,12 +26,16 @@ public class Base extends Grid {
 	private int production;
 	
 	List<Factory> factoryList;
+	ResourceInfo resourceInfo;
+	
 
 	/**
 	 * 
 	 */
 	public Base() {
 		factoryList = new ArrayList<Factory>();
+		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
+		resourceInfo = applicationFactory.getResourceInfo();
 	}
 	
 	public void evaluate() {
@@ -54,8 +58,7 @@ public class Base extends Grid {
 			goal.setActionType(actionType);
 			goal.setPriority(100);
 			goal.setProcessor("worker");
-			ResourceInfo info = GameApplicationFactory.getInstance().getResourceInfo();
-			Map<String, Integer> resources = info.getResourcesForThing("factory");
+			int[] resources = resourceInfo.getResourcesForThing("factory");
 			goal.setResources(resources);
 			goal.setDestination(getFreeNode().getLocation());
 			setGoal(goal);
@@ -69,13 +72,13 @@ public class Base extends Grid {
 			 * find the best place to stock resources
 			 * store buildings
 			 */
-			Map<String,Integer> totalResources = new HashMap<String, Integer>();
+			int[] totalResources = new int[resourceInfo.NUM_RESOURCES];
 			for (Node node : nodeList) {
 				if (node.containsMapItem()) {
 					Item item = node.getItem();
 					if (item instanceof Factory) {
 						//player or Base can give factory orders
-						Map<String,Integer> resources = calcRequiredResources(item);
+						int[] resources = calcRequiredResources(item);
 						addResources(totalResources, resources);
 						goal.setDestination(item.getLocation());
 					}
@@ -97,25 +100,22 @@ public class Base extends Grid {
 	 * @param totalResources
 	 * @param resources
 	 */
-	private void addResources(Map<String, Integer> total,
-			Map<String, Integer> temp) {
-		for (Map.Entry<String, Integer> entry : temp.entrySet()) {
-			if (total.containsKey(entry.getKey())) {
-				int available = total.get(entry.getKey());
-				int newValue = available + entry.getValue();
-				total.put(entry.getKey(), newValue);
-			} else {
-				total.put(entry.getKey(), entry.getValue());
-			}
+	private void addResources(int[] total,
+			int[] temp) {
+		for (int i = 0; i <temp.length;i++) {
+			int extra = temp[i];
+			int newAmount =  total[i] + extra;
+			total[i] = newAmount;
 		}
+		
 	}
 
 	/**
 	 * @param string
 	 */
-	private Map<String,Integer> calcRequiredResources(Item item) {
+	private int[] calcRequiredResources(Item item) {
 		Factory factory = (Factory) item;
-		Map<String,Integer> resources = factory.getRequiredResources();
+		int[] resources = factory.getRequiredResources();
 		return resources;
 	}
 

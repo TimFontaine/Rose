@@ -7,6 +7,7 @@ import java.awt.Point;
 
 import tim.data.back.Building;
 import tim.data.back.Node;
+import tim.data.back.Thing;
 import tim.data.unit.TransferResource;
 import tim.data.unit.Unit;
 
@@ -16,20 +17,19 @@ import tim.data.unit.Unit;
  */
 public class DeliverJob extends Job {
 	
-	private TransferResource transferer;
-	private String resourceName;
+	private int resourceKey;
 	private int amount;
 
 	/**
 	 * 
 	 */
-	public DeliverJob(TransferResource transferer, String resourceName, int amount) {
-		this.transferer = transferer;
-		init(resourceName, amount);
+	public DeliverJob(Unit unit, int resourceKey, int amount) {
+		this.unit = unit;
+		init(resourceKey, amount);
 	}
 	
-	private void init(String resourceName, int amount) {
-		this.resourceName = resourceName;
+	private void init(int resourceKey, int amount) {
+		this.resourceKey = resourceKey;
 		this.amount = amount;
 	}
 
@@ -38,14 +38,15 @@ public class DeliverJob extends Job {
 	 */
 	@Override
 	public void doAction() {
-		Node current = back.getNode(transferer.getLocation().x, transferer.getLocation().y);
-		TransferResource receiver = (TransferResource) current.getItem();
-		if (receiver == null || !(receiver instanceof TransferResource)) {
-			System.out.println("error: delivery is on location with no TransferResource object");
-		}
+		Node current = back.getNode(unit.getLocation().x, unit.getLocation().y);
+		/**
+		 * TODO
+		 * delivery is possible on unit and building
+		 */
+		Thing target = (Thing)current.getItem();
 		//worker? delivers to factory?
-		receiver.receiveResource(resourceName, amount);
-		transferer.giveResource(resourceName, amount);
+		unit.retreiveResource(resourceKey, amount);
+		target.addResource(resourceKey, amount);
 		finished = true;
 	}
 

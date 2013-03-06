@@ -13,7 +13,7 @@ import java.util.Map;
 public class ResourceInfo {
 	
 	private Map<String, String> location;
-	private Map<String, Map<String, Integer>> resources;
+	private Map<String, int[]> resources;
 	private static ResourceInfo INSTANCE;
 
 	public enum AvailableResources {
@@ -35,8 +35,6 @@ public class ResourceInfo {
 
 	public int NUM_RESOURCES = 3;
 	
-	private int[][] res;
-	
 	/**
 	 * 
 	 */
@@ -45,23 +43,34 @@ public class ResourceInfo {
 		location.put("iron", "mine");
 		location.put("oil", "oilwell");
 		
-		resources = new HashMap<String, Map<String,Integer>>();
-		Map<String, Integer> workerCost = new HashMap<String, Integer>();
-		workerCost.put("iron", 20);
-		workerCost.put("oil", 10);
+		int ironKey = getResourceKeyByName("iron");
+		int oilKey = getResourceKeyByName("oil");
+		
+		resources = new HashMap<String, int[]>();
+		int[] workerCost = new int[2];
+		workerCost[ironKey] = 20;
+		workerCost[oilKey] = 10;
 		
 		resources.put("worker", workerCost);
 		
-		Map<String, Integer> farmCost = new HashMap<String, Integer>();
-		farmCost.put("iron", 20);
-		farmCost.put("oil", 10);
+		int[] farmCost = new int[2];
+		farmCost[ironKey] = 20;
+		farmCost[oilKey] = 10;
 		resources.put("farm", farmCost);
 		
-		Map<String, Integer> factoryCost = new HashMap<String, Integer>();
-		factoryCost.put("iron", 20);
-		factoryCost.put("oil", 10);
+		int[] factoryCost = new int[2];
+		factoryCost[ironKey] = 20;
+		factoryCost[oilKey] = 10;
 		resources.put("factory", factoryCost);
 		
+	}
+	
+	public AvailableResources getResourceByKey(int key) {
+		return AvailableResources.values()[key];
+	}
+	
+	public int getResourceKeyByName(String name) {
+		return AvailableResources.valueOf(name.toUpperCase()).getNum();
 	}
 	
 	public static ResourceInfo getInstance() {
@@ -78,8 +87,18 @@ public class ResourceInfo {
 	/**
 	 * @return the itemCost
 	 */
-	public Map<String, Integer> getResourcesForThing(String name) {
+	public int[] getResourcesForThing(String name) {
 		return resources.get(name);
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 */
+	public String getLocation(int key) {
+		AvailableResources a = getResourceByKey(key);
+		return getLocation(a.toString().toLowerCase());
+		
 	}
 
 }

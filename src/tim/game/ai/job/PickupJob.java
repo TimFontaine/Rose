@@ -18,21 +18,20 @@ import tim.data.unit.Worker;
  */
 public class PickupJob extends Job {
 	
-	private TransferResource transferer;
-	private String resourceName;
+	private int resourceKey;
 	private int amount;
 	
 	/**
 	 * 
 	 */
-	public PickupJob(TransferResource transferer, int destinationX, int destinationY, String resourceName, int amount) {
-		init(resourceName, amount);
+	public PickupJob(Unit unit, int destinationX, int destinationY, int resourceKey, int amount) {
+		init(resourceKey, amount);
 //		path = back.findShortestPath(unit.getX(), unit.getY(), destinationX, destinationY);
 	}
 	
-	public PickupJob(TransferResource transferer, String resourceName, int amount) {
-		this.transferer = transferer;
-		init(resourceName, amount);
+	public PickupJob(Unit unit, int resourceKey, int amount) {
+		this.unit = unit;
+		init(resourceKey, amount);
 //		path = back.findNearestObject(unit, itemName);
 	}
 	
@@ -42,8 +41,8 @@ public class PickupJob extends Job {
 	}
 	
 	
-	private void init(String resourceName, int amount) {
-		this.resourceName = resourceName;
+	private void init(int resourceKey, int amount) {
+		this.resourceKey = resourceKey;
 		this.amount = amount;
 	}
 	
@@ -53,14 +52,10 @@ public class PickupJob extends Job {
 	 */
 	@Override
 	public void doAction() {
-		Node current = back.getNode(transferer.getLocation().x, transferer.getLocation().y);
-		TransferResource unit = (TransferResource) current.getItem();
-		if (unit == null || !(unit instanceof TransferResource)) {
-			System.out.println("error: pickupjob is on location with no TransferResource object");
-		}
+		Node current = back.getNode(unit.getLocation().x, unit.getLocation().y);
 		//worker? receives from mine?
-		System.out.println("pickup up job " + ((Worker)transferer).getName());
-		transferer.receiveResource(resourceName, amount);
+		System.out.println("pickup up job " + unit.getName());
+		unit.addResource(resourceKey, amount);
 		back.addUsedItem(current.getItem());
 		finished = true;
 
