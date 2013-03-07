@@ -27,14 +27,6 @@ public abstract class MoveJob extends Job {
 	}
 	
 	public boolean testOnDestination()  {
-		if (unit.getName().equals("worker2")) {
-			System.out.println("path last:" + path.getLast().getLocation());
-			System.out.println("path first:" + path.first().getLocation());
-			System.out.println("unit post:" + unit.getLocation());
-		}
-		if (unit.getX() == 6 && unit.getY() == 8 && unit.getName().equals("worker2")) {
-			int k = 14;
-		}
 		if (unit.getLocation().equals(path.getLast().getLocation())){
 			return true;
 		}

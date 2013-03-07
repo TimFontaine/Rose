@@ -26,6 +26,10 @@ public class BuildingFactory {
 			building.setImageName("factory");
 			building.setType("factory");
 			building.setState(BuildingState.CONSTRUCTING);
+		} else if ("storage".equals(buildingType)) {
+			building = new Factory("factory");
+			building.setState(BuildingState.CONSTRUCTING);
+			building.setType("storage");
 		}
 		return building;
 	}

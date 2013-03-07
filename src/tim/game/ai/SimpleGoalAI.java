@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import tim.data.ai.ActionType;
 import tim.data.ai.PlayerOrder;
@@ -21,6 +24,7 @@ import tim.data.unit.UnitState;
 import tim.data.unit.Worker;
 import tim.game.Back;
 import tim.game.ai.data.Goal;
+import tim.game.ai.data.Goal.GoalStatus;
 import tim.game.ai.data.Grid;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.factory.GameApplicationFactory;
@@ -32,6 +36,7 @@ import tim.game.factory.GameApplicationFactory;
 public class SimpleGoalAI extends BasicPlayer {
 	
 	private List<Grid> grids;
+	private List<Goal> goalList;
 
 	/**
 	 * 
@@ -39,6 +44,7 @@ public class SimpleGoalAI extends BasicPlayer {
 	public SimpleGoalAI() {
 		setUnits(new ArrayList<Unit>());
 		grids = new ArrayList<Grid>();
+		goalList = new ArrayList<Goal>();
 		setupGrids();
 	}
 	
@@ -65,6 +71,7 @@ public class SimpleGoalAI extends BasicPlayer {
 	}
 	
 	public void assignUnits() {
+		goalList.clear();
 		for (Grid grid: grids) {
 			defineGoalsForGrid(grid);
 		}
@@ -88,24 +95,36 @@ public class SimpleGoalAI extends BasicPlayer {
 	
 	public void defineGoalsForGrid(Grid grid) {
 		//only base is interesting
-		grid.defineGoal();
+		List<Goal> goals = grid.defineGoal();
+		goalList.addAll(goals);
 	}
 	
 	public void assignUnitToGoal() {
-		SortedMap<Integer,Grid> map= new TreeMap<Integer,Grid>(new MyComparator());
+		SortedMap<Integer,Goal> map= new TreeMap<Integer,Goal>(new MyComparator());
 		for (Unit unit : units) {
 			if (unit.getState() == UnitState.IDLE) {
-				for (Grid grid: grids) {
+				for (Goal goal: goalList) {//undefined order
 					//compute the match between a unit and a goal
-					int match = computeMatchToGoal(grid, unit);
-					map.put(new Integer(match),grid);
+					int match = computeMatchToGoal(goal, unit);
+					map.put(new Integer(match),goal);
 					//add the unit to the specified goal 
 				}
 				
 				Integer key = map.firstKey();
-				Grid grid = map.get(key);
-				addUnitToGrid(unit, grid);
+				Goal goal = map.get(key);
+				if (goal.getActionType() == ActionType.BUILD && goal.getActionType().getInfo().equals("storage")) {
+					System.out.println(unit.getName() + "has order to build storage on" + goal.getDestination());
+				}
+				addUnitToGoal(unit, goal);
+				goalList.remove(goal);
 				map.clear();
+			}
+			
+			/**
+			 * TODO do something with units without task
+			 */
+			if (goalList.isEmpty()) {
+				return;
 			}
 		}
 	}
@@ -114,27 +133,32 @@ public class SimpleGoalAI extends BasicPlayer {
 	 * @param unit
 	 * @param grid
 	 */
-	private void addUnitToGrid(Unit unit, Grid grid) {
+	private void addUnitToGoal(Unit unit, Goal goal) {
 		PlayerOrder order = new PlayerOrder();
-		int[] resources = grid.getGoal().getResources();
-		order.addInfo("start", grid.getGoal().getDestination());
+		int[] resources = goal.getResources();
+		order.addInfo("start", goal.getDestination());
 		order.setResources(resources);
-		order.setAction(grid.getGoal().getActionType());
+		order.setAction(goal.getActionType());
 		((Worker)unit).setPlayerOrder(order);
+		
+		//update goal status
+		goal.setStatus(GoalStatus.INPROGRESS);
+		goal.getAssignedUnits().add(unit);
+		System.out.println(unit.getName() + "is assigned to" + goal.getActionType() + " " + goal.getActionType().getInfo());
 	}
 
 	/**
 	 * @param unit
 	 */
-	private int computeMatchToGoal(Grid grid, Unit unit) {
-		int distanceFromGoal = distanceToGrid(grid, unit);
-		int match = distanceFromGoal * grid.getGoal().getPriority();
+	private int computeMatchToGoal(Goal goal, Unit unit) {
+		int distanceFromGoal = distanceToGrid(goal, unit);
+		int match = distanceFromGoal * goal.getPriority();
 		return match;
 	}
 	
-	private int distanceToGrid(Grid grid, Unit unit) {
+	private int distanceToGrid(Goal goal, Unit unit) {
 		Point source = unit.getLocation();
-		Point target = grid.getLocation();
+		Point target = goal.getDestination();
 		int distance = (int)source.distance(target);
 		return distance;
 	}

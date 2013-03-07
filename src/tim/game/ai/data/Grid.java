@@ -35,17 +35,18 @@ public class Grid {
 		nodeList = new ArrayList<Node>();
 	}
 	
-	public Goal defineGoal() {
+	public List<Goal> defineGoal() {
 		goal = new Goal();
 		goal.setActionType(ActionType.NONE);
 		goal.setPriority(0);
-		return goal;
+		List<Goal> goalList = new ArrayList<Goal>();
+		goalList.add(goal);
+		return goalList;
 	}
 	
 	public Node getFreeNode() {
 		for (int i = 0; i < nodes.length;i++) {
 			for (int j = 0; j<nodes[0].length;j++) {
-				System.out.println("free x:" + i + ":" + j);
 				Node node = back.getNode(location.x +i, location.y + j);
 				if (!node.containsItem()) {
 					//node is free;

@@ -11,9 +11,11 @@ import java.util.Map;
 import tim.data.ai.ActionType;
 import tim.data.back.Factory;
 import tim.data.back.Item;
+import tim.data.back.MapItem;
 import tim.data.back.Node;
 import tim.data.back.Thing;
 import tim.game.ai.data.Goal;
+import tim.game.ai.data.Goal.GoalStatus;
 import tim.game.ai.data.Grid;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.factory.GameApplicationFactory;
@@ -29,6 +31,13 @@ public class Base extends Grid {
 	List<Factory> factoryList;
 	ResourceInfo resourceInfo;
 	
+	ResourcesData resourcesData;
+	
+	private Map<String, Goal> assignments;
+	
+	//STATES
+	private boolean STORAGE_REQUIRED;
+	private boolean PRODUCTION_REQUIRED;
 
 	/**
 	 * 
@@ -37,22 +46,80 @@ public class Base extends Grid {
 		factoryList = new ArrayList<Factory>();
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		resourceInfo = applicationFactory.getResourceInfo();
+		resourcesData = new ResourcesData();
+		assignments = new HashMap<String, Goal>();
 	}
 	
 	public void evaluate() {
-		for (Node node : nodeList) {
-			//calc the total production
-			if (node.containsItem() && node.getItem() instanceof Factory) {
-				production++;
-				factoryList.add((Factory)node.getItem());
-				
+		factoryList.clear();
+		
+		for (Map.Entry<String, Goal> entry : assignments.entrySet()) {
+			Goal goal = entry.getValue();
+			if (goal.getAssignedUnits().size() == 0) {
+				goal.setStatus(GoalStatus.FINISHED);
+				assignments.remove(entry.getKey());
 			}
 		}
+		
+		for (Node node : nodeList) {
+			//calc the total production
+			/**
+			 * TODO store all buildings in a list
+			 */
+			if (node.containsItem() && node.getItem() instanceof Factory) {
+				production++;
+				Factory factory = (Factory) node.getItem();
+				factoryList.add(factory);
+			}
+		}
+			
+			//INIT STATES
+			/**
+			 * TODO
+			 * reset states function
+			 */
+			if (production == 0) {
+				PRODUCTION_REQUIRED = true;
+			} else {
+				PRODUCTION_REQUIRED = false;
+			}
+			
+			STORAGE_REQUIRED = false;
+			//first check, is there any storage request
+				if (assignments.containsKey("storage")) {
+					System.out.println("base has storage assignment with status" + assignments.get("storage").getStatus());
+				}
+				for (Factory factory : factoryList) {
+					if (!factory.getResourcesData().isEmpty()) {
+						if (!assignments.containsKey("storage") || 
+								assignments.get("storage").getStatus() != GoalStatus.INPROGRESS) {
+							STORAGE_REQUIRED = true;
+						}
+					}
+				}
+//			} else {
+//				STORAGE_REQUIRED = false;
+//				System.out.println("storage goal is in assignment list");
+//			}
 	}
 	
-	public Goal defineGoal() {
+	public List<Goal> defineGoal() {
+		List<Goal> goalList = new ArrayList<Goal>();
 		evaluate();
-		if (production == 0) {
+		if(STORAGE_REQUIRED) {
+			ActionType actionType = ActionType.BUILD;
+			actionType.setInfo("storage");
+			goal.setActionType(actionType);
+			goal.setPriority(100);
+			goal.setProcessor("worker");
+			int[] resources = resourceInfo.getResourcesForThing("storage");
+			goal.setResources(resources);
+			goal.setDestination(getFreeNode().getLocation());
+			setGoal(goal);
+			goalList.add(goal);
+			assignments.put("storage", goal);
+		}
+		if (PRODUCTION_REQUIRED) {
 			Goal goal = new Goal();
 			ActionType actionType = ActionType.BUILD;
 			actionType.setInfo("factory");
@@ -63,7 +130,7 @@ public class Base extends Grid {
 			goal.setResources(resources);
 			goal.setDestination(getFreeNode().getLocation());
 			setGoal(goal);
-			return goal;
+			goalList.add(goal);
 		} else {
 			//there is a factory, ask for resources
 			Goal goal = new Goal();
@@ -75,8 +142,11 @@ public class Base extends Grid {
 			 */
 			int[] totalResources = new int[resourceInfo.NUM_RESOURCES];
 			for (Node node : nodeList) {
-				if (node.containsMapItem()) {
+				if (node.containsItem()) {
 					Item item = node.getItem();
+					if (item == null) {
+						int k = 14;
+					}
 					if (item instanceof Factory) {
 						//player or Base can give factory orders
 						//for now let the factory produce workers
@@ -86,17 +156,22 @@ public class Base extends Grid {
 						int[] resources = calcRequiredResources(required, (Thing)item);
 						//resources required
 						addResources(totalResources, resources);
-						}
 						goal.setDestination(item.getLocation());
 					}
 					
 				}
+					
+			}
 				goal.setResources(totalResources);
 				goal.setActionType(actionType);
+				goalList.add(goal);
 				setGoal(goal);
-				return goal;
-			}
-			
+		}
+		
+		if (goalList.isEmpty()) {
+			System.out.println("ERROR: goallist in base is empty");
+		}
+		return goalList;
 			
 //		Goal goal = new Goal();
 //		goal.setActionType(ActionType.NONE);
@@ -133,6 +208,10 @@ public class Base extends Grid {
 			}
 		}
  		return required;
+	}
+	
+	private void addAssignedJob(String name, MapItem mapItem) {
+		
 	}
 
 }

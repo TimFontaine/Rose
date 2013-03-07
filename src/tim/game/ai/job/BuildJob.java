@@ -45,6 +45,7 @@ public class BuildJob extends Job {
 			building.setState(BuildingState.CONSTRUCTING);
 		}
 		back.buildOnTile(unit.getX(), unit.getY(), building);
+		System.out.println("build job has build " + buildingType);
 		finished = true;
 	}
 

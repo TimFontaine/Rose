@@ -26,7 +26,6 @@ public class Dijkstra {
 	public Path findClosestItem(int startX, int startY, Map map, String type) {
 		Node start = map.getNode(startX, startY);
 		start.setDistanceFromStart(0);
-		System.out.println("dijkstra searching for:" + type);
 		PriorityQueue<Node> queue = new PriorityQueue<Node>();
 		queue.add(start);
 		

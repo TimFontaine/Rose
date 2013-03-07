@@ -63,6 +63,11 @@ public class ResourceInfo {
 		factoryCost[oilKey] = 10;
 		resources.put("factory", factoryCost);
 		
+		int[] storageCost = new int[2];
+		storageCost[ironKey] = 20;
+		storageCost[oilKey] = 20;
+		resources.put("storage", storageCost);
+		
 	}
 	
 	public AvailableResources getResourceByKey(int key) {

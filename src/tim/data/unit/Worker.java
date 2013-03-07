@@ -67,7 +67,6 @@ public class Worker extends Unit {
 	@Override
 	public void doLogic() {
 		
-		System.out.println("locic for:" + getName());
 		if (testNewOrder()) {
 			//test requirements for the playerorder
 			setRequirementList();

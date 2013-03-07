@@ -72,6 +72,13 @@ public class ResourcesData {
 	private void updateTotalStorage(int amount) {
 		totalStorage += amount;
 	}
+	
+	public boolean isEmpty() {
+		if (totalStorage == 0) {
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * @return
