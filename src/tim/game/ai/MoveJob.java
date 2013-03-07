@@ -3,17 +3,11 @@
  */
 package tim.game.ai;
 
-import java.awt.Point;
-import java.util.List;
 
-import tim.data.back.Event;
-import tim.data.back.EventCode;
 import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.data.unit.Unit;
-import tim.data.unit.UnitState;
 import tim.game.ai.job.Job;
-import tim.pathfinding.AStar;
 
 /**
  * @author tfontaine

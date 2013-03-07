@@ -36,7 +36,6 @@ public abstract class Thing extends Item implements Serializable {
 		super(name);
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		back = applicationFactory.getBack();
-		requestMap = new HashMap<String, Integer>();
 		
 		resourceInfo = applicationFactory.getResourceInfo();
 		resourcesData = new ResourcesData();

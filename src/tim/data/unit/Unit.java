@@ -5,18 +5,10 @@ package tim.data.unit;
 
 import java.util.List;
 
-import tim.data.back.Event;
-import tim.data.back.EventCode;
 import tim.data.back.Path;
 import tim.data.back.Thing;
-import tim.game.Back;
-import tim.game.Player;
 import tim.game.ai.Task;
-import tim.game.ai.TransferJob;
-import tim.game.ai.data.ResourceInfo;
-import tim.game.ai.job.GotoJob;
 import tim.game.ai.job.Job;
-import tim.game.factory.GameApplicationFactory;
 
 /**
  * @author tfontaine
@@ -57,28 +49,6 @@ public abstract class Unit extends Thing {
 	public abstract void initJob();
 	
 	public abstract List<Path> getUsedRoutes();
-	
-	public boolean canMove() {
-		//is there enough oil?
-		if (oil <=0) {
-			if (state == UnitState.ACTIVE) {
-				addEvent();
-			}
-			state = UnitState.TURN_FINISHED;
-			return false;
-		}
-		return true;
-	}
-	
-	private void addEvent() {
-		//oil is empty
-		Event event = new Event();
-		event.setSource(this);
-		event.setCode(EventCode.OIL_EMPTY);
-		event.setDescription("oil is empty");
-		back.getEvents().add(event);
-		player.addEvent(event);
-	}
 	
 	public void useOil() {
 		oil-=OIL_USAGE;

@@ -13,7 +13,6 @@ import java.util.List;
 import tim.data.back.Building;
 import tim.data.back.Direction;
 import tim.data.back.Event;
-import tim.data.back.EventCode;
 import tim.data.back.Factory;
 import tim.data.back.Item;
 import tim.data.back.MapItem;
@@ -208,7 +207,7 @@ public class Back {
 		map.getNode(x, y).addUnit(unit);
 		unit.setX(x);
 		unit.setY(y);
-		return EventCode.SUCCESS;
+		return 0;
 	}
 	
 	public Path findNearestObject(Thing thing, String itemName) {
