@@ -3,6 +3,7 @@
  */
 package tim.game.ai;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,6 +89,9 @@ public class Base extends Grid {
 			//first check, is there any storage request
 				if (assignments.containsKey("storage")) {
 					System.out.println("base has storage assignment with status" + assignments.get("storage").getStatus());
+					if (assignments.get("storage").getStatus() == GoalStatus.FINISHED) {
+						assignments.remove("storage");
+					}
 				}
 				for (Factory factory : factoryList) {
 					if (!factory.getResourcesData().isEmpty()) {
@@ -160,12 +164,13 @@ public class Base extends Grid {
 					}
 					
 				}
+				
 					
 			}
-				goal.setResources(totalResources);
-				goal.setActionType(actionType);
-				goalList.add(goal);
-				setGoal(goal);
+			goal.setResources(totalResources);
+			goal.setActionType(actionType);
+			goalList.add(goal);
+			setGoal(goal);
 		}
 		
 		if (goalList.isEmpty()) {

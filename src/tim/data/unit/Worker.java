@@ -17,6 +17,7 @@ import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.game.ai.RoadJob;
 import tim.game.ai.data.Goal;
+import tim.game.ai.data.Goal.GoalStatus;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.job.BuildJob;
 import tim.game.ai.job.DeliverJob;
@@ -112,6 +113,8 @@ public class Worker extends Unit {
 		//all done ?
 		if (jobList.isEmpty()) {
 			state = UnitState.IDLE;
+			//update goal status
+			goal.setStatus(GoalStatus.FINISHED);
 			return;
 		}
 		startNextJob();
