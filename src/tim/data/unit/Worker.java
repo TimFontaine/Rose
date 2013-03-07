@@ -16,6 +16,7 @@ import tim.data.ai.PlayerOrder;
 import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.game.ai.RoadJob;
+import tim.game.ai.data.Goal;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.job.BuildJob;
 import tim.game.ai.job.DeliverJob;
@@ -31,7 +32,7 @@ import tim.game.ai.job.UseResourceJob;
  */
 public class Worker extends Unit {
 	
-	private PlayerOrder playerOrder;
+	private Goal goal;
 	
 	private Queue<Job> jobList;
 
@@ -70,7 +71,7 @@ public class Worker extends Unit {
 		if (testNewOrder()) {
 			//test requirements for the playerorder
 			setRequirementList();
-			System.out.println(getName() + "has order" + playerOrder.getAction().toString());
+			System.out.println(getName() + "has order" + goal.getActionType().toString());
 			startNextJob();
 			state = UnitState.ACTIVE;
 		}
@@ -104,7 +105,7 @@ public class Worker extends Unit {
 	}
 	
 	private boolean testNewOrder() {
-		return state == UnitState.IDLE && playerOrder != null && jobList.isEmpty();
+		return state == UnitState.IDLE && goal != null && jobList.isEmpty();
 	}
 	
 	private void handleEndJob() {
@@ -131,10 +132,10 @@ public class Worker extends Unit {
 		 */
 		
 		getRequiredResources();
-		Point start = (Point) playerOrder.getInfo().get("start");
+		Point start = goal.getDestination();
 		testOnLocation(start);
 		//test on location;
-		switch(playerOrder.getAction()) {
+		switch(goal.getActionType()) {
 			case BUILD:
 				placeBuilding();
 				useResources();
@@ -143,21 +144,15 @@ public class Worker extends Unit {
 				deliverRequestResources();
 				break;
 			case ROAD:
-				Point end = (Point) playerOrder.getInfo().get("end");
-				System.out.println("order to build road from " + start.x + ":" + start.y + "to"
-						+ end.x + ":" + end.y + "for unit " + getName());
-				MultiStepJob buildRoad = new MultiStepJob(this, end);
-				Job roadJob = new RoadJob(this);
-				buildRoad.setExtraJob(roadJob);
-				
-				jobList.add(buildRoad);
-				break;
-		}
-		
-		if (playerOrder.getAction() == ActionType.BUILD) {
-			
-		} else if (playerOrder.getAction() == ActionType.RESOURCES) {			
-		} else if (playerOrder.getAction() == ActionType.ROAD) {
+//				Point end = (Point) playerOrder.getInfo().get("end");
+//				System.out.println("order to build road from " + start.x + ":" + start.y + "to"
+//						+ end.x + ":" + end.y + "for unit " + getName());
+//				MultiStepJob buildRoad = new MultiStepJob(this, end);
+//				Job roadJob = new RoadJob(this);
+//				buildRoad.setExtraJob(roadJob);
+//				
+//				jobList.add(buildRoad);
+//				break;
 		}
 
 	}
@@ -171,7 +166,7 @@ public class Worker extends Unit {
 		//bug? if total resources is 0, skip goto source
 		int totalResources = 0;
 		
-		int[] orderResources = playerOrder.getResources();
+		int[] orderResources = goal.getResources();
 		if (orderResources != null) {
 			for (int key=0; key<orderResources.length;key++) {
 				ResourceInfo info = ResourceInfo.getInstance();
@@ -203,13 +198,14 @@ public class Worker extends Unit {
 	}
 	
 	private void placeBuilding() {
-		Job job = new BuildJob(this, playerOrder.getAction().getInfo());
+		String buildType = goal.getActionType().getInfo();
+		Job job = new BuildJob(this, buildType);
 		jobList.add(job);
 	}
 	
 	private void useResources() {
-		for (int i =0; i<playerOrder.getResources().length; i++) {
-			int[] resources = playerOrder.getResources();
+		int[] resources = goal.getResources();
+		for (int i =0; i<resources.length; i++) {
 			System.out.println("use resource job:" + ResourceInfo.getInstance().getResourceByKey(i) + ":" + resources[i]);
 			Job delivery = new UseResourceJob(this, i, resources[i]);
 			jobList.add(delivery);
@@ -218,20 +214,26 @@ public class Worker extends Unit {
 	
 	private void deliverRequestResources() {
 		//for all resources in the playerorder create deliver amount available
-		for (int i =0; i<playerOrder.getResources().length; i++) {
-			int[] resources = playerOrder.getResources();
+		int[] resources = goal.getResources();
+		for (int i =0; i<resources.length; i++) {
 			System.out.println("Delivery job:"  + ResourceInfo.getInstance().getResourceByKey(i) + ":" + resources[i]);
 			Job delivery = new DeliverJob(this, i, resources[i]);
 			jobList.add(delivery);
 		}
 	}
 
-	public PlayerOrder getPlayerOrder() {
-		return playerOrder;
+	/**
+	 * @return the goal
+	 */
+	public Goal getGoal() {
+		return goal;
 	}
 
-	public void setPlayerOrder(PlayerOrder playerOrder) {
-		this.playerOrder = playerOrder;
+	/**
+	 * @param goal the goal to set
+	 */
+	public void setGoal(Goal goal) {
+		this.goal = goal;
 	}
 
 }

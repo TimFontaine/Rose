@@ -139,7 +139,7 @@ public class SimpleGoalAI extends BasicPlayer {
 		order.addInfo("start", goal.getDestination());
 		order.setResources(resources);
 		order.setAction(goal.getActionType());
-		((Worker)unit).setPlayerOrder(order);
+		((Worker)unit).setGoal(goal);
 		
 		//update goal status
 		goal.setStatus(GoalStatus.INPROGRESS);
