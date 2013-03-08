@@ -360,7 +360,6 @@ public class Back {
 	
 	public void addBuilding(Building building) {
 		addItem(building);
-		building.getPlayer().addBuilding(building);
 	}
 	
 	public void addBuilding(Player player, Building building) {

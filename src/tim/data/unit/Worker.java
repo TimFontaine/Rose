@@ -174,7 +174,7 @@ public class Worker extends Unit {
 			for (int key=0; key<orderResources.length;key++) {
 				ResourceInfo info = ResourceInfo.getInstance();
 				System.out.println("Pickup:" + info.getResourceByKey(key) + ":" + orderResources[key]);
-				int available = getResourcesData().getResources()[key];
+				int available = getAvailableResources(key);
 				int required = orderResources[key];
 				if (available < required) {
 					//there are not enough resources, pick them up

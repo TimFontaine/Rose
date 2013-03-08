@@ -40,7 +40,7 @@ public class UseResourceJob extends Job {
 	 */
 	@Override
 	public void doAction() {
-		unit.getResourcesData().retreiveResource(resourceKey, amount);
+		unit.retreiveResource(resourceKey, amount);
 		finished = true;
 	}
 

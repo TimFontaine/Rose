@@ -94,7 +94,7 @@ public class Base extends Grid {
 					}
 				}
 				for (Factory factory : factoryList) {
-					if (!factory.getResourcesData().isEmpty()) {
+					if (!factory.hasResources()) {
 						if (!assignments.containsKey("storage") || 
 								assignments.get("storage").getStatus() != GoalStatus.INPROGRESS) {
 							STORAGE_REQUIRED = true;
@@ -204,7 +204,7 @@ public class Base extends Grid {
 	 */
 	private int[] calcRequiredResources(int[] requirement,  Thing thing) {
 		int[] required = new int[resourceInfo.NUM_RESOURCES];
-		int available[] = thing.getResourcesData().getResources();
+		int available[] = thing.getAvailableResources();
 		for (int key= 0; key < requirement.length;key++) {
 			int availableRes = available[key];
 			int needed = requirement[key];

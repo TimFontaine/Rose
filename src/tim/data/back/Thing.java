@@ -21,12 +21,6 @@ import tim.game.factory.GameApplicationFactory;
 public abstract class Thing extends Item implements Serializable {
 
 	protected Back back;
-	protected Player player;
-	
-	protected ResourcesRequest resourcesRequest;
-	
-	protected int maxStorage = 100;
-	protected int totalStorage;
 	
 	protected ResourceInfo resourceInfo;
 	
@@ -44,22 +38,57 @@ public abstract class Thing extends Item implements Serializable {
 
 	public abstract void doLogic();
 	
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-
-	public ResourcesRequest getResourcesRequest() {
-		return resourcesRequest;
-	}
-
-	public void setResourcesRequest(ResourcesRequest resourcesRequest) {
-		this.resourcesRequest = resourcesRequest;
+//	public ResourcesData getResourcesData() {
+//		return resourcesData;
+//	}
+//
+//	public void setResourcesData(ResourcesData resourcesData) {
+//		this.resourcesData = resourcesData;
+//	}
+	
+	public int[] getAvailableResources() {
+		return resourcesData.getResources();
 	}
 	
+	public void addResource(int key, int amount) {
+		resourcesData.updateResource(key, amount);
+	}
+	
+	public void retreiveResource(int key, int amount) {
+		resourcesData.updateResource(key, -amount);
+	}
+	
+	public void retreiveMultipleResources(int[] resourseSet) {
+		for (int i = 0; i < resourseSet.length; i++ ) {
+			resourcesData.updateResource(i, -resourseSet[i]);
+		}
+	}
+	
+	public boolean hasResourcesAvailable(int[] required) {
+		for (int key=0; key<required.length;key++) {
+			int amount = required[key];
+			if (resourcesData.getAvailableResource(key) < amount) {
+				return false;
+			}
+		}
+		return true;	
+	}
+	
+	public boolean hasResources() {
+		if (resourcesData.getTotalStorage() == 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public int getAvailableResources(int key) {
+		return resourcesData.getAvailableResource(key);
+	}
+	
+	public int getFreeStorage() {
+		return resourcesData.getFreeStorage();
+	}
+
 	public ResourcesData getResourcesData() {
 		return resourcesData;
 	}

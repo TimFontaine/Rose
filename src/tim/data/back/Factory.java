@@ -51,12 +51,11 @@ public class Factory extends Building {
 		Unit unit = (Unit) RoseObjectFactory.getInstance().getRoseObject("worker");
 		unit.setName("worker");
 		unit.setType("worker");
-		unit.setPlayer(player);
 		unit.setOil(100);
 		unit.setX(x);
 		unit.setY(y);
 		back.addUnit(unit);
-		getResourcesData().retreiveMultipleResources(requiredResources);
+		retreiveMultipleResources(requiredResources);
 		System.out.println("factory has build unit");
 		producedUnits++;
 	}

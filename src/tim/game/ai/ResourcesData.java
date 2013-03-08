@@ -27,39 +27,36 @@ public class ResourcesData {
 		resources = new int[resourceInfo.NUM_RESOURCES];
 	}
 	
-	public void addResource(int key, int amount) {
+//	public void addResource(int key, int amount) {
+//		int available = resources[key];
+//		resources[key] = available + amount;
+//		updateTotalStorage(amount);
+//	}
+	
+	/*
+	 * update a resource with a certain key for amount
+	 * amount can be positive or negative
+	 */
+	public void updateResource(int key, int amount) {
 		int available = resources[key];
 		resources[key] = available + amount;
 		updateTotalStorage(amount);
-	}
-	
-	public void retreiveResource(int key, int amount) {
-		int available = resources[key];
-		resources[key] = available - amount;
-		//debug
 		if (resources[key] <0 ) {
 			System.out.println("error: negative resources for" + 
 			resourceInfo.getResourceByKey(key) + ":" + resources[key]);
 		}
-		updateTotalStorage(-amount);
 	}
 	
-	public void retreiveMultipleResources(int[] resourseSet) {
-		for (int i = 0; i < resourseSet.length; i++ ) {
-			retreiveResource(i, resourseSet[i]);
-		}
-	}
-	
-	
-	public boolean hasResourcesAvailable(int[] required) {
-		for (int key=0; key<required.length;key++) {
-			int amount = required[key];
-			if (resources[key] < amount) {
-				return false;
-			}
-		}
-		return true;	
-	}
+//	public void retreiveResource(int key, int amount) {
+//		int available = resources[key];
+//		resources[key] = available - amount;
+//		//debug
+//		if (resources[key] <0 ) {
+//			System.out.println("error: negative resources for" + 
+//			resourceInfo.getResourceByKey(key) + ":" + resources[key]);
+//		}
+//		updateTotalStorage(-amount);
+//	}
 	
 	public int getAvailableResource(int key) {
 		return resources[key]; 
@@ -73,18 +70,19 @@ public class ResourcesData {
 		totalStorage += amount;
 	}
 	
-	public boolean isEmpty() {
-		if (totalStorage == 0) {
-			return true;
-		}
-		return false;
-	}
-
 	/**
 	 * @return
 	 */
 	public int[] getResources() {
 		return resources;
+	}
+
+	public int getTotalStorage() {
+		return totalStorage;
+	}
+
+	public void setTotalStorage(int totalStorage) {
+		this.totalStorage = totalStorage;
 	}
 
 }

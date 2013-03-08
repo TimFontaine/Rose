@@ -55,13 +55,13 @@ public class PickupJob extends Job {
 		Node current = back.getNode(unit.getLocation().x, unit.getLocation().y);
 		//worker? receives from mine?
 		//calc the max amount to pick up 
-		int availableSpace = unit.getResourcesData().getFreeStorage();
+		int availableSpace = unit.getFreeStorage();
 		if (availableSpace < amount) {
 			//not enough space available to store the requested
 			int possible = amount-availableSpace;
 			amount = possible;
 		}
-		unit.getResourcesData().addResource(resourceKey, amount);
+		unit.addResource(resourceKey, amount);
 		back.addUsedItem(current.getItem());
 		finished = true;
 
