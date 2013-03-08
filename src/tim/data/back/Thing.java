@@ -81,6 +81,10 @@ public abstract class Thing extends Item implements Serializable {
 		return false;
 	}
 	
+	public void updateMaxStorage(int max) {
+		resourcesData.setMaxStorage(max);
+	}
+	
 	public int getAvailableResources(int key) {
 		return resourcesData.getAvailableResource(key);
 	}

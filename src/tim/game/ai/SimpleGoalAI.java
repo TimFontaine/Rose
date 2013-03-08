@@ -159,6 +159,12 @@ public class SimpleGoalAI extends BasicPlayer {
 	private int distanceToGrid(Goal goal, Unit unit) {
 		Point source = unit.getLocation();
 		Point target = goal.getDestination();
+		if (source==null) {
+			System.out.println("source is null");
+		}
+		if (target==null) {
+			System.out.println("target is null");
+		}
 		int distance = (int)source.distance(target);
 		return distance;
 	}

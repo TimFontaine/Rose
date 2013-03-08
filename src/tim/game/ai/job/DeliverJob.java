@@ -51,8 +51,12 @@ public class DeliverJob extends Job {
 			//calc the possible amount to deliver
 			amount = freeSpace;
 		}
-		unit.retreiveResource(resourceKey, amount);
-		target.addResource(resourceKey, amount);
+		int available = unit.getAvailableResources(resourceKey);
+		if (available > target.getFreeStorage()) {
+			available = target.getFreeStorage();
+		}
+		unit.retreiveResource(resourceKey, available);
+		target.addResource(resourceKey, available);
 		finished = true;
 	}
 

@@ -85,4 +85,12 @@ public class ResourcesData {
 		this.totalStorage = totalStorage;
 	}
 
+	public int getMaxStorage() {
+		return maxStorage;
+	}
+
+	public void setMaxStorage(int maxStorage) {
+		this.maxStorage = maxStorage;
+	}
+
 }

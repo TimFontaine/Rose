@@ -43,6 +43,7 @@ public class Worker extends Unit {
 	public Worker(String name) {
 		super(name);
 		jobList = new LinkedList<Job>();
+		updateMaxStorage(5);
 	}
 
 	/* (non-Javadoc)
@@ -141,7 +142,8 @@ public class Worker extends Unit {
 		switch(goal.getActionType()) {
 			case BUILD:
 				placeBuilding();
-				useResources();
+//				useResources();
+				deliverRequestResources();
 				break;
 			case RESOURCES:
 				deliverRequestResources();

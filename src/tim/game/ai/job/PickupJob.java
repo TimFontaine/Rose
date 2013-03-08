@@ -58,8 +58,7 @@ public class PickupJob extends Job {
 		int availableSpace = unit.getFreeStorage();
 		if (availableSpace < amount) {
 			//not enough space available to store the requested
-			int possible = amount-availableSpace;
-			amount = possible;
+			amount = availableSpace;
 		}
 		unit.addResource(resourceKey, amount);
 		back.addUsedItem(current.getItem());

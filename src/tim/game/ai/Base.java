@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import tim.data.ai.ActionType;
+import tim.data.back.Building;
+import tim.data.back.BuildingState;
 import tim.data.back.Factory;
 import tim.data.back.Item;
 import tim.data.back.MapItem;
@@ -29,7 +31,8 @@ public class Base extends Grid {
 	
 	private int production;
 	
-	List<Factory> factoryList;
+	List<Building> factoryList;
+	List<Building> underConstruction;
 	ResourceInfo resourceInfo;
 	
 	ResourcesData resourcesData;
@@ -44,11 +47,12 @@ public class Base extends Grid {
 	 * 
 	 */
 	public Base() {
-		factoryList = new ArrayList<Factory>();
+		factoryList = new ArrayList<Building>();
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		resourceInfo = applicationFactory.getResourceInfo();
 		resourcesData = new ResourcesData();
 		assignments = new HashMap<String, Goal>();
+		underConstruction = new ArrayList<Building>();
 	}
 	
 	public void evaluate() {
@@ -67,9 +71,14 @@ public class Base extends Grid {
 			/**
 			 * TODO store all buildings in a list
 			 */
-			if (node.containsItem() && node.getItem() instanceof Factory) {
-				production++;
-				Factory factory = (Factory) node.getItem();
+			if (node.containsItem() && node.getItem().getType().equals("factory")) {
+				Building factory = (Building) node.getItem();
+				if (factory.getState() == BuildingState.CONSTRUCTING) {
+					underConstruction.add(factory);
+				} else {
+					production++;
+				}
+				
 				factoryList.add(factory);
 			}
 		}
@@ -93,7 +102,7 @@ public class Base extends Grid {
 						assignments.remove("storage");
 					}
 				}
-				for (Factory factory : factoryList) {
+				for (Building factory : factoryList) {
 					if (!factory.hasResources()) {
 						if (!assignments.containsKey("storage") || 
 								assignments.get("storage").getStatus() != GoalStatus.INPROGRESS) {
@@ -110,6 +119,19 @@ public class Base extends Grid {
 	public List<Goal> defineGoal() {
 		List<Goal> goalList = new ArrayList<Goal>();
 		evaluate();
+		if (!underConstruction.isEmpty()) {
+			//there are buildings under construction, bring resources to them
+			for (Building building : underConstruction) {
+				Goal goal = new Goal();
+				ActionType actionType = ActionType.RESOURCES;
+				goal.setActionType(actionType);
+				goal.setDestination(building.getLocation());
+				goal.setResources(building.getRequiredResources());
+				goal.setPriority(200);
+				goalList.add(goal);
+			}
+		}
+		
 		if(STORAGE_REQUIRED) {
 			ActionType actionType = ActionType.BUILD;
 			actionType.setInfo("storage");
@@ -148,10 +170,7 @@ public class Base extends Grid {
 			for (Node node : nodeList) {
 				if (node.containsItem()) {
 					Item item = node.getItem();
-					if (item == null) {
-						int k = 14;
-					}
-					if (item instanceof Factory) {
+					if (item.getType().equals("factory")) {
 						//player or Base can give factory orders
 						//for now let the factory produce workers
 						//1. get the required resources to build unit(worker)
