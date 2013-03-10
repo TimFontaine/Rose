@@ -91,7 +91,7 @@ public class Rose extends Core {
 
 	private void initGame() {
 		setupGameActions();
-		SimpleGoalMapBuilder m = new SimpleGoalMapBuilder();
+		GridMapBuilder m = new GridMapBuilder();
 		MouseInfoItem.mouseState = MouseState.FREE;
 		
 	}

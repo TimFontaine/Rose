@@ -11,6 +11,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import tim.data.unit.DummyUnit;
+import tim.data.unit.Worker;
+import tim.data.unit.Unit;
 import tim.game.back.scheduler.Order.OrderAction;
 
 /**
@@ -27,14 +30,16 @@ public class GridTest {
 	
 	@Before
 	public void setup() {
+		GridScheduler scheduler = new MockGridScheduler();
 		assignUnits = new ArrayList<Unit>();
 		orders = new ArrayList<Order>();
 		grid = new Grid();
+		grid.setScheduler(scheduler);
 	}
 	
 	@Test
-	public void doAction() {
-		Unit unit = new Unit();
+	public void doActionTestPriority() {
+		Unit unit = new Worker("worker");
 		
 		Order order = new Order();
 		order.setAction(OrderAction.BUILD);
@@ -56,6 +61,18 @@ public class GridTest {
 		grid.doAction();
 		
 		assertEquals(order2, unit.getOrder());
+		
+	}
+	
+	@Test
+	public void doActionTestOrders() {
+		MockStrategy strategy = new MockStrategy();
+		Unit unit = new DummyUnit("dummy");
+		grid.setStrategy(strategy);
+		grid.addUnit(unit);
+		grid.doAction();
+		
+		assertNotNull(unit.getOrder());
 		
 	}
 	

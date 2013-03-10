@@ -3,8 +3,11 @@
  */
 package tim.game.back.scheduler;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+
+import tim.game.back.scheduler.Order.OrderAction;
 
 /**
  * @author tim
@@ -25,7 +28,10 @@ public class MockStrategy implements GridStrategy {
 	 * @see tim.game.back.scheduler.GridStrategy#doAction()
 	 */
 	public void doAction() {
-		// TODO Auto-generated method stub
+		Order order = new Order();
+		order.setAction(OrderAction.BUILD);
+		order.setDestination(new Point(1, 1));
+		orders.add(order);
 
 	}
 	

@@ -32,13 +32,13 @@ public class GameApplicationFactory {
 	 * 
 	 */
 	private GameApplicationFactory() {
-		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties");
-		Properties properties = new Properties();
-		try {
-			properties.load(is);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties");
+//		Properties properties = new Properties();
+//		try {
+//			properties.load(is);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	public static GameApplicationFactory getInstance() {

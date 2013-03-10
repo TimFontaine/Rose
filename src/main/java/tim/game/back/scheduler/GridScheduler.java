@@ -3,16 +3,20 @@
  */
 package tim.game.back.scheduler;
 
+import java.util.List;
+import java.util.Queue;
+
+import tim.data.unit.Unit;
+
 /**
  * @author tim
  *
  */
-public class GridScheduler {
-
+public interface GridScheduler {
+	
 	/**
-	 * 
+	 * @param units
+	 * @param orderList
 	 */
-	public GridScheduler() {
-	}
-
+	void doAction(List<Unit> units, List<Order> orderList);
 }

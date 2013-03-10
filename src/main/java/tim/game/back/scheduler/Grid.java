@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeSet;
+import tim.data.unit.Unit;
 
 import tim.data.back.Node;
+import tim.game.back.scheduler.Order.OrderAction;
 
 /**
  * @author tim
@@ -25,17 +27,10 @@ public class Grid {
 	private Point center;
 	private GridState state;
 	
-	private GridStrategy strategy;
-	public GridStrategy getStrategy() {
-		return strategy;
-	}
-
-	public void setStrategy(GridStrategy strategy) {
-		this.strategy = strategy;
-	}
-
-	GridScheduler scheduler;
+	private GridScheduler scheduler;
 	
+	private GridStrategy strategy;
+
 	public enum GridState {
 		BASE;
 	}
@@ -45,6 +40,8 @@ public class Grid {
 	 */
 	public Grid() {
 		setAssignedUnits(new ArrayList<Unit>());
+		strategy = new BaseGridStrategy();
+		scheduler = new SimpleGridScheduler();
 	}
 	
 	public void addUnit(Unit unit) {
@@ -52,11 +49,19 @@ public class Grid {
 	}
 	
 	public void doAction() {
-		PriorityQueue<Order> orderSet = new PriorityQueue<Order>();
-		orderSet.addAll(strategy.getOrders());
-		for (Unit unit : assignedUnits) {
-			unit.setOrder(orderSet.poll());
-		}
+		strategy.doAction();
+		List<Order> orderList = strategy.getOrders();
+		scheduler.doAction(assignedUnits, orderList);
+	
+	}
+
+	/**
+	 * 
+	 */
+	private void createBuildOrder() {
+		Order order = new Order();
+		order.setDestination(new Point(1,1));
+		order.setAction(OrderAction.BUILD);
 	}
 
 	/**
@@ -122,4 +127,25 @@ public class Grid {
 		this.assignedUnits = assignedUnits;
 	}
 
+	/**
+	 * @return the scheduler
+	 */
+	public GridScheduler getScheduler() {
+		return scheduler;
+	}
+
+	/**
+	 * @param scheduler the scheduler to set
+	 */
+	public void setScheduler(GridScheduler scheduler) {
+		this.scheduler = scheduler;
+	}
+
+	public GridStrategy getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(GridStrategy strategy) {
+		this.strategy = strategy;
+	}
 }

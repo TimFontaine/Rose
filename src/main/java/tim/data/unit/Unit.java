@@ -3,12 +3,14 @@
  */
 package tim.data.unit;
 
+import java.awt.Point;
 import java.util.List;
 
 import tim.data.back.Path;
 import tim.data.back.Thing;
 import tim.game.ai.Task;
 import tim.game.ai.job.Job;
+import tim.game.back.scheduler.Order;
 
 /**
  * @author tfontaine
@@ -30,7 +32,8 @@ public abstract class Unit extends Thing {
 	
 	protected UnitState state;
 	
-	protected UnitOrder order;
+//	protected UnitOrder order;
+	protected Order order;
 	
 	
 	/**
@@ -53,7 +56,7 @@ public abstract class Unit extends Thing {
 	public void useOil() {
 		oil-=OIL_USAGE;
 	}
-	
+	public abstract void giveOrder(Order order);
 
 	public int getOil() {
 		return oil;
@@ -72,14 +75,6 @@ public abstract class Unit extends Thing {
 
 	public void setState(UnitState state) {
 		this.state = state;
-	}
-
-	public UnitOrder getOrder() {
-		return order;
-	}
-
-	public void setOrder(UnitOrder order) {
-		this.order = order;
 	}
 
 	public int getMoves() {
@@ -104,6 +99,28 @@ public abstract class Unit extends Thing {
 
 	public void setJob(Job job) {
 		this.job = job;
+	}
+
+	/**
+	 * @param location
+	 */
+	public void setLocation(Point location) {
+		this.setX(location.x);
+		this.setY(location.y);
+	}
+
+	/**
+	 * @return the order
+	 */
+	public Order getOrder() {
+		return order;
+	}
+
+	/**
+	 * @param order the order to set
+	 */
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 

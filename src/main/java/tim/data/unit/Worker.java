@@ -26,6 +26,8 @@ import tim.game.ai.job.Job;
 import tim.game.ai.job.MultiStepJob;
 import tim.game.ai.job.PickupJob;
 import tim.game.ai.job.UseResourceJob;
+import tim.game.back.scheduler.Order;
+import tim.game.back.scheduler.Order.Status;
 
 /**
  * @author tfontaine
@@ -34,7 +36,6 @@ import tim.game.ai.job.UseResourceJob;
 public class Worker extends Unit {
 	
 	private Goal goal;
-	
 	private Queue<Job> jobList;
 
 	/**
@@ -64,58 +65,34 @@ public class Worker extends Unit {
 		return null;
 	}
 
+	public void giveOrder(Order order) {
+		this.setOrder(order);
+		initJobList();
+		startNextJob();
+		state = UnitState.ACTIVE;
+	}
+	
 	/* (non-Javadoc)
 	 * @see tim.data.back.Thing#doLogic()
 	 */
 	@Override
 	public void doLogic() {
 		
-		if (testNewOrder()) {
-			//test requirements for the playerorder
-			setRequirementList();
-			System.out.println(getName() + "has order" + goal.getActionType().toString());
-			startNextJob();
-			state = UnitState.ACTIVE;
-		}
-		
-		
-	
-		//this should not occur
-		if (state == UnitState.IDLE) {
-			//there is no job assignment
-			return;
-		}
-		
-		//this is an error
-		if (job == null) {
-			System.out.println("job is null");
-		}
-
-		//the start function can set the job on finished
-		//e.x gotoJob is on destination already
-		if (job.isFinished()) {
-			handleEndJob();
-		}
-		
 		job.doAction();
 		
 		if (job.isFinished()) {
 			handleEndJob();
-			
 		}
 		
 	}
 	
-	private boolean testNewOrder() {
-		return state == UnitState.IDLE && goal != null && jobList.isEmpty();
-	}
-	
+	/**
+	 * 
+	 */
 	private void handleEndJob() {
-		//all done ?
 		if (jobList.isEmpty()) {
+			getOrder().setStatus(Status.FINISHED);
 			state = UnitState.IDLE;
-			//update goal status
-			goal.setStatus(GoalStatus.FINISHED);
 			return;
 		}
 		startNextJob();
@@ -126,76 +103,36 @@ public class Worker extends Unit {
 		job = jobList.poll();
 		job.start();
 	}
-
-	/**
-	 * 
-	 */
-	private void setRequirementList() {
-		/*
-		 * add for other stuff as task build
-		 */
-		
-		getRequiredResources();
-		Point start = goal.getDestination();
-		testOnLocation(start);
-		//test on location;
-		switch(goal.getActionType()) {
-			case BUILD:
-				placeBuilding();
-//				useResources();
-				deliverRequestResources();
-				break;
-			case RESOURCES:
-				deliverRequestResources();
-				break;
-			case ROAD:
-//				Point end = (Point) playerOrder.getInfo().get("end");
-//				System.out.println("order to build road from " + start.x + ":" + start.y + "to"
-//						+ end.x + ":" + end.y + "for unit " + getName());
-//				MultiStepJob buildRoad = new MultiStepJob(this, end);
-//				Job roadJob = new RoadJob(this);
-//				buildRoad.setExtraJob(roadJob);
-//				
-//				jobList.add(buildRoad);
-//				break;
-		}
-
-	}
 	
 	/**
 	 * 
 	 */
-	private void getRequiredResources() {
-		//test resource available
-		//for every resource in the playerorder create correct orders
-		//bug? if total resources is 0, skip goto source
-		int totalResources = 0;
-		
-		int[] orderResources = goal.getResources();
-		if (orderResources != null) {
-			for (int key=0; key<orderResources.length;key++) {
-				ResourceInfo info = ResourceInfo.getInstance();
-				System.out.println("Pickup:" + info.getResourceByKey(key) + ":" + orderResources[key]);
-				int available = getAvailableResources(key);
-				int required = orderResources[key];
-				if (available < required) {
-					//there are not enough resources, pick them up
-					int transfer = required - available;
-					String resourceLocation = resourceInfo.getLocation(key);
-					if (resourceLocation == null) {
-						int k = 0;
-						System.out.println("error no resourcelocation");
-					}
-					Job gotoMine = new GotoJob(this,resourceLocation);
-					Job job = new PickupJob(this, key ,transfer);
-					jobList.add(gotoMine);
-					jobList.add(job);
-				}
-			}
-			
+	private void initJobList() {
+		if (!onLocation()) {
+			Job job = new GotoJob(this, getOrder().getDestination());
+			jobList.add(job);
 		}
-		
+		Job job = null;
+		switch (getOrder().getAction()) {
+		case BUILD:
+			job = new BuildJob(this, "factory");
+			break;
+		case RESOURCES:
+			job = new PickupJob(this, resourceInfo.getResourceKeyByName("iron"), Integer.MAX_VALUE);
+			break;
+		default:
+			break;
+		}
+		jobList.add(job);
 	}
+	
+	private boolean onLocation(){
+		if (this.getLocation().equals(getOrder().getDestination())) {
+			return true;
+		}
+		return false;
+	}
+	
 
 	private void testOnLocation(Point start) {
 		Job job = new GotoJob(this, start);

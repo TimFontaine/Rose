@@ -10,12 +10,14 @@ import java.util.List;
 import tim.data.back.Node;
 import tim.game.Back;
 import tim.game.factory.GameApplicationFactory;
+import tim.data.unit.Unit;
+import tim.data.unit.UnitState;
 
 /**
  * @author tim
  *
  */
-public class Scheduler {
+public class SimplePlayerScheduler implements PlayerScheduler {
 	
 	private List<Grid> grids;
 	private List<Unit> units;
@@ -23,34 +25,10 @@ public class Scheduler {
 	/**
 	 * 
 	 */
-	public Scheduler() {
+	public SimplePlayerScheduler() {
 		grids = new ArrayList<Grid>();
 		units = new ArrayList<Unit>();
 //		setupGrids();
-	}
-	
-	/**
-	 * 
-	 */
-	private void setupGrids() {
-		//define a grid for the base;
-		Grid grid = new Grid();
-		//assign nodes to a grid;
-		Node[][] nodes = new Node[3][3];
-		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
-		//this is the upper left of the grid
-		Point gridPoint = new Point(13,13);
-		Back back = applicationFactory.getBack();
-		//fill the grid nodes
-		for (int i = 0; i <nodes.length; i++) {
-			for (int j = 0; j< nodes[0].length; j++) {
-				nodes[i][j] =  back.getNode(gridPoint.x + i, gridPoint.y +j);
-			}
-		}
-		grid.setNodes(nodes);
-		//grid.setState(GridState.BASE);
-		grid.setCenter(new Point(10,10));
-		grids.add(grid);
 	}
 	
 	public void doAction(){
@@ -63,17 +41,19 @@ public class Scheduler {
 	 */
 	private void assignUnitsToGrids() {
 		for (Unit unit : units) {
-			int bestMatch = -Integer.MIN_VALUE;
-			Grid bestGrid = null;
-			for (Grid grid : grids) {
-				int match = computeMatchToGoal(grid, unit);
-				if (match > bestMatch) {
-					bestMatch = match;
-					bestGrid = grid;
+			if (unit.getState() == UnitState.IDLE) {
+				int bestMatch = -Integer.MIN_VALUE;
+				Grid bestGrid = null;
+				for (Grid grid : grids) {
+					int match = computeMatchToGoal(grid, unit);
+					if (match > bestMatch) {
+						bestMatch = match;
+						bestGrid = grid;
+					}
 				}
-			}
-			if (bestGrid != null) {
-				bestGrid.addUnit(unit);
+				if (bestGrid != null) {
+					bestGrid.addUnit(unit);
+				}
 			}
 		}
 	}

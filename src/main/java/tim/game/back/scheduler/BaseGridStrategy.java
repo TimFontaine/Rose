@@ -3,6 +3,7 @@
  */
 package tim.game.back.scheduler;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +27,12 @@ public class BaseGridStrategy implements GridStrategy {
 	/* (non-Javadoc)
 	 * @see tim.game.back.scheduler.GridStrategy#doAction()
 	 */
+	@Override
 	public void doAction() {
 		Order order = new Order();
-		order.setAction(OrderAction.BUILD);
+		order.setDestination(new Point(1,1));
+		order.setAction(OrderAction.RESOURCES);
+		order.setInfo("iron");
 		orderList.add(order);
 	}
 

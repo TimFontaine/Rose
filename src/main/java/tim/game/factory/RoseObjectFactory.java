@@ -7,6 +7,7 @@ import tim.data.back.RoseObject;
 import tim.data.unit.Worker;
 import tim.game.ai.SimpleGoalAI;
 import tim.game.ai.SimplePlayerAI;
+import tim.game.back.scheduler.GridPlayer;
 
 /**
  * @author tfontaine
@@ -44,6 +45,8 @@ public class RoseObjectFactory {
 			roseObject.setImageName("builder");
 		} else if ("simpleGoalPlayer".equals(name)) {
 			roseObject = new SimpleGoalAI();
+		} else if ("GridPlayer".equals(name)) {
+			roseObject = new GridPlayer();
 		}
 		return roseObject;
 	}

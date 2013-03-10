@@ -3,6 +3,8 @@
  */
 package tim.game.back.scheduler;
 
+import java.awt.Point;
+
 /**
  * @author tim
  *
@@ -10,6 +12,18 @@ package tim.game.back.scheduler;
 public class Order implements Comparable<Order> {
 	
 	private int priority;
+	private Status status;
+	private Point destination;
+	private String info;
+	
+	
+	
+	public enum Status {
+		NEW,
+		INPROGRESS,
+		FINISHED;
+	}
+	
 	public int getPriority() {
 		return priority;
 	}
@@ -30,6 +44,7 @@ public class Order implements Comparable<Order> {
 	 * 
 	 */
 	public Order() {
+		setStatus(Status.NEW);
 	}
 
 	/* (non-Javadoc)
@@ -56,6 +71,48 @@ public class Order implements Comparable<Order> {
 	 */
 	public void setAction(OrderAction action) {
 		this.action = action;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public Status getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	/**
+	 * @return the destination
+	 */
+	public Point getDestination() {
+		return destination;
+	}
+
+	/**
+	 * @param destination the destination to set
+	 */
+	public void setDestination(Point destination) {
+		this.destination = destination;
+	}
+
+	/**
+	 * @return the info
+	 */
+	public String getInfo() {
+		return info;
+	}
+
+	/**
+	 * @param info the info to set
+	 */
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
 
