@@ -126,7 +126,7 @@ public class Base extends Grid {
 				ActionType actionType = ActionType.RESOURCES;
 				goal.setActionType(actionType);
 				goal.setDestination(building.getLocation());
-				goal.setResources(building.getRequiredResources());
+				goal.setResources(calcMissingResources(building));
 				goal.setPriority(200);
 				goalList.add(goal);
 			}
@@ -203,6 +203,22 @@ public class Base extends Grid {
 	}
 	
 	
+
+	/**
+	 * @param building
+	 * @return
+	 */
+	private int[] calcMissingResources(Building building) {
+		//update the required resources
+		int[] requirement = new int[requiredResources.length];
+		for (int key = 0; key < requiredResources.length; key++) {
+			int required = requiredResources[key] - building.getAvailableResources(key);
+			if (required > 0) {
+				requirement[key] = required;
+			}
+		}
+		building.setRequiredResources(requiredResources);
+	}
 
 	/**
 	 * @param totalResources

@@ -16,7 +16,10 @@ public class ResourcesData {
 	protected int maxStorage = 100;
 	protected int totalStorage;
 	
+	
 	ResourceInfo resourceInfo;
+	
+	private int[] fullOperationResources;
 
 	/**
 	 * 
@@ -91,6 +94,20 @@ public class ResourcesData {
 
 	public void setMaxStorage(int maxStorage) {
 		this.maxStorage = maxStorage;
+	}
+
+	/**
+	 * @return the fullOperationResources
+	 */
+	public int[] getFullOperationResources() {
+		return fullOperationResources;
+	}
+
+	/**
+	 * @param fullOperationResources the fullOperationResources to set
+	 */
+	public void setFullOperationResources(int[] fullOperationResources) {
+		this.fullOperationResources = fullOperationResources;
 	}
 
 }

@@ -16,6 +16,8 @@ public class BuildingConstructionStrategy implements BuildingStrategy {
 	Building building;
 	ResourceInfo info;
 	
+	int[] requiredResources;
+	
 	
 	/**
 	 * 
@@ -26,26 +28,28 @@ public class BuildingConstructionStrategy implements BuildingStrategy {
 		info = applicationFactory.getResourceInfo();
 		this.building = building;
 		building.setImageName("underconstruction");
+		
+		String type = building.getType();
+		requiredResources = info.getResourcesForThing(type);
 	}
 	
 	@Override
 	public void doAction(BuildingStateContext context) {
 		//are there enough resources to finish construction ?
-		String type = building.getType();
-		int[] requiredResources = info.getResourcesForThing(type);
+		
 		boolean test = building.hasResourcesAvailable(requiredResources);
 		if (test) {
 			context.switchState(BuildingState.IDLE);
 		} else {
-			//update the required resources
+//			//update the required resources
 			int[] requirement = new int[requiredResources.length];
 			for (int key = 0; key < requiredResources.length; key++) {
 				int required = requiredResources[key] - building.getAvailableResources(key);
 				if (required > 0) {
-					requirement[key] = required;
+					requiredResources[key] = required;
 				}
 			}
-			building.setRequiredResources(requiredResources);
+//			building.setRequiredResources(requiredResources);
 		}
 		
 	}
