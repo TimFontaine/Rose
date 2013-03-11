@@ -10,6 +10,7 @@ import java.util.List;
 
 import tim.data.back.Building;
 import tim.data.back.Event;
+import tim.data.back.HQ;
 import tim.data.back.Item;
 import tim.data.back.Node;
 import tim.data.unit.UnitOrder;
@@ -59,6 +60,12 @@ public class GridPlayer extends BasicPlayer implements Player {
 		}
 		grid.setCenter(gridPoint);
 		grid.setNodes(nodes);
+		
+		//add a hq to a grid
+		Building building = new HQ("base");
+		building.setX(gridPoint.x);
+		building.setY(gridPoint.y);
+		applicationFactory.getBack().addBuilding(building);
 		grids.add(grid);
 	}
 

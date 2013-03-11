@@ -3,13 +3,7 @@
  */
 package tim.data.back;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import tim.data.unit.TransferResource;
-import tim.data.unit.Unit;
 import tim.game.ai.data.ResourcesRequest;
-import tim.game.factory.RoseObjectFactory;
 
 /**
  * @author tfontaine

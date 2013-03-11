@@ -31,6 +31,10 @@ public class BuildingFactory {
 			building = new Storage("factory");
 			building.setState(BuildingState.CONSTRUCTING);
 			building.setType("storage");
+		} else if ("hq".equals(buildingType)) {
+			building = new Storage("hq");
+			building.setState(BuildingState.CONSTRUCTING);
+			building.setType("hq");
 		}
 		return building;
 	}

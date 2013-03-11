@@ -10,6 +10,7 @@ import tim.data.back.Node;
 import tim.data.back.Thing;
 import tim.data.unit.TransferResource;
 import tim.data.unit.Unit;
+import tim.game.ai.data.MutableResource.Resource;
 
 /**
  * @author tfontaine
@@ -19,6 +20,7 @@ public class DeliverJob extends Job {
 	
 	private int resourceKey;
 	private int amount;
+	private Resource resource;
 
 	/**
 	 * 
@@ -26,6 +28,12 @@ public class DeliverJob extends Job {
 	public DeliverJob(Unit unit, int resourceKey, int amount) {
 		this.unit = unit;
 		init(resourceKey, amount);
+	}
+	
+	public DeliverJob(Unit unit, Resource resource, int amount) {
+		this.unit = unit;
+		init(resourceKey, amount);
+		this.resource = resource;
 	}
 	
 	private void init(int resourceKey, int amount) {
@@ -55,8 +63,8 @@ public class DeliverJob extends Job {
 		if (available > target.getFreeStorage()) {
 			available = target.getFreeStorage();
 		}
-		unit.retreiveResource(resourceKey, available);
-		target.addResource(resourceKey, available);
+		unit.retreiveResource(resource, available);
+		target.addResource(resource, available);
 		finished = true;
 	}
 

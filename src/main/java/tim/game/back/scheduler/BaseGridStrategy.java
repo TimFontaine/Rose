@@ -7,6 +7,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import tim.data.back.Building;
+import tim.game.ai.ResourcesData;
+import tim.game.ai.data.MutableResource.Resource;
 import tim.game.back.scheduler.Order.OrderAction;
 
 /**
@@ -16,6 +19,9 @@ import tim.game.back.scheduler.Order.OrderAction;
 public class BaseGridStrategy implements GridStrategy {
 	
 	private List<Order> orderList;
+	private Building base;
+	
+	private ResourcesData resourcesLink;
 
 	/**
 	 * 
@@ -29,10 +35,12 @@ public class BaseGridStrategy implements GridStrategy {
 	 */
 	@Override
 	public void doAction() {
-		Order order = new Order();
+		ResourceOrder order = new ResourceOrder();
 		order.setDestination(new Point(1,1));
 		order.setAction(OrderAction.RESOURCES);
-		order.setInfo("iron");
+		order.setAmount(10);
+		order.setDestination(base.getLocation());
+		order.setResource(Resource.IRON);
 		orderList.add(order);
 	}
 
@@ -41,6 +49,15 @@ public class BaseGridStrategy implements GridStrategy {
 	 */
 	public List<Order> getOrders() {
 		return orderList;
+	}
+
+	public Building getBase() {
+		return base;
+	}
+
+	public void setBase(Building base) {
+		this.base = base;
+		this.resourcesLink =base.getResourcesData();
 	}
 
 }

@@ -4,12 +4,15 @@
 package tim.data.back;
 
 import java.io.Serializable;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
 import tim.game.Back;
 import tim.game.Player;
 import tim.game.ai.ResourcesData;
+import tim.game.ai.data.MutableResource;
+import tim.game.ai.data.MutableResource.Resource;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.data.ResourcesRequest;
 import tim.game.factory.GameApplicationFactory;
@@ -25,6 +28,7 @@ public abstract class Thing extends Item implements Serializable {
 	protected ResourceInfo resourceInfo;
 	
 	protected ResourcesData resourcesData;
+	protected EnumMap<Resource, MutableResource> resources;
 	
 	public Thing(String name) {
 		super(name);
@@ -33,6 +37,7 @@ public abstract class Thing extends Item implements Serializable {
 		
 		resourceInfo = applicationFactory.getResourceInfo();
 		resourcesData = new ResourcesData();
+		resources = new EnumMap<MutableResource.Resource, MutableResource>(Resource.class);
 		
 	}
 
@@ -52,6 +57,20 @@ public abstract class Thing extends Item implements Serializable {
 	
 	public void addResource(int key, int amount) {
 		resourcesData.updateResource(key, amount);
+	}
+	
+	public void addResource(Resource resource, int amount) {
+		if (resources.containsKey(resource)) {
+			resources.get(resource).update(amount);
+		} else {
+			MutableResource mutable = new MutableResource(resource);
+			mutable.update(amount);
+			resources.put(resource, mutable);
+		}
+	}
+	
+	public void retreiveResource(Resource resource, int amount) {
+		resources.get(resource).update(-amount);
 	}
 	
 	public void retreiveResource(int key, int amount) {

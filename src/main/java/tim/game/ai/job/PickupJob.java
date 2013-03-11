@@ -11,6 +11,7 @@ import tim.data.back.Path;
 import tim.data.unit.TransferResource;
 import tim.data.unit.Unit;
 import tim.data.unit.Worker;
+import tim.game.ai.data.MutableResource.Resource;
 
 /**
  * @author tfontaine
@@ -20,6 +21,8 @@ public class PickupJob extends Job {
 	
 	private int resourceKey;
 	private int amount;
+	
+	private Resource resource;
 	
 	/**
 	 * 
@@ -32,6 +35,13 @@ public class PickupJob extends Job {
 	public PickupJob(Unit unit, int resourceKey, int amount) {
 		this.unit = unit;
 		init(resourceKey, amount);
+//		path = back.findNearestObject(unit, itemName);
+	}
+	
+	public PickupJob(Unit unit, Resource resource, int amount) {
+		this.unit = unit;
+		init(resourceKey, amount);
+		this.resource = resource;
 //		path = back.findNearestObject(unit, itemName);
 	}
 	
@@ -60,7 +70,8 @@ public class PickupJob extends Job {
 			//not enough space available to store the requested
 			amount = availableSpace;
 		}
-		unit.addResource(resourceKey, amount);
+		System.out.println("pickupjob");
+		unit.addResource(resource, amount);
 		back.addUsedItem(current.getItem());
 		finished = true;
 

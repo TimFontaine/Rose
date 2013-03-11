@@ -5,6 +5,7 @@ package tim.data.unit;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,12 +13,13 @@ import java.util.Map;
 import java.util.Queue;
 
 import tim.data.ai.ActionType;
-import tim.data.ai.PlayerOrder;
 import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.game.ai.RoadJob;
 import tim.game.ai.data.Goal;
 import tim.game.ai.data.Goal.GoalStatus;
+import tim.game.ai.data.MutableResource;
+import tim.game.ai.data.MutableResource.Resource;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.job.BuildJob;
 import tim.game.ai.job.DeliverJob;
@@ -28,6 +30,7 @@ import tim.game.ai.job.PickupJob;
 import tim.game.ai.job.UseResourceJob;
 import tim.game.back.scheduler.Order;
 import tim.game.back.scheduler.Order.Status;
+import tim.game.back.scheduler.ResourceOrder;
 
 /**
  * @author tfontaine
@@ -36,7 +39,7 @@ import tim.game.back.scheduler.Order.Status;
 public class Worker extends Unit {
 	
 	private Goal goal;
-	private Queue<Job> jobList;
+	private Deque<Job> jobList;
 
 	/**
 	 * @param name
@@ -44,6 +47,7 @@ public class Worker extends Unit {
 	public Worker(String name) {
 		super(name);
 		jobList = new LinkedList<Job>();
+		LinkedList<Order> l = new LinkedList<Order>();
 		updateMaxStorage(5);
 	}
 
@@ -118,7 +122,18 @@ public class Worker extends Unit {
 			job = new BuildJob(this, "factory");
 			break;
 		case RESOURCES:
-			job = new PickupJob(this, resourceInfo.getResourceKeyByName("iron"), Integer.MAX_VALUE);
+			//all jobs need to be inserted before goto destination
+			//goto resource location
+			ResourceOrder resourceOrder = (ResourceOrder) order;
+			Resource resource = resourceOrder.getResource();
+			String resourceName = resource.toString().toLowerCase();
+			String resourceSource = resourceInfo.getLocation(resourceName);
+			Job gotoResource = new GotoJob(this, resourceSource);
+			
+			int amount = resourceOrder.getAmount();
+			job = new PickupJob(this, resource, amount);
+			jobList.addFirst(job);
+			jobList.addFirst(gotoResource);
 			break;
 		default:
 			break;

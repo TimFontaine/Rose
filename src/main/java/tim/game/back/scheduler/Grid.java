@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import tim.data.unit.Unit;
 
+import tim.data.back.Building;
 import tim.data.back.Node;
 import tim.game.back.scheduler.Order.OrderAction;
 
@@ -23,6 +24,7 @@ public class Grid {
 	private Node[][] nodes;
 	private int priority;
 	private List<Unit> assignedUnits;
+	private List<Building> buildings;
 	
 	private Point center;
 	private GridState state;
@@ -42,10 +44,15 @@ public class Grid {
 		setAssignedUnits(new ArrayList<Unit>());
 		strategy = new BaseGridStrategy();
 		scheduler = new SimpleGridScheduler();
+		buildings = new ArrayList<Building>();
 	}
 	
 	public void addUnit(Unit unit) {
 		assignedUnits.add(unit);
+	}
+	
+	public void addBuilding(Building building) {
+		buildings.add(building);
 	}
 	
 	public void doAction() {
