@@ -32,6 +32,7 @@ public class Grid {
 	private GridScheduler scheduler;
 	
 	private GridStrategy strategy;
+	private GridData gridData;
 
 	public enum GridState {
 		BASE;
@@ -42,9 +43,10 @@ public class Grid {
 	 */
 	public Grid() {
 		setAssignedUnits(new ArrayList<Unit>());
-		strategy = new BaseGridStrategy();
+		strategy = new BaseGridStrategy(gridData);
 		scheduler = new SimpleGridScheduler();
 		buildings = new ArrayList<Building>();
+		gridData = new GridData();
 	}
 	
 	public void addUnit(Unit unit) {
@@ -154,5 +156,9 @@ public class Grid {
 
 	public void setStrategy(GridStrategy strategy) {
 		this.strategy = strategy;
+	}
+	
+	public void setBase(Building base) {
+		gridData.setBase(base);
 	}
 }

@@ -112,12 +112,20 @@ public abstract class Thing extends Item implements Serializable {
 		return resourcesData.getFreeStorage();
 	}
 
-	public ResourcesData getResourcesData() {
-		return resourcesData;
+	public EnumMap<Resource, MutableResource> getResources() {
+		return resources;
 	}
 
-	public void setResourcesData(ResourcesData resourcesData) {
-		this.resourcesData = resourcesData;
+	public void setResources(EnumMap<Resource, MutableResource> resources) {
+		this.resources = resources;
 	}
+
+//	public ResourcesData getResourcesData() {
+//		return resourcesData;
+//	}
+//
+//	public void setResourcesData(ResourcesData resourcesData) {
+//		this.resourcesData = resourcesData;
+//	}
 	
 }

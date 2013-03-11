@@ -3,8 +3,11 @@
  */
 package tim.game.ai.data;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+
+import tim.game.ai.data.MutableResource.Resource;
 
 /**
  * @author tfontaine
@@ -13,7 +16,7 @@ import java.util.Map;
 public class ResourceInfo {
 	
 	private Map<String, String> location;
-	private Map<String, int[]> resources;
+	private Map<String, EnumMap<Resource, Integer>> resources;
 	private static ResourceInfo INSTANCE;
 
 	public enum AvailableResources {
@@ -46,26 +49,26 @@ public class ResourceInfo {
 		int ironKey = getResourceKeyByName("iron");
 		int oilKey = getResourceKeyByName("oil");
 		
-		resources = new HashMap<String, int[]>();
-		int[] workerCost = new int[2];
-		workerCost[ironKey] = 20;
-		workerCost[oilKey] = 10;
+		resources = new HashMap<String, EnumMap<Resource, Integer>>();
+		EnumMap<Resource, Integer> workerCost = new EnumMap<MutableResource.Resource, Integer>(Resource.class);
+		workerCost.put(Resource.IRON, 20);
+		workerCost.put(Resource.OIL, 10);
 		
 		resources.put("worker", workerCost);
 		
-		int[] farmCost = new int[2];
-		farmCost[ironKey] = 20;
-		farmCost[oilKey] = 10;
+		EnumMap<Resource, Integer> farmCost = new EnumMap<MutableResource.Resource, Integer>(Resource.class);
+		farmCost.put(Resource.IRON, 20);
+		farmCost.put(Resource.OIL, 10);
 		resources.put("farm", farmCost);
 		
-		int[] factoryCost = new int[2];
-		factoryCost[ironKey] = 20;
-		factoryCost[oilKey] = 10;
+		EnumMap<Resource, Integer> factoryCost = new EnumMap<MutableResource.Resource, Integer>(Resource.class);
+		factoryCost.put(Resource.IRON, 20);
+		factoryCost.put(Resource.OIL, 10);
 		resources.put("factory", factoryCost);
 		
-		int[] storageCost = new int[2];
-		storageCost[ironKey] = 20;
-		storageCost[oilKey] = 20;
+		EnumMap<Resource, Integer> storageCost = new EnumMap<MutableResource.Resource, Integer>(Resource.class);
+		storageCost.put(Resource.IRON, 20);
+		storageCost.put(Resource.OIL, 10);
 		resources.put("storage", storageCost);
 		
 	}
@@ -92,7 +95,7 @@ public class ResourceInfo {
 	/**
 	 * @return the itemCost
 	 */
-	public int[] getResourcesForThing(String name) {
+	public EnumMap<Resource, Integer> getResourcesForThing(String name) {
 		return resources.get(name);
 	}
 

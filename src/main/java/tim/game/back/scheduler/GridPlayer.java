@@ -66,6 +66,7 @@ public class GridPlayer extends BasicPlayer implements Player {
 		building.setX(gridPoint.x);
 		building.setY(gridPoint.y);
 		applicationFactory.getBack().addBuilding(building);
+		grid.setBase(building);
 		grids.add(grid);
 	}
 
