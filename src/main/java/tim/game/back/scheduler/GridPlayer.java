@@ -44,8 +44,6 @@ public class GridPlayer extends BasicPlayer implements Player {
 	 * 
 	 */
 	private void setupGrids() {
-		//define a grid for the base;
-		Grid grid = new Grid();
 		//assign nodes to a grid;
 		Node[][] nodes = new Node[3][3];
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
@@ -58,8 +56,9 @@ public class GridPlayer extends BasicPlayer implements Player {
 				nodes[i][j] =  back.getNode(gridPoint.x + i, gridPoint.y +j);
 			}
 		}
+		//define a grid for the base;
+		Grid grid = new Grid(nodes);
 		grid.setCenter(gridPoint);
-		grid.setNodes(nodes);
 		
 		//add a hq to a grid
 		Building building = new HQ("base");
@@ -67,6 +66,7 @@ public class GridPlayer extends BasicPlayer implements Player {
 		building.setY(gridPoint.y);
 		applicationFactory.getBack().addBuilding(building);
 		grid.setBase(building);
+		grid.init();
 		grids.add(grid);
 	}
 

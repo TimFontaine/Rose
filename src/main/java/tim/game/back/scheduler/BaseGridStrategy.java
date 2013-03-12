@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import tim.data.back.Building;
+import tim.data.back.Node;
 import tim.game.ai.ResourcesData;
 import tim.game.ai.data.MutableResource;
 import tim.game.ai.data.MutableResource.Resource;
@@ -37,7 +38,8 @@ public class BaseGridStrategy implements GridStrategy {
 	public BaseGridStrategy(GridData data) {
 		orderList = new ArrayList<Order>();
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
-		
+		resourceInfo = applicationFactory.getResourceInfo();
+		this.data = data;
 		init();
 	}
 
@@ -71,14 +73,19 @@ public class BaseGridStrategy implements GridStrategy {
 	private void addBuildings() {
 		//test enough resources;
 		EnumMap<Resource, Integer> map = resourceInfo.getResourcesForThing("factory");
+		boolean canBuild = true;
 		for (Map.Entry<Resource, Integer> entry : map.entrySet()) {
 			if (resourceLink.containsKey(entry.getKey())) {
 				MutableResource mutable = resourceLink.get(entry.getKey());
-				if (mutable.getAmount() > entry.getValue()) {
-					//fixit
-					addBuildingOrder("factory", map);
+				if (mutable.getAmount() < entry.getValue()) {
+					canBuild = false;
 				}
+			} else {
+				canBuild = false;
 			}
+		}
+		if (canBuild) {
+			addBuildingOrder("factory", map);
 		}
 	}
 
@@ -87,6 +94,21 @@ public class BaseGridStrategy implements GridStrategy {
 	 * @param map
 	 */
 	private void addBuildingOrder(String string, EnumMap<Resource, Integer> map) {
+		Order order = new Order();
+		order.setAction(OrderAction.BUILD);
+		Node destination = getFreeNode(data.getNodes());
+		order.setDestination(destination.getLocation());
+		order.setPriority(120);
+		orderList.add(order);
+	}
+	
+	private Node getFreeNode(List<Node> nodes) {
+		for (Node node : nodes) {
+			if (node.containsItem()) {
+				return node;
+			}
+		}
+		return null;
 		
 	}
 

@@ -48,7 +48,7 @@ public class Worker extends Unit {
 		super(name);
 		jobList = new LinkedList<Job>();
 		LinkedList<Order> l = new LinkedList<Order>();
-		updateMaxStorage(5);
+		updateMaxStorage(40);
 	}
 
 	/* (non-Javadoc)
@@ -112,33 +112,36 @@ public class Worker extends Unit {
 	 * 
 	 */
 	private void initJobList() {
-		if (!onLocation()) {
-			Job job = new GotoJob(this, getOrder().getDestination());
-			jobList.add(job);
-		}
+		
 		Job job = null;
 		switch (getOrder().getAction()) {
 		case BUILD:
+			if (!onLocation()) {
+				Job gotoJob = new GotoJob(this, getOrder().getDestination());
+				jobList.add(gotoJob);
+			}
 			job = new BuildJob(this, "factory");
+			jobList.add(job);
 			break;
 		case RESOURCES:
-			//all jobs need to be inserted before goto destination
 			//goto resource location
 			ResourceOrder resourceOrder = (ResourceOrder) order;
 			Resource resource = resourceOrder.getResource();
 			String resourceName = resource.toString().toLowerCase();
 			String resourceSource = resourceInfo.getLocation(resourceName);
 			Job gotoResource = new GotoJob(this, resourceSource);
-			
+			Job gotoDestination = new GotoJob(this, getOrder().getDestination());
 			int amount = resourceOrder.getAmount();
 			job = new PickupJob(this, resource, amount);
-			jobList.addFirst(job);
-			jobList.addFirst(gotoResource);
+			DeliverJob deliver = new DeliverJob(this, resource, amount);
+			jobList.add(gotoResource);
+			jobList.add(job);
+			jobList.add(gotoDestination);
+			jobList.add(deliver);
 			break;
 		default:
 			break;
 		}
-		jobList.add(job);
 	}
 	
 	private boolean onLocation(){

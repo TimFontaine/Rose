@@ -55,16 +55,16 @@ public class DeliverJob extends Job {
 		//worker? delivers to factory?
 		//get the free storage of the target
 		int freeSpace = target.getFreeStorage();
-		if (freeSpace < amount) {
-			//calc the possible amount to deliver
-			amount = freeSpace;
-		}
-		int available = unit.getAvailableResources(resourceKey);
-		if (available > target.getFreeStorage()) {
-			available = target.getFreeStorage();
-		}
-		unit.retreiveResource(resource, available);
-		target.addResource(resource, available);
+//		if (freeSpace < amount) {
+//			//calc the possible amount to deliver
+//			amount = freeSpace;
+//		}
+//		int available = unit.getAvailableResources(resourceKey);
+//		if (available > target.getFreeStorage()) {
+//			available = target.getFreeStorage();
+//		}
+		unit.retreiveResource(resource, amount);
+		target.addResource(resource, amount);
 		finished = true;
 	}
 

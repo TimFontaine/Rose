@@ -36,15 +36,15 @@ public class Factory extends Building {
 	}
 	
 	public void doLogic() {
-		int[] requiredResources = resourceInfo.getResourcesForThing("worker");
-		boolean test = testCanBuild(requiredResources);
-		if (test) {
-			buildUnit(requiredResources);
-		} else {
-			
-			
-			
-		}
+//		int[] requiredResources = resourceInfo.getResourcesForThing("worker");
+//		boolean test = testCanBuild(requiredResources);
+//		if (test) {
+//			buildUnit(requiredResources);
+//		} else {
+//			
+//			
+//			
+//		}
 	}
 	
 	private void buildUnit(int[] requiredResources) {

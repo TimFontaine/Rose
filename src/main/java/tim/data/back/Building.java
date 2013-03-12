@@ -14,17 +14,17 @@ public class Building extends Thing {
 	
 	private BuildingState state;
 	private BuildingStateContext context;
-	private ResourcesRequest waitingOrder;
+	
+	//the building connected too, to find resources (hq or storage)
+	private Building resourceLink;
 	
 	
-	private int[] requiredResources;
-
 	/**
 	 * 
 	 */
 	public Building(String name) {
 		super(name);
-		context = new BuildingStateContext(this);
+		//context = new BuildingStateContext(this);
 	}
 	
 	public BuildingState getState() {
@@ -46,12 +46,12 @@ public class Building extends Thing {
 		}
 	}
 
-	public int[] getRequiredResources() {
-		return requiredResources;
+	public Building getResourceLink() {
+		return resourceLink;
 	}
 
-	public void setRequiredResources(int[] requiredResources) {
-		this.requiredResources = requiredResources;
+	public void setResourceLink(Building resourceLink) {
+		this.resourceLink = resourceLink;
 	}
 
 }

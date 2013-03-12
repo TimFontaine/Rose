@@ -41,12 +41,25 @@ public class Grid {
 	/**
 	 * 
 	 */
-	public Grid() {
+	public Grid(Node[][] nodes) {
+		gridData = new GridData();
+		this.nodes = nodes;
 		setAssignedUnits(new ArrayList<Unit>());
-		strategy = new BaseGridStrategy(gridData);
 		scheduler = new SimpleGridScheduler();
 		buildings = new ArrayList<Building>();
-		gridData = new GridData();
+		
+		List<Node> nodeList = new ArrayList<Node>();
+		for (int i = 0; i <nodes.length; i++) {
+			for (int j = 0; j<nodes[0].length;j++) {
+				nodeList.add(nodes[i][j]);
+			}
+		}
+		gridData.setNodes(nodeList);
+		
+	}
+	
+	public void init() {
+		strategy = new BaseGridStrategy(gridData);
 	}
 	
 	public void addUnit(Unit unit) {
