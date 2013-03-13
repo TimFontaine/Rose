@@ -104,7 +104,7 @@ public class BaseGridStrategy implements GridStrategy {
 	
 	private Node getFreeNode(List<Node> nodes) {
 		for (Node node : nodes) {
-			if (node.containsItem()) {
+			if (!node.containsItem()) {
 				return node;
 			}
 		}
