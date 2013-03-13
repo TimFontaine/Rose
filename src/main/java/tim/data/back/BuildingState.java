@@ -10,5 +10,6 @@ package tim.data.back;
 public enum BuildingState {
 	CONSTRUCTING,
 	IDLE,
-	PRODUCING;
+	PRODUCING,
+	WAIT;
 }

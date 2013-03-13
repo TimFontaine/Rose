@@ -28,7 +28,7 @@ public class BuildingFactory {
 			building.setType("factory");
 			building.setState(BuildingState.CONSTRUCTING);
 		} else if ("storage".equals(buildingType)) {
-			building = new Storage("factory");
+			building = new Storage("storage");
 			building.setState(BuildingState.CONSTRUCTING);
 			building.setType("storage");
 		} else if ("hq".equals(buildingType)) {

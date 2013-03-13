@@ -3,6 +3,10 @@
  */
 package tim.data.back;
 
+import java.util.Map;
+
+import tim.game.ai.data.MutableResource;
+import tim.game.ai.data.MutableResource.Resource;
 import tim.game.ai.data.ResourcesRequest;
 
 /**
@@ -13,10 +17,17 @@ import tim.game.ai.data.ResourcesRequest;
 public class Building extends Thing {
 	
 	private BuildingState state;
-	private BuildingStateContext context;
+	protected BuildingStateContext context;
 	
 	//the building connected too, to find resources (hq or storage)
 	private Building resourceLink;
+	
+	private RESOURCELINK resourceLocation;
+	
+	private enum RESOURCELINK {
+		LOCAL,
+		REMOTE
+	}
 	
 	
 	/**
@@ -24,7 +35,8 @@ public class Building extends Thing {
 	 */
 	public Building(String name) {
 		super(name);
-		//context = new BuildingStateContext(this);
+		resourceLocation = RESOURCELINK.LOCAL;
+		context = new BuildingStateContext(this);
 	}
 	
 	public BuildingState getState() {
@@ -33,11 +45,24 @@ public class Building extends Thing {
 
 	public void setState(BuildingState state) {
 		this.state = state;
+		context.switchState(state);
 	}
 	
 	@Override
 	public void doLogic() {
 		context.doLogic();
+	}
+	
+	public void switchResourceLink(Building resourceLink) {
+		//set new resourcelink
+		//move all local resources to resourcelink
+		for (Map.Entry<Resource, MutableResource> entry : resources.entrySet()) {
+			resourceLink.addResource(entry.getKey(), entry.getValue().getAmount());
+		}
+		this.resources.clear();
+		//assign remote link resources to local;
+		resources = resourceLink.getResources();
+		resourceLocation = RESOURCELINK.REMOTE;
 	}
 
 	public void switchState(BuildingState newState) {
@@ -50,8 +75,8 @@ public class Building extends Thing {
 		return resourceLink;
 	}
 
-	public void setResourceLink(Building resourceLink) {
-		this.resourceLink = resourceLink;
-	}
+//	public void setResourceLink(Building resourceLink) {
+//		this.resourceLink = resourceLink;
+//	}
 
 }

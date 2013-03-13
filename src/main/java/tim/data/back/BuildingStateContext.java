@@ -19,9 +19,9 @@ public class BuildingStateContext {
 	 * 
 	 */
 	public BuildingStateContext(Building building) {
-		state = BuildingState.CONSTRUCTING;
+		state = building.getState();
 		this.building = building;
-		strategy = new BuildingConstructionStrategy(building, this);
+		strategy = new BuildingWaitStrategy();
 	}
 	
 	public void doLogic() {
@@ -33,9 +33,13 @@ public class BuildingStateContext {
 	 */
 	public void switchState(BuildingState newState) {
 		switch (newState) {
+		case CONSTRUCTING:
+			strategy = new BuildingConstructionStrategy(building, this);
 		case IDLE:
 			strategy = new BuildingWorkingStrategy(building);
 			break;
+		case WAIT:
+			strategy = new BuildingWaitStrategy();
 		}
 	}
 

@@ -74,6 +74,9 @@ public class GridPlayer extends BasicPlayer implements Player {
 	 * @see tim.game.Player#doLogic()
 	 */
 	public void doLogic() {
+		for (Building building : buildings) {
+			building.doLogic();
+		}
 		//assign units to grid
 		scheduler.doAction();
 		//assign grid orders to units
@@ -81,6 +84,7 @@ public class GridPlayer extends BasicPlayer implements Player {
 			grid.doAction();
 		}
 		
+		//units execute order
 		for (Unit unit: units) {
 			unit.doLogic();
 		}

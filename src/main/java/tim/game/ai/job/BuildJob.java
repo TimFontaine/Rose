@@ -68,7 +68,7 @@ public class BuildJob extends Job {
 				Node node = back.getNode(unitX + x, unitY + y);
 				if (node.containsItem() && node.getItem().getType().equals("hq")) {
 					Building link = (Building) node.getItem();
-					building.setResourceLink(link);
+					building.switchResourceLink(link);
 					return;
 				}
 			}
