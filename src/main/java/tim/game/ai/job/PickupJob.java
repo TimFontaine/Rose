@@ -19,7 +19,6 @@ import tim.game.ai.data.MutableResource.Resource;
  */
 public class PickupJob extends Job {
 	
-	private int resourceKey;
 	private int amount;
 	
 	private Resource resource;
@@ -27,21 +26,14 @@ public class PickupJob extends Job {
 	/**
 	 * 
 	 */
-	public PickupJob(Unit unit, int destinationX, int destinationY, int resourceKey, int amount) {
-		init(resourceKey, amount);
+	public PickupJob(Unit unit, int destinationX, int destinationY, Resource resource, int amount) {
+		init(resource, amount);
 //		path = back.findShortestPath(unit.getX(), unit.getY(), destinationX, destinationY);
-	}
-	
-	public PickupJob(Unit unit, int resourceKey, int amount) {
-		this.unit = unit;
-		init(resourceKey, amount);
-//		path = back.findNearestObject(unit, itemName);
 	}
 	
 	public PickupJob(Unit unit, Resource resource, int amount) {
 		this.unit = unit;
-		init(resourceKey, amount);
-		this.resource = resource;
+		init(resource, amount);
 //		path = back.findNearestObject(unit, itemName);
 	}
 	
@@ -51,8 +43,8 @@ public class PickupJob extends Job {
 	}
 	
 	
-	private void init(int resourceKey, int amount) {
-		this.resourceKey = resourceKey;
+	private void init(Resource resource, int amount) {
+		this.resource = resource;
 		this.amount = amount;
 	}
 	
@@ -65,11 +57,11 @@ public class PickupJob extends Job {
 		Node current = back.getNode(unit.getLocation().x, unit.getLocation().y);
 		//worker? receives from mine?
 		//calc the max amount to pick up 
-		int availableSpace = unit.getFreeStorage();
-		if (availableSpace < amount) {
-			//not enough space available to store the requested
-			amount = availableSpace;
-		}
+//		int availableSpace = unit.getFreeStorage();
+//		if (availableSpace < amount) {
+//			//not enough space available to store the requested
+//			amount = availableSpace;
+//		}
 		System.out.println("pickupjob");
 		unit.addResource(resource, amount);
 		back.addUsedItem(current.getItem());

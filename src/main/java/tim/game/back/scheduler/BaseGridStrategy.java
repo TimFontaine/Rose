@@ -32,11 +32,12 @@ public class BaseGridStrategy implements GridStrategy {
 	private EnumMap<Resource, MutableResource> resourceLink;
 	GridData data;
 	
+	private int factoryOrders;
+	
 	/**
 	 * 
 	 */
 	public BaseGridStrategy(GridData data) {
-		orderList = new ArrayList<Order>();
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		resourceInfo = applicationFactory.getResourceInfo();
 		this.data = data;
@@ -56,6 +57,10 @@ public class BaseGridStrategy implements GridStrategy {
 	 */
 	@Override
 	public void doAction() {
+		/**
+		 * TODO orderlist is not global
+		 */
+		orderList = new ArrayList<Order>();
 		ResourceOrder order = new ResourceOrder();
 		order.setAction(OrderAction.RESOURCES);
 		order.setAmount(10);
@@ -64,7 +69,10 @@ public class BaseGridStrategy implements GridStrategy {
 		order.setPriority(100);
 		orderList.add(order);
 		
-		addBuildings();
+		if (factoryOrders == 0) {
+			addBuildings();
+			
+		}
 	}
 
 	/**
@@ -86,6 +94,7 @@ public class BaseGridStrategy implements GridStrategy {
 		}
 		if (canBuild) {
 			addBuildingOrder("factory", map);
+			factoryOrders++;
 		}
 	}
 

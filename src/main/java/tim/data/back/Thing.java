@@ -36,7 +36,6 @@ public abstract class Thing extends Item implements Serializable {
 		back = applicationFactory.getBack();
 		
 		resourceInfo = applicationFactory.getResourceInfo();
-		resourcesData = new ResourcesData();
 		resources = new EnumMap<MutableResource.Resource, MutableResource>(Resource.class);
 		
 	}
@@ -73,24 +72,23 @@ public abstract class Thing extends Item implements Serializable {
 		resources.get(resource).update(-amount);
 	}
 	
-	public void retreiveResource(int key, int amount) {
-		resourcesData.updateResource(key, -amount);
-	}
-	
 	public void retreiveMultipleResources(int[] resourseSet) {
 		for (int i = 0; i < resourseSet.length; i++ ) {
 			resourcesData.updateResource(i, -resourseSet[i]);
 		}
 	}
 	
-	public boolean hasResourcesAvailable(int[] required) {
-		for (int key=0; key<required.length;key++) {
-			int amount = required[key];
-			if (resourcesData.getAvailableResource(key) < amount) {
+	public boolean hasResourcesAvailable(Map<Resource, Integer> required) {
+		for (Map.Entry<Resource, Integer> entry: required.entrySet()) {
+			if (!resources.containsKey(entry.getKey())) {
+				return false;
+			}
+			int available = resources.get(entry.getKey()).getAmount();
+			if (available < entry.getValue()) {
 				return false;
 			}
 		}
-		return true;	
+		return true;
 	}
 	
 	public boolean hasResources() {
@@ -101,7 +99,7 @@ public abstract class Thing extends Item implements Serializable {
 	}
 	
 	public void updateMaxStorage(int max) {
-		resourcesData.setMaxStorage(max);
+//		resourcesData.setMaxStorage(max);
 	}
 	
 	public int getAvailableResources(int key) {

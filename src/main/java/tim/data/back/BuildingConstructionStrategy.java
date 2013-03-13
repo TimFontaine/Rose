@@ -3,7 +3,10 @@
  */
 package tim.data.back;
 
+import java.util.EnumMap;
+
 import tim.game.ai.ResourcesData;
+import tim.game.ai.data.MutableResource.Resource;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.factory.GameApplicationFactory;
 
@@ -16,7 +19,7 @@ public class BuildingConstructionStrategy implements BuildingStrategy {
 	Building building;
 	ResourceInfo info;
 	
-	int[] requiredResources;
+	EnumMap<Resource, Integer> requiredResources;
 	
 	
 	/**
@@ -41,15 +44,6 @@ public class BuildingConstructionStrategy implements BuildingStrategy {
 		if (test) {
 			context.switchState(BuildingState.IDLE);
 		} else {
-//			//update the required resources
-			int[] requirement = new int[requiredResources.length];
-			for (int key = 0; key < requiredResources.length; key++) {
-				int required = requiredResources[key] - building.getAvailableResources(key);
-				if (required > 0) {
-					requiredResources[key] = required;
-				}
-			}
-//			building.setRequiredResources(requiredResources);
 		}
 		
 	}

@@ -54,7 +54,7 @@ public class DeliverJob extends Job {
 		Thing target = (Thing)current.getItem();
 		//worker? delivers to factory?
 		//get the free storage of the target
-		int freeSpace = target.getFreeStorage();
+//		int freeSpace = target.getFreeStorage();
 //		if (freeSpace < amount) {
 //			//calc the possible amount to deliver
 //			amount = freeSpace;

@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import tim.data.back.Building;
+import tim.data.back.BuildingState;
 import tim.data.back.Event;
 import tim.data.back.Item;
 import tim.data.back.MapItem;
@@ -71,6 +73,15 @@ public class ForeGround {
 		List<MapItem> mapItems= back.getMapItems();
 		for (MapItem mapItem: mapItems) {
 			String name = mapItem.getType();
+			//TODO rework image system to allow different images for items
+			if (mapItem instanceof Building) {
+				Building building = (Building) mapItem;
+				if (building.getState() == BuildingState.CONSTRUCTING) {
+					name="construction";
+				}
+				
+			}
+			
 			if (name == null) {
 				System.out.println("alert: " + mapItem.getName());
 			}

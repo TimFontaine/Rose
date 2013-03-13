@@ -4,6 +4,7 @@
 package tim.game.ai.job;
 
 import java.awt.Point;
+import java.util.EnumMap;
 
 import tim.data.back.Building;
 import tim.data.back.BuildingState;
@@ -11,6 +12,7 @@ import tim.data.back.Node;
 import tim.data.unit.Unit;
 import tim.game.ai.data.Grid;
 import tim.game.ai.data.ResourceInfo;
+import tim.game.ai.data.MutableResource.Resource;
 import tim.game.factory.BuildingFactory;
 import tim.game.factory.GameApplicationFactory;
 
@@ -20,33 +22,35 @@ import tim.game.factory.GameApplicationFactory;
  */
 public class BuildJob extends Job {
 	
+	ResourceInfo resourceInfo;
+	
 	String buildingType;
 	Grid grid;
-	ResourceInfo resourceInfo;
-	int[] requiredResources;
-	
 
 	/**
 	 * 
 	 */
 	public BuildJob(Unit unit, String buildingType) {
-		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		this.unit = unit;
 		this.buildingType = buildingType;
+		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		resourceInfo = applicationFactory.getResourceInfo();
-		//requiredResources = resourceInfo.getResourcesForThing(buildingType);
 	}
 	
 	public void doAction() {
+		EnumMap<Resource, Integer> required = resourceInfo.getResourcesForThing(buildingType);
+		
+		//1. create building
 		Building building = BuildingFactory.constructBuilding(buildingType);
 		setupResourceLink(building);
 		
 		//test on shortage of resources
-//		if (unit.hasResourcesAvailable(requiredResources)) {
-//			building.setState(BuildingState.IDLE);
-//		} else {
-//			building.setState(BuildingState.CONSTRUCTING);
-//		}
+		if (unit.hasResourcesAvailable(required)) {
+			building.setState(BuildingState.IDLE);
+		} else {
+			building.setState(BuildingState.CONSTRUCTING);
+		}
+		//2.place building on map
 		back.buildOnTile(unit.getX(), unit.getY(), building);
 		System.out.println("build job has build " + buildingType);
 		finished = true;

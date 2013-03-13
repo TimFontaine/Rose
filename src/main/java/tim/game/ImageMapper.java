@@ -23,6 +23,7 @@ public class ImageMapper {
 		map.put("block", "cross");
 		map.put("autoroute", "double-road");
 		map.put("worker", "builder");
+		map.put("construction", "underconstruction");
 	}
 
 	public String getImageName(String name) {
