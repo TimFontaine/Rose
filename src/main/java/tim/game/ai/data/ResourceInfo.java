@@ -98,6 +98,12 @@ public class ResourceInfo {
 	public EnumMap<Resource, Integer> getResourcesForThing(String name) {
 		return resources.get(name);
 	}
+	
+	public EnumMap<Resource, Integer> getUsageToBuild() {
+		EnumMap<Resource, Integer> map = new EnumMap<Resource, Integer>(Resource.class);
+		map.put(Resource.IRON, 10);
+		return map;
+	}
 
 	/**
 	 * @param key

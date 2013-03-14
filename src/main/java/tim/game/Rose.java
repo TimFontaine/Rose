@@ -28,6 +28,7 @@ import tim.data.front.ScreenInfo;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.hud.Interface;
 import tim.game.hud.Mediator;
+import tim.game.usercentric.CentricMapBuilder;
 
 
 /**
@@ -65,6 +66,7 @@ public class Rose extends Core {
 	public Rose(GraphicsDevice gd) {
 		super(gd);
 		applicationFactory = GameApplicationFactory.getInstance();
+		CentricMapBuilder m = new CentricMapBuilder();
 		backGround = new BackGround(getWidth(), getWidth());
 		foreGround = new ForeGround(getWidth(), getHeight());
 		actionMap = new HashMap<String, GameAction>();
@@ -91,7 +93,6 @@ public class Rose extends Core {
 
 	private void initGame() {
 		setupGameActions();
-		GridMapBuilder m = new GridMapBuilder();
 		MouseInfoItem.mouseState = MouseState.FREE;
 		
 	}

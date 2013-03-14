@@ -26,6 +26,7 @@ import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.hud.Interface;
 import tim.game.hud.Mediator;
+import tim.game.usercentric.InterfaceTranslator;
 import tim.rose.buttons.actions.RoseAction;
 
 /**
@@ -40,6 +41,7 @@ public class Logic {
 	Mediator mediator;
 	
 	JFrame frame;
+	private InterfaceTranslator translator;
 	private static List<GameButton> queue;
 	private static List<RoseAction> actionQueue;
 	
@@ -50,6 +52,7 @@ public class Logic {
 	public Logic(JFrame frame, HashMap<String, GameAction> actionMap) {
 		this.actionMap = actionMap;
 		this.back = GameApplicationFactory.getInstance().getBack();
+		translator = back.getTrans();
 		this.screenInfo = ScreenInfo.getInstance();
 		this.frame = frame;
 		this.mediator = GameApplicationFactory.getInstance().getMediator();
@@ -62,19 +65,19 @@ public class Logic {
 		doMouseLogic();
 		
 		if (actionMap.get("down").getAmount() > 0) {
-			back.move(Direction.DOWN, 1);
+			translator.move(Direction.DOWN, 1);
 			System.out.println("event is down");
 		}
 		if (actionMap.get("up").getAmount() > 0) {
-			back.move(Direction.UP, 1);
+			translator.move(Direction.UP, 1);
 			System.out.println("event is up");
 		}
 		if (actionMap.get("left").getAmount() > 0) {
-			back.move(Direction.LEFT, 1);
+			translator.move(Direction.LEFT, 1);
 			System.out.println("event is left");
 		}
 		if (actionMap.get("right").getAmount() > 0) {
-			back.move(Direction.RIGHT, 1);
+			translator.move(Direction.RIGHT, 1);
 			System.out.println("event is right");
 		}
 		if (actionMap.get("nextStep").getAmount() > 0) {

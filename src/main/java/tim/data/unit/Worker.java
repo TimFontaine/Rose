@@ -116,12 +116,18 @@ public class Worker extends Unit {
 		Job job = null;
 		switch (getOrder().getAction()) {
 		case BUILD:
+			/**
+			 * assume that unit has enough resources to build
+			 */
 			if (!onLocation()) {
 				Job gotoJob = new GotoJob(this, getOrder().getDestination());
 				jobList.add(gotoJob);
 			}
 			job = new BuildJob(this, "factory");
+			Map<Resource, Integer> usage = resourceInfo.getUsageToBuild();
+			Job useResource = new UseResourceJob(this, usage);
 			jobList.add(job);
+			jobList.add(useResource);
 			break;
 		case RESOURCES:
 			//goto resource location

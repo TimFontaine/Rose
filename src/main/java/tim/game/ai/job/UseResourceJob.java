@@ -7,6 +7,7 @@ import java.util.Map;
 
 import tim.data.unit.Unit;
 import tim.data.unit.Worker;
+import tim.game.ai.data.MutableResource.Resource;
 
 /**
  * @author tim
@@ -16,7 +17,8 @@ public class UseResourceJob extends Job {
 	
 	int resourceKey;
 	int amount;
-
+	Map<Resource,Integer> usageMap;
+	
 	/**
 	 * 
 	 */
@@ -25,7 +27,13 @@ public class UseResourceJob extends Job {
 		this.resourceKey = resourceKey;
 		this.amount = amount;
 	}
+	
 
+	public UseResourceJob(Unit unit, Map<Resource, Integer> map) {
+		this.unit = unit;
+		usageMap = map;
+	}
+	
 	/* (non-Javadoc)
 	 * @see tim.game.ai.job.Job#start()
 	 */
@@ -40,8 +48,9 @@ public class UseResourceJob extends Job {
 	 */
 	@Override
 	public void doAction() {
-		unit.retreiveResource(resourceKey, amount);
-		finished = true;
+		for (Map.Entry<Resource, Integer> entry : usageMap.entrySet()) {
+			unit.retreiveResource(entry.getKey(), entry.getValue());
+		}
 	}
 
 }

@@ -21,6 +21,7 @@ import tim.data.back.Path;
 import tim.data.back.Road;
 import tim.data.back.Thing;
 import tim.data.unit.Unit;
+import tim.game.usercentric.InterfaceTranslator;
 import tim.pathfinding.AStar;
 import tim.pathfinding.ClosestHeuristic;
 import tim.pathfinding.Dijkstra;
@@ -41,6 +42,7 @@ public class Back {
 	private List<Player> playerList;
 	private Player activePlayer;
 	Iterator<Player> playerIterator;
+	private InterfaceTranslator trans;
 
 	public static final int defaultSpeed = 10;
 	private java.util.Map<String, Integer> speed;
@@ -338,7 +340,7 @@ public class Back {
 		String name = unit.getName() + itemId++;
 		unit.setName(name);
 		getMapItems().add(unit);
-		activePlayer.addUnit(unit);
+//		activePlayer.addUnit(unit);
 		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
 	}
 	
@@ -376,6 +378,17 @@ public class Back {
 	}
 
 	
-	
+	public void addHumam(InterfaceTranslator trans) {
+		this.trans = trans;
+		
+	}
+
+	public InterfaceTranslator getTrans() {
+		return trans;
+	}
+
+	public void setTrans(InterfaceTranslator trans) {
+		this.trans = trans;
+	}
 
 }
