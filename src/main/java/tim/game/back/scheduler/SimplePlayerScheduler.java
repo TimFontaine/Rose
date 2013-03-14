@@ -72,7 +72,6 @@ public class SimplePlayerScheduler implements PlayerScheduler {
 	 */
 	private int computeMatchToGoal(Grid grid, Unit unit) {
 		int distanceFromGoal = distanceToGrid(grid, unit);
-		System.out.println("distance from goal is" + distanceFromGoal);
 		int match = grid.getPriority() / (distanceFromGoal + 1);//distance to goal can be zero
 		return match;
 	}

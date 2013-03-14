@@ -58,21 +58,42 @@ public class BaseGridStrategy implements GridStrategy {
 	@Override
 	public void doAction() {
 		/**
-		 * TODO orderlist is not global
+		 * TODO clear or new instance ?
 		 */
 		orderList = new ArrayList<Order>();
 		ResourceOrder order = new ResourceOrder();
 		order.setAction(OrderAction.RESOURCES);
 		order.setAmount(10);
 		order.setDestination(data.getBase().getLocation());
-		order.setResource(Resource.IRON);
 		order.setPriority(100);
 		orderList.add(order);
 		
+		Resource lowestResource = lowestResource();
+		order.setResource(lowestResource);
+		
 		if (factoryOrders == 0) {
 			addBuildings();
-			
 		}
+		
+		
+	}
+	
+	private Resource lowestResource() {
+		EnumMap<Resource, MutableResource> resources = data.getBase().getResources();
+		int lowest = Integer.MAX_VALUE;
+		Resource lowestResource = null;
+		for (Resource resource : Resource.values()) {
+			if (resources.containsKey(resource)) {
+				int amount = resources.get(resource).getAmount();
+				if (amount < lowest) {
+					lowestResource = resource;;
+					lowest = amount;
+				}
+			} else {
+				return resource;
+			}
+		}
+		return lowestResource;
 	}
 
 	/**
