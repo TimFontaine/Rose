@@ -3,9 +3,13 @@
  */
 package tim.data.back;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 import tim.data.unit.Unit;
 import tim.game.Back;
 import tim.game.ai.data.ResourceInfo;
+import tim.game.ai.data.MutableResource.Resource;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.factory.RoseObjectFactory;
 
@@ -36,7 +40,7 @@ public class BuildingWorkingStrategy implements BuildingStrategy {
 	 */
 	@Override
 	public void doAction(BuildingStateContext context) {
-		int[] requiredResources = resourceInfo.getResourcesForThing("worker");
+		EnumMap<Resource, Integer> requiredResources = resourceInfo.getResourcesForThing("worker");
 		boolean test = testCanBuild(requiredResources);
 		if (test) {
 			buildUnit(requiredResources);
@@ -47,7 +51,7 @@ public class BuildingWorkingStrategy implements BuildingStrategy {
 		}
 	}
 	
-	private void buildUnit(int[] requiredResources) {
+	private void buildUnit(EnumMap<Resource, Integer> requiredResources) {
 		Unit unit = (Unit) RoseObjectFactory.getInstance().getRoseObject("worker");
 		unit.setName("worker");
 		unit.setType("worker");
@@ -72,10 +76,13 @@ public class BuildingWorkingStrategy implements BuildingStrategy {
 //		
 //	}
 
-	private boolean testCanBuild(int[] requiredResources) {
-		for (int key = 0; key <requiredResources.length;key++) {
-			int cost = requiredResources[key];
-			int available = building.getAvailableResources(key);
+	private boolean testCanBuild(EnumMap<Resource, Integer> requiredResources) {
+		for (Map.Entry<Resource, Integer> entry : requiredResources.entrySet()) {
+			if (!building.containsResource(entry.getKey())) {
+				return false;
+			}
+			int cost = entry.getValue();
+			int available = building.getAvailableResources(entry.getKey());
 			int rest = cost - available;
 			if (rest >0) {
 //				if (resourceShortage == null) {
@@ -84,8 +91,8 @@ public class BuildingWorkingStrategy implements BuildingStrategy {
 //				resourceShortage[key] = rest;
 				return false;
 			}
+			
 		}
-		
 		return true;
 	}
 

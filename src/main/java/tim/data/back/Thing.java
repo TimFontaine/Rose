@@ -72,9 +72,9 @@ public abstract class Thing extends Item implements Serializable {
 		resources.get(resource).update(-amount);
 	}
 	
-	public void retreiveMultipleResources(int[] resourseSet) {
-		for (int i = 0; i < resourseSet.length; i++ ) {
-			resourcesData.updateResource(i, -resourseSet[i]);
+	public void retreiveMultipleResources(EnumMap<Resource,Integer> requiredResources) {
+		for (Map.Entry<Resource, Integer> entry : requiredResources.entrySet()) {
+			retreiveResource(entry.getKey(), entry.getValue());
 		}
 	}
 	
@@ -91,6 +91,17 @@ public abstract class Thing extends Item implements Serializable {
 		return true;
 	}
 	
+	/**
+	 * @param key
+	 * @return
+	 */
+	public boolean containsResource(Resource key) {
+		if (resources.containsKey(key)) {
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean hasResources() {
 		if (resourcesData.getTotalStorage() == 0) {
 			return true;
@@ -102,8 +113,11 @@ public abstract class Thing extends Item implements Serializable {
 //		resourcesData.setMaxStorage(max);
 	}
 	
-	public int getAvailableResources(int key) {
-		return resourcesData.getAvailableResource(key);
+	public int getAvailableResources(Resource resource) {
+		if (resources.containsKey(resource)) {
+			return resources.get(resource).getAmount();
+		}
+		return 0;
 	}
 	
 	public int getFreeStorage() {
