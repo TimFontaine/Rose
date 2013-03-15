@@ -21,6 +21,14 @@ public abstract class Job {
 	protected Unit unit;
 	
 	protected boolean started;
+	
+	private JobType type;
+	
+	public enum JobType {
+		MOVE,
+		PATH,
+		BUILD
+	}
 
 	/**
 	 * 
@@ -39,6 +47,14 @@ public abstract class Job {
 	
 	protected boolean started() {
 		return started;
+	}
+
+	public JobType getType() {
+		return type;
+	}
+
+	public void setType(JobType type) {
+		this.type = type;
 	}
 
 }

@@ -19,6 +19,8 @@ public class GotoJob extends MoveJob {
 	protected Point destination;
 	String mapItemType;
 	
+	private int step;
+	
 	/**
 	 * @param node 
 	 * 
@@ -26,6 +28,7 @@ public class GotoJob extends MoveJob {
 	public GotoJob(Unit unit, Point destination) {
 		super(unit);
 		this.destination = destination;
+		start();
 	}
 	
 	public GotoJob(Unit unit, String mapItemType) {
@@ -33,6 +36,14 @@ public class GotoJob extends MoveJob {
 		this.mapItemType = mapItemType;
 	}
 	
+	/**
+	 * @param destination2
+	 */
+	public GotoJob(Point destination) {
+		super(null);
+		this.destination = destination;
+	}
+
 	/* (non-Javadoc)
 	 * @see tim.game.ai.Job#start()
 	 */
@@ -51,6 +62,16 @@ public class GotoJob extends MoveJob {
 		} else if (destination != null) {
 			path = back.findShortestPath(unit.getX(), unit.getY(), destination.x, destination.y);
 		}
+	}
+	
+	public Point getNext() {
+		Node nextNode = path.getPathNodes().get(step);
+		step++;
+		if (!path.hasNext(step)) {
+			finished = true;
+		}
+		return nextNode.getLocation();
+		
 	}
 	
 	public void doAction() {

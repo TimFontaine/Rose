@@ -9,7 +9,11 @@ import tim.data.back.Direction;
 import tim.data.unit.Unit;
 import tim.game.Back;
 import tim.game.ai.BasicPlayer;
+import tim.game.ai.job.GotoJob;
+import tim.game.ai.job.Job;
+import tim.game.ai.job.Job.JobType;
 import tim.game.factory.GameApplicationFactory;
+import tim.game.usercentric.UnitData.UnitState;
 
 /**
  * TODO this is an AI but driven by a user inteface
@@ -34,6 +38,9 @@ public class InterfaceTranslator extends BasicPlayer {
 	public void doLogic() {
 		for (Unit unit : playerData.getUnits()) {
 			activeUnit = (CentricWorker) unit;
+			if (activeUnit.getUnitData().getState() == UnitState.MULTI) {
+				activeUnit.doLogic();
+			}
 		}
 	}
 	
@@ -61,6 +68,14 @@ public class InterfaceTranslator extends BasicPlayer {
 			break;
 		}
 		activeUnit.move(location.x, location.y);
+	}
+	
+	public void gotoLocation(Point destination) {
+		ComplexOrder order = new ComplexOrder();
+		Job job = new GotoJob(activeUnit, destination);
+		job.setType(JobType.PATH);
+		order.addJob(job);
+		activeUnit.setComplexOrder(order);
 	}
 	
 	public void specialAction(SpecialAction action) {

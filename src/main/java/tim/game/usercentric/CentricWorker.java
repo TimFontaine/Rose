@@ -3,16 +3,20 @@
  */
 package tim.game.usercentric;
 
+import java.awt.Point;
 import java.util.List;
 
 import tim.data.back.MapItem;
 import tim.data.back.Path;
 import tim.data.unit.Unit;
+import tim.game.ai.job.GotoJob;
+import tim.game.ai.job.Job;
 import tim.game.back.scheduler.Order;
+import tim.game.usercentric.UnitData.UnitState;
 
 /**
  * @author tfontaine
- *
+ * centric worker is a unit that should be extended and override basic functions
  */
 public class CentricWorker extends Unit {
 	
@@ -61,8 +65,18 @@ public class CentricWorker extends Unit {
 	 */
 	@Override
 	public void doLogic() {
-		// TODO Auto-generated method stub
-		
+		if (unitData.getState() == UnitState.MULTI) {
+			Job job = unitData.getComplexOrder().getJob();
+			switch (job.getType()) {
+			case PATH:
+				GotoJob go = (GotoJob) job;
+				Point location = go.getNext();
+				move(location.x, location.y);
+				if (job.isFinished()) {
+					unitData.setState(UnitState.IDLE);
+				}
+			}
+		}
 	}
 	
 	public void move(int x, int y) {
@@ -73,6 +87,11 @@ public class CentricWorker extends Unit {
 	
 	public void specialAction(SpecialAction action){
 		specialActionManager.doAction(action);
+	}
+	
+	public void setComplexOrder(ComplexOrder order) {
+		unitData.setComplexOrder(order);
+		unitData.setState(UnitState.MULTI);
 	}
 
 	public UnitData getUnitData() {

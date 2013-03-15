@@ -105,6 +105,7 @@ public class Rose extends Core {
 		GameAction space = new GameAction();
 		GameAction nextTurn = new GameAction();
 		GameAction mouseClick = new GameAction();
+		GameAction mouseRight = new GameAction();
 		escape = new GameAction();
 		inputManager.mapToKey(left, KeyEvent.VK_LEFT);
 		inputManager.mapToKey(right, KeyEvent.VK_RIGHT);
@@ -115,6 +116,7 @@ public class Rose extends Core {
 		inputManager.mapToMouse(mouseClick, InputManager.MOUSE_BUTTON_1);
 		inputManager.mapToKey(escape, KeyEvent.VK_ESCAPE);
 		inputManager.mapToKey(nextStep, KeyEvent.VK_CONTROL);
+		inputManager.mapToMouse(mouseRight, InputManager.MOUSE_BUTTON_3);
 		
 		actionMap.put("left", left);
 		actionMap.put("right", right);
@@ -123,6 +125,7 @@ public class Rose extends Core {
 //		actionMap.put("space", space);
 		actionMap.put("nextTurn", nextTurn);
 		actionMap.put("mouseLeft", mouseClick);
+		actionMap.put("mouseRight", mouseRight);
 		actionMap.put("nextStep", nextStep);
 		
 		

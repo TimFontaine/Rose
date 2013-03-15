@@ -6,6 +6,7 @@ package tim.game;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,10 +23,13 @@ import tim.data.back.Thing;
 import tim.data.front.MouseInfoItem;
 import tim.data.front.MouseState;
 import tim.data.front.ScreenInfo;
+import tim.game.ai.job.GotoJob;
+import tim.game.ai.job.Job;
 import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.hud.Interface;
 import tim.game.hud.Mediator;
+import tim.game.usercentric.ComplexOrder;
 import tim.game.usercentric.InterfaceTranslator;
 import tim.rose.buttons.actions.RoseAction;
 
@@ -133,7 +137,20 @@ public class Logic {
 				Node node = back.getNode(tileOnScreenX, tileOnScreenY);
 				mediator.updateTileInfo(node);
 			}
+		} else if (actionMap.get("mouseRight").isPressed()) {
+			Point destination = translateCoordsFromScreen();
+			translator.gotoLocation(destination);
 		}
+	}
+	
+	private Point translateCoordsFromScreen() {
+		int x = MouseInfo.getPointerInfo().getLocation().x;
+		int y = MouseInfo.getPointerInfo().getLocation().y;
+		
+		int tileOnScreenX = x / ScreenInfo.getTileSize();
+		int tileOnScreenY = y / ScreenInfo.getTileSize();
+		Point coords = new Point(tileOnScreenX, tileOnScreenY);
+		return coords;
 	}
 	
 	
