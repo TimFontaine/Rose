@@ -8,6 +8,7 @@ import java.awt.Point;
 import tim.data.back.Direction;
 import tim.data.unit.Unit;
 import tim.game.Back;
+import tim.game.ai.BasicPlayer;
 import tim.game.factory.GameApplicationFactory;
 
 /**
@@ -16,16 +17,20 @@ import tim.game.factory.GameApplicationFactory;
  * @author tfontaine
  *
  */
-public class InterfaceTranslator {
+public class InterfaceTranslator extends BasicPlayer {
 	
 	private PlayerData playerData;
 	Unit activeUnit;
+	CentricWorker centricWorker;
 	
 	Back back;
 	
-	public InterfaceTranslator() {
+	public InterfaceTranslator(PlayerData playerData) {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		back = applicationFactory.getBack();
+		this.playerData = playerData;
+		activeUnit = playerData.getUnits().get(0);
+		centricWorker = (CentricWorker) activeUnit;
 	}
 	
 	/**
@@ -34,7 +39,6 @@ public class InterfaceTranslator {
 	 * @param amount
 	 */
 	public void move(Direction direction, int amount) {
-		activeUnit = playerData.getUnits().get(0);
 		Point location = activeUnit.getLocation();
 		switch (direction) {
 		case DOWN:
@@ -52,7 +56,11 @@ public class InterfaceTranslator {
 		default:
 			break;
 		}
-		back.moveUnit(activeUnit, location.x, location.y);
+		centricWorker.move(location.x, location.y);
+	}
+	
+	public void specialAction(SpecialAction action) {
+		 centricWorker.specialAction(action);
 	}
 
 	public PlayerData getPlayerData() {

@@ -40,8 +40,7 @@ public class Logic {
 	ScreenInfo screenInfo;
 	Mediator mediator;
 	
-	JFrame frame;
-	private InterfaceTranslator translator;
+	private InterfaceTranslator translator;//the player coupled to the interface
 	private static List<GameButton> queue;
 	private static List<RoseAction> actionQueue;
 	
@@ -49,12 +48,11 @@ public class Logic {
 	 * @param mediator 
 	 * 
 	 */
-	public Logic(JFrame frame, HashMap<String, GameAction> actionMap) {
+	public Logic(InterfaceTranslator translator, HashMap<String, GameAction> actionMap) {
 		this.actionMap = actionMap;
 		this.back = GameApplicationFactory.getInstance().getBack();
-		translator = back.getTrans();
+		this.translator = translator;
 		this.screenInfo = ScreenInfo.getInstance();
-		this.frame = frame;
 		this.mediator = GameApplicationFactory.getInstance().getMediator();
 		queue = new ArrayList<GameButton>();
 		actionQueue = new ArrayList<RoseAction>();

@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import tim.core.ScreenUtils;
 import tim.data.front.MouseInfoItem;
 import tim.data.front.MouseState;
+import tim.game.usercentric.SpecialAction;
 
 /**
  * @author tfontaine
@@ -32,9 +33,12 @@ public class BuildAction extends RoseAction {
 	 */
 	@Override
 	public void doAction() {
-		MouseInfoItem.mouseState = MouseState.SELECTED;
-		MouseInfoItem.item = item;
-		ScreenUtils.getInstance().changeMouseCursor(item);
+//		MouseInfoItem.mouseState = MouseState.SELECTED;
+//		MouseInfoItem.item = item;
+//		ScreenUtils.getInstance().changeMouseCursor(item);
+		SpecialAction action = SpecialAction.BUILD;
+		action.setData(item);
+		translator.specialAction(action);
 	}
 	
 

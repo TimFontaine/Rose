@@ -12,6 +12,7 @@ import tim.game.Back;
 import tim.game.ai.data.PlayerData;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.hud.Mediator;
+import tim.game.usercentric.InterfaceTranslator;
 
 /**
  * @author tfontaine
@@ -69,5 +70,6 @@ public class GameApplicationFactory {
 	public ResourceInfo getResourceInfo() {
 		return resourceInfo;
 	}
+
 
 }

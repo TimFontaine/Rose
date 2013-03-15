@@ -22,6 +22,7 @@ import tim.game.factory.RoseObjectFactory;
 public class CentricMapBuilder {
 	
 	Back back;
+	private InterfaceTranslator interfaceTranslator;
 	
 	public CentricMapBuilder() {
 		back = GameApplicationFactory.getInstance().getBack();
@@ -34,8 +35,6 @@ public class CentricMapBuilder {
 //		back.buildOnTile(3, 3, "flag");
 		
 		PlayerData playerData = new PlayerData();
-		InterfaceTranslator interfaceTranslator = new InterfaceTranslator();
-		back.addHumam(interfaceTranslator);
 //		Player playerAI = (Player) factory.getRoseObject("simpleGoalPlayer");
 //		back.addPlayer(human);
 //		back.addPlayer(playerAI);
@@ -50,7 +49,9 @@ public class CentricMapBuilder {
 		units.add(worker);
 		
 		playerData.setUnits(units);
-		interfaceTranslator.setPlayerData(playerData);
+		interfaceTranslator = new InterfaceTranslator(playerData);
+		back.addHumam(interfaceTranslator);
+		back.addPlayer(interfaceTranslator);
 		back.addUnit(worker);
 		
 //		Building building = new Factory("factory");
@@ -100,7 +101,15 @@ public class CentricMapBuilder {
 //		back.addUnit(playerAI, unit);
 //		back.addUnit(playerAI, oilTruck);
 		
-//		back.nextPlayer();
+		back.nextPlayer();
+	}
+
+	public InterfaceTranslator getInterfaceTranslator() {
+		return interfaceTranslator;
+	}
+
+	public void setInterfaceTranslator(InterfaceTranslator interfaceTranslator) {
+		this.interfaceTranslator = interfaceTranslator;
 	}
 
 }

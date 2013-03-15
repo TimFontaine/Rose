@@ -43,15 +43,15 @@ public class ForeGround {
 	
 	public void draw(Graphics2D g) {
 		drawMapItems(g);
-		int playerX = (int) (back.getPlayer().getX() * 50);
-		int playerY = (int) (back.getPlayer().getY() * 50);
+//		int playerX = (int) (back.getPlayer().getX() * 50);
+//		int playerY = (int) (back.getPlayer().getY() * 50);
 		
 //		int otherPlayerX = (int) (back.getOtherPlayer().getX() * 50);
 //		int otherPlayerY = (int) (back.getOtherPlayer().getY() * 50);
-//		
-		ImageIcon icon = new ImageIcon(resourceManager.getImage("dot"));
-		ImageIcon greenIcon = new ImageIcon(resourceManager.getImage("dot-green"));
-		g.drawImage(icon.getImage(),playerX,playerY, null);
+////		
+//		ImageIcon icon = new ImageIcon(resourceManager.getImage("dot"));
+//		ImageIcon greenIcon = new ImageIcon(resourceManager.getImage("dot-green"));
+//		g.drawImage(icon.getImage(),playerX,playerY, null);
 //		g.drawImage(greenIcon.getImage(),otherPlayerX,otherPlayerY, null);
 		
 		drawEvents(g);

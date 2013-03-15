@@ -32,9 +32,6 @@ import tim.pathfinding.Dijkstra;
  */
 public class Back {
 	
-	Point player;
-	private int x;
-	private int y;
 	private Map map;
 	private List<Event> events;
 //	private Thing flag;
@@ -55,7 +52,6 @@ public class Back {
 		map = new Map();
 		events = new ArrayList<Event>();
 		setPlayerList(new ArrayList<Player>());
-		player = new Point();
 //		otherPlayer = new Point();
 //		flag = new Thing();
 //		flag.setX(3);
@@ -67,27 +63,6 @@ public class Back {
 		speed.put("road", 50);
 		speed.put("double-road", 70);
 	}
-	
-	public void move(Direction direction, int amount) {
-		switch (direction) {
-		case DOWN:
-			player.y+=amount;
-			break;
-		case UP:
-			player.y-=amount;
-			break;
-		case LEFT:
-			player.x-=amount;
-			break;
-		case RIGHT:
-			player.x+=amount;
-			break;
-		default:
-			break;
-		}
-		checkWinConditions();
-	}
-	
 	
 //	public int getX() {
 //		return x;
@@ -162,18 +137,6 @@ public class Back {
 		map.getNode(x, y).setItem(building);
 	}
 	
-	private void checkWinConditions() {
-		for (MapItem mapItem : getMapItems()) {
-			if (mapItem.getName().equals("home")) {
-				if (player.getX() == mapItem.getX() && player.getY() == mapItem.getY()) {
-					Event winEvent = new Event();
-					winEvent.setDescription("you have won the game");
-					events.add(winEvent);
-				}
-			}
-		}
-	}
-	
 	public Path calcPath(Point start) {
 		removePath();
 		getMap().shuffleNeighbours();
@@ -199,12 +162,6 @@ public class Back {
 	}
 	
 	public int moveUnit(Unit unit, int x, int y) {
-		Node target = map.getNode(x, y);
-		//tile blocked ?
-//		if (target.getUnit() != null) {
-//			return EventCode.TILE_BLOCKED;
-//		}
-		
 		map.getNode(unit.getX(), unit.getY()).removeUnit(unit);
 		map.getNode(x, y).addUnit(unit);
 		unit.setX(x);
@@ -301,13 +258,7 @@ public class Back {
 	
 	public List<Event> getEvents() {
 		return events;
-	}
-
-	public Point getPlayer() {
-		return player;
-	}
-
-	
+	}	
 
 	public Map getMap() {
 		return map;

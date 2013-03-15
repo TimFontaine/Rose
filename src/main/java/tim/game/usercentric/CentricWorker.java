@@ -15,6 +15,9 @@ import tim.game.back.scheduler.Order;
  *
  */
 public class CentricWorker extends Unit {
+	
+	SpecialActionManager specialActionManager;
+	UnitData unitData;
 
 	/**
 	 * @param name
@@ -22,7 +25,8 @@ public class CentricWorker extends Unit {
 	public CentricWorker(String name) {
 		super(name);
 		setType("worker");
-		// TODO Auto-generated constructor stub
+		unitData = new UnitData();
+		specialActionManager = new WorkerSpecialAction(unitData);
 	}
 
 	/* (non-Javadoc)
@@ -60,5 +64,17 @@ public class CentricWorker extends Unit {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void move(int x, int y) {
+		back.moveUnit(this, x, y);
+		unitData.getLocation().x = x;
+		unitData.getLocation().y = y;
+	}
+	
+	public void specialAction(SpecialAction action){
+		specialActionManager.doAction(action);
+	}
+	
+	
 
 }

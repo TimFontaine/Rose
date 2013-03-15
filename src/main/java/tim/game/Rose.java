@@ -73,7 +73,7 @@ public class Rose extends Core {
 		ResourceManager resourceManager = ResourceManager.getInstance();
 		mediator = applicationFactory.getMediator();
 		drawInterFace(null, this);
-		logic = new Logic(this, actionMap);
+		logic = new Logic(m.getInterfaceTranslator(),actionMap);
 		play = true;
 		
 		initGame();
