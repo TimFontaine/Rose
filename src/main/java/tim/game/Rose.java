@@ -87,7 +87,7 @@ public class Rose extends Core {
         }
        
 		 this.validate();
-
+		 applicationFactory.getBack().startGame();
 		run();
 	}
 
@@ -173,7 +173,7 @@ public class Rose extends Core {
 		if (escape.isPressed()) {
 			gui.buildSystemMenu();
 		}
-		if (actionMap.get("nextTurn").isPressed() && human == 1) {
+		if (actionMap.get("nextTurn").isPressed()) {
 			applicationFactory.getBack().nextPlayer();
 		}
 		

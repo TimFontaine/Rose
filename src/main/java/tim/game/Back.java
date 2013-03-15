@@ -87,6 +87,15 @@ public class Back {
 //		map.getThingList().add(thing);
 //	}
 	
+	/**
+	 * 
+	 */
+	public void startGame() {
+		playerIterator = playerList.listIterator();
+		nextPlayer();
+		nextStep();
+	}
+	
 
 	public List<MapItem> getMapItems() {
 		return map.getMapItems();
@@ -231,9 +240,6 @@ public class Back {
 	public void nextPlayer() {
 //		playerIterator = playerList.iterator();
 		events.clear();
-		if (playerIterator == null) {
-			playerIterator = playerList.listIterator();
-		}
 		if (playerIterator.hasNext()) {
 			activePlayer = playerIterator.next();
 		}
@@ -341,5 +347,7 @@ public class Back {
 	public void setTrans(InterfaceTranslator trans) {
 		this.trans = trans;
 	}
+
+	
 
 }

@@ -17,7 +17,7 @@ import tim.game.back.scheduler.Order;
 public class CentricWorker extends Unit {
 	
 	SpecialActionManager specialActionManager;
-	UnitData unitData;
+	private UnitData unitData;
 
 	/**
 	 * @param name
@@ -73,6 +73,14 @@ public class CentricWorker extends Unit {
 	
 	public void specialAction(SpecialAction action){
 		specialActionManager.doAction(action);
+	}
+
+	public UnitData getUnitData() {
+		return unitData;
+	}
+
+	public void setUnitData(UnitData unitData) {
+		this.unitData = unitData;
 	}
 	
 	

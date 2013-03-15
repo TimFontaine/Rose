@@ -20,7 +20,7 @@ import tim.game.factory.GameApplicationFactory;
 public class InterfaceTranslator extends BasicPlayer {
 	
 	private PlayerData playerData;
-	Unit activeUnit;
+	CentricWorker activeUnit;
 	CentricWorker centricWorker;
 	
 	Back back;
@@ -29,8 +29,12 @@ public class InterfaceTranslator extends BasicPlayer {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		back = applicationFactory.getBack();
 		this.playerData = playerData;
-		activeUnit = playerData.getUnits().get(0);
-		centricWorker = (CentricWorker) activeUnit;
+	}
+	
+	public void doLogic() {
+		for (Unit unit : playerData.getUnits()) {
+			activeUnit = (CentricWorker) unit;
+		}
 	}
 	
 	/**
@@ -56,11 +60,11 @@ public class InterfaceTranslator extends BasicPlayer {
 		default:
 			break;
 		}
-		centricWorker.move(location.x, location.y);
+		activeUnit.move(location.x, location.y);
 	}
 	
 	public void specialAction(SpecialAction action) {
-		 centricWorker.specialAction(action);
+		activeUnit.specialAction(action);
 	}
 
 	public PlayerData getPlayerData() {

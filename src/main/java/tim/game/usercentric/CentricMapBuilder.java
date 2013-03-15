@@ -35,6 +35,7 @@ public class CentricMapBuilder {
 //		back.buildOnTile(3, 3, "flag");
 		
 		PlayerData playerData = new PlayerData();
+		PlayerData playerDataAi = new PlayerData();
 //		Player playerAI = (Player) factory.getRoseObject("simpleGoalPlayer");
 //		back.addPlayer(human);
 //		back.addPlayer(playerAI);
@@ -45,14 +46,21 @@ public class CentricMapBuilder {
 //		back.getOtherPlayer().y = 10;
 		
 		CentricWorker worker = new CentricWorker("centric");
+		CentricWorker workerAi = new CentricWorker("centricAI");
 		List<Unit> units = new ArrayList<Unit>();
+		List<Unit> unitsAI = new ArrayList<Unit>();
 		units.add(worker);
-		
+		unitsAI.add(workerAi);
+		CentricAIPlayer aiPlayer = new CentricAIPlayer(playerDataAi);
 		playerData.setUnits(units);
+		playerDataAi.setUnits(unitsAI);
 		interfaceTranslator = new InterfaceTranslator(playerData);
+		
 		back.addHumam(interfaceTranslator);
 		back.addPlayer(interfaceTranslator);
+		back.addPlayer(aiPlayer);
 		back.addUnit(worker);
+		back.addUnit(workerAi);
 		
 //		Building building = new Factory("factory");
 		Item mine = new Mine("mine");
@@ -101,7 +109,6 @@ public class CentricMapBuilder {
 //		back.addUnit(playerAI, unit);
 //		back.addUnit(playerAI, oilTruck);
 		
-		back.nextPlayer();
 	}
 
 	public InterfaceTranslator getInterfaceTranslator() {
