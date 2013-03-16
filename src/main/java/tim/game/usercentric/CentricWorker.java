@@ -4,6 +4,7 @@
 package tim.game.usercentric;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import tim.data.back.MapItem;
@@ -22,6 +23,8 @@ public class CentricWorker extends Unit {
 	
 	SpecialActionManager specialActionManager;
 	private UnitData unitData;
+	
+	private List<String> possibleBuildings;
 
 	/**
 	 * @param name
@@ -31,6 +34,15 @@ public class CentricWorker extends Unit {
 		setType("worker");
 		unitData = new UnitData();
 		specialActionManager = new WorkerSpecialAction(unitData);
+		possibleBuildings = new ArrayList<String>();
+		init();
+	}
+
+	/**
+	 * 
+	 */
+	private void init() {
+		possibleBuildings.add("factory");
 	}
 
 	/* (non-Javadoc)
@@ -100,6 +112,14 @@ public class CentricWorker extends Unit {
 
 	public void setUnitData(UnitData unitData) {
 		this.unitData = unitData;
+	}
+
+	public List<String> getPossibleBuildings() {
+		return possibleBuildings;
+	}
+
+	public void setPossibleBuildings(List<String> possibleBuildings) {
+		this.possibleBuildings = possibleBuildings;
 	}
 	
 	

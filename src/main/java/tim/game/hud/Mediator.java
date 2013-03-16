@@ -14,6 +14,7 @@ import tim.data.back.Node;
 import tim.game.Back;
 import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;
+import tim.game.usercentric.InterfaceTranslator.Selection;
 
 /**
  * @author tfontaine
@@ -26,6 +27,8 @@ public class Mediator {
 	TileInfoPanel tileInfoPanel;
 	JFrame frame;
 	Back back;
+	
+	private GameViewPanel gameViewPanel;
 	
 	/**
 	 * 
@@ -77,6 +80,11 @@ public class Mediator {
 		frame.requestFocusInWindow();
 	}
 	
+	public void switchItemPanel(Selection selection) {
+		gameViewPanel.update(selection);
+		
+	}
+	
 	public Map<String, Integer> getSpeedSettings() {
 		return back.getSpeed();
 	}
@@ -90,6 +98,10 @@ public class Mediator {
 
 	public void updateTileInfo(Node node) {
 		tileInfoPanel.updateInfo(node);
+	}
+
+	public void registerGameViewPanel(GameViewPanel panel) {
+		this.gameViewPanel = panel;
 	}
 
 	

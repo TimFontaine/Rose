@@ -5,6 +5,7 @@ package tim.game;
 
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Frame;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import tim.core.GameAction;
 import tim.core.ScreenUtils;
@@ -31,6 +33,7 @@ import tim.game.hud.Interface;
 import tim.game.hud.Mediator;
 import tim.game.usercentric.ComplexOrder;
 import tim.game.usercentric.InterfaceTranslator;
+import tim.game.usercentric.InterfaceTranslator.Selection;
 import tim.rose.buttons.actions.RoseAction;
 
 /**
@@ -114,29 +117,9 @@ public class Logic {
 
 	private void doMouseLogic() {
 		if (actionMap.get("mouseLeft").isPressed()) {
-			//if an item is on the stack, place it on the tile
-			if (MouseInfoItem.mouseState == MouseState.SELECTED) {
-				int x = MouseInfo.getPointerInfo().getLocation().x;
-				int y = MouseInfo.getPointerInfo().getLocation().y;
-				
-				int tileOnScreenX = x / ScreenInfo.getTileSize();
-				int tileOnScreenY = y / ScreenInfo.getTileSize();
-				
-				back.buildOnTile(tileOnScreenX , tileOnScreenY, MouseInfoItem.item );
-				
-				MouseInfoItem.mouseState = MouseState.FREE;
-				ScreenUtils.getInstance().changeMouseCursorToDefault();
-			//retreive the info from the tile
-			} else if (MouseState.FREE == MouseInfoItem.mouseState) {
-				int x = MouseInfo.getPointerInfo().getLocation().x;
-				int y = MouseInfo.getPointerInfo().getLocation().y;
-				
-				int tileOnScreenX = x / ScreenInfo.getTileSize();
-				int tileOnScreenY = y / ScreenInfo.getTileSize();
-				
-				Node node = back.getNode(tileOnScreenX, tileOnScreenY);
-				mediator.updateTileInfo(node);
-			}
+			Point destination = translateCoordsFromScreen();
+			Selection selection = translator.selectScreenItem(destination);
+			mediator.switchItemPanel(selection);
 		} else if (actionMap.get("mouseRight").isPressed()) {
 			Point destination = translateCoordsFromScreen();
 			translator.gotoLocation(destination);
@@ -144,11 +127,11 @@ public class Logic {
 	}
 	
 	private Point translateCoordsFromScreen() {
-		int x = MouseInfo.getPointerInfo().getLocation().x;
-		int y = MouseInfo.getPointerInfo().getLocation().y;
-		
-		int tileOnScreenX = x / ScreenInfo.getTileSize();
-		int tileOnScreenY = y / ScreenInfo.getTileSize();
+		Frame frame = JFrame.getFrames()[0];
+		Point mouse = MouseInfo.getPointerInfo().getLocation();
+		SwingUtilities.convertPointFromScreen(mouse, frame);
+		int tileOnScreenX = mouse.x / ScreenInfo.getTileSize();
+		int tileOnScreenY = mouse.y / ScreenInfo.getTileSize();
 		Point coords = new Point(tileOnScreenX, tileOnScreenY);
 		return coords;
 	}

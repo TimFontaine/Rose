@@ -23,9 +23,16 @@ import tim.game.usercentric.UnitData.UnitState;
  */
 public class InterfaceTranslator extends BasicPlayer {
 	
+	
 	private PlayerData playerData;
 	CentricWorker activeUnit;
 	CentricWorker centricWorker;
+	
+	public enum Selection {
+		UNIT,
+		BUILDING,
+		NONE;
+	}
 	
 	Back back;
 	
@@ -88,6 +95,28 @@ public class InterfaceTranslator extends BasicPlayer {
 
 	public void setPlayerData(PlayerData playerData) {
 		this.playerData = playerData;
+	}
+
+	/**
+	 * @param destination
+	 */
+	public Selection selectScreenItem(Point location) {
+		if (back.getNode(location.x, location.y).containsUnit()) {
+			Unit unit = back.getNode(location.x, location.y).getUnits().get(0);
+			activeUnit = (CentricWorker) unit;
+			return Selection.UNIT;
+		} else {
+			activeUnit = null;
+			return Selection.NONE;
+		}
+	}
+
+	public CentricWorker getActiveUnit() {
+		return activeUnit;
+	}
+
+	public void setActiveUnit(CentricWorker activeUnit) {
+		this.activeUnit = activeUnit;
 	}
 
 }

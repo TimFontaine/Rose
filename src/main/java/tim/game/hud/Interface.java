@@ -4,6 +4,7 @@
 package tim.game.hud;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ import tim.game.Back;
 import tim.game.Logic;
 import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;
+import tim.game.usercentric.InterfaceTranslator.Selection;
 
 
 
@@ -45,16 +47,16 @@ public class Interface implements ActionListener {
 	public void buildInterface() {
 		FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT);
 		frame.getContentPane().setLayout(null);
-		JPanel panel = new BuildPanel();
-		panel.setLayout(flowLayout);
-		panel.setBackground(Color.white);
+		GameViewPanel panel = new GameViewPanel();
+		mediator.registerGameViewPanel(panel);
+//		panel.setLayout(flowLayout);
+//		panel.setBackground(Color.white);
 		panel.setSize(frame.getWidth(), 100);
 		panel.setLocation(0, frame.getHeight() - 100);
-		
-		JPanel travel = new TravelSpeedMenu(mediator);
-		
-		
 		frame.getContentPane().add(panel);
+		JPanel travel = new TravelSpeedMenu(mediator);
+		mediator.switchItemPanel(Selection.NONE);
+		
 		travel.setBackground(Color.white);
 //		travel.setSize(300, 300);
 		travel.setLocation(300, 300);
@@ -67,7 +69,6 @@ public class Interface implements ActionListener {
 //		systemPanel.setSize(300, 300);
 		frame.add(systemPanel);
 	}
-
 
 
 	@Override
@@ -85,5 +86,4 @@ public class Interface implements ActionListener {
 		
 		
 	}
-	
 }
