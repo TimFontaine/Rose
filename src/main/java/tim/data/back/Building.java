@@ -3,6 +3,8 @@
  */
 package tim.data.back;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import tim.game.ai.data.MutableResource;
@@ -24,6 +26,8 @@ public class Building extends Thing {
 	
 	private RESOURCELINK resourceLocation;
 	
+	private List<String> possibleActions;
+	
 	private enum RESOURCELINK {
 		LOCAL,
 		REMOTE
@@ -37,6 +41,15 @@ public class Building extends Thing {
 		super(name);
 		resourceLocation = RESOURCELINK.LOCAL;
 		context = new BuildingStateContext(this);
+		possibleActions = new ArrayList<String>();
+		init();
+	}
+	
+	/**
+	 * 
+	 */
+	private void init() {
+		possibleActions.add("worker");
 	}
 	
 	public BuildingState getState() {
@@ -73,6 +86,14 @@ public class Building extends Thing {
 
 	public Building getResourceLink() {
 		return resourceLink;
+	}
+
+	public List<String> getPossibleActions() {
+		return possibleActions;
+	}
+
+	public void setPossibleActions(List<String> possibleActions) {
+		this.possibleActions = possibleActions;
 	}
 
 //	public void setResourceLink(Building resourceLink) {

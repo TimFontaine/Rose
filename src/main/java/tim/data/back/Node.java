@@ -195,7 +195,7 @@ public class Node implements Comparable<Node>, Serializable{
     }
     
     public void removeUnit(Unit unit) {
-    	units.remove(units);
+    	units.remove(unit);
     }
     
     public boolean containsUnit(String name) {

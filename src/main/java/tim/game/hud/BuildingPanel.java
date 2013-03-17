@@ -9,8 +9,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import tim.data.back.Building;
 import tim.game.Back;
-import tim.game.Logic;
 import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.usercentric.CentricWorker;
@@ -21,11 +21,11 @@ import tim.rose.buttons.actions.BuildAction;
  * @author tim
  *
  */
-public class UnitPanel extends JPanel implements ActionListener {
+public class BuildingPanel extends JPanel implements ActionListener {
 	
-	InterfaceTranslator translator;
+InterfaceTranslator translator;
 	
-	public UnitPanel() {
+	public BuildingPanel() {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		Back back = applicationFactory.getBack();
 		translator = back.getTrans();
@@ -36,8 +36,8 @@ public class UnitPanel extends JPanel implements ActionListener {
 	 * 
 	 */
 	private void build() {
-		CentricWorker worker = translator.getActiveUnit();
-		List<String> buildings = worker.getPossibleBuildings();
+		Building building = translator.getSelectedBuilding();
+		List<String> buildings = building.getPossibleActions();
 		for (String name : buildings) {
 			GameButton button = new GameButton(this);
 			button.setRoseAction(new BuildAction(name));
@@ -51,13 +51,7 @@ public class UnitPanel extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-GameButton button = (GameButton) e.getSource();
+		// TODO Auto-generated method stub
 		
-		//put the event in a queue and process later
-			Logic.addToEventQueue(button);
-			if (button.getRoseAction() != null) {
-				Logic.addToEventQueue(button.getRoseAction());
-			}
 	}
-
 }

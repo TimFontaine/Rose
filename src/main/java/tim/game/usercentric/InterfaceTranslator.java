@@ -5,7 +5,9 @@ package tim.game.usercentric;
 
 import java.awt.Point;
 
+import tim.data.back.Building;
 import tim.data.back.Direction;
+import tim.data.back.Node;
 import tim.data.unit.Unit;
 import tim.game.Back;
 import tim.game.ai.BasicPlayer;
@@ -26,6 +28,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	
 	private PlayerData playerData;
 	CentricWorker activeUnit;
+	Building selectedBuilding;//human player only
 	CentricWorker centricWorker;
 	
 	public enum Selection {
@@ -101,10 +104,14 @@ public class InterfaceTranslator extends BasicPlayer {
 	 * @param destination
 	 */
 	public Selection selectScreenItem(Point location) {
-		if (back.getNode(location.x, location.y).containsUnit()) {
-			Unit unit = back.getNode(location.x, location.y).getUnits().get(0);
+		Node node = back.getNode(location.x, location.y);
+		if (node.containsUnit()) {
+			Unit unit = node.getUnits().get(0);
 			activeUnit = (CentricWorker) unit;
 			return Selection.UNIT;
+		}else if (node.containsItem()) {
+			selectedBuilding = (Building) node.getItem();
+			return Selection.BUILDING;
 		} else {
 			activeUnit = null;
 			return Selection.NONE;
@@ -117,6 +124,14 @@ public class InterfaceTranslator extends BasicPlayer {
 
 	public void setActiveUnit(CentricWorker activeUnit) {
 		this.activeUnit = activeUnit;
+	}
+
+	public Building getSelectedBuilding() {
+		return selectedBuilding;
+	}
+
+	public void setSelectedBuilding(Building selectedBuilding) {
+		this.selectedBuilding = selectedBuilding;
 	}
 
 }

@@ -31,6 +31,8 @@ public class GameViewPanel extends JPanel implements ActionListener {
 		case UNIT:
 			add(new UnitPanel());
 			break;
+		case BUILDING:
+			add(new BuildingPanel());
 		case NONE:
 			add(new PlayerState());
 			break;
