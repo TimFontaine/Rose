@@ -238,9 +238,11 @@ public class Back {
 	}
 	
 	public void nextPlayer() {
-//		playerIterator = playerList.iterator();
 		events.clear();
 		if (playerIterator.hasNext()) {
+			activePlayer = playerIterator.next();
+		} else {
+			playerIterator = playerList.iterator();
 			activePlayer = playerIterator.next();
 		}
 		activePlayer.initTurn();

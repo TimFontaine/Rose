@@ -33,7 +33,7 @@ public class BuildingConstructionStrategy implements BuildingStrategy {
 		applicationFactory = GameApplicationFactory.getInstance();
 		info = applicationFactory.getResourceInfo();
 		buildingData.setImageName("underconstruction");
-		
+		this.buildingData = buildingData;
 		String type = buildingData.getType();
 		requiredResources = info.getResourcesForThing(type);
 	}
@@ -44,7 +44,7 @@ public class BuildingConstructionStrategy implements BuildingStrategy {
 		
 		boolean test = buildingData.getResourceContainer().hasResourcesAvailable(requiredResources);
 		if (test) {
-			context.switchState(BuildingState.IDLE);
+			context.setState(new BuildingWorkingStrategy(buildingData));
 		} else {
 		}
 		

@@ -45,6 +45,12 @@ public class InterfaceTranslator extends BasicPlayer {
 		this.playerData = playerData;
 	}
 	
+	public void initTurn() {
+		for (Building building : buildings) {
+			building.doLogic();
+		}
+	}
+	
 	public void doLogic() {
 		for (Unit unit : playerData.getUnits()) {
 			activeUnit = (CentricWorker) unit;

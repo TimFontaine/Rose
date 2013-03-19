@@ -41,20 +41,32 @@ public class Building extends Thing {
 	/**
 	 * 
 	 */
-	public Building(String name) {
+	public Building(String type, String name) {
 		super(name);
 		buildingData = new BuildingData();
+		buildingData.setType(type);
 		resourceLocation = RESOURCELINK.LOCAL;
 		context = new BuildingStateContext(buildingData);
 		possibleActions = new ArrayList<String>();
+		
 		init();
+		testResources();
 	}
 	
+	/**
+	 * Let the game work, give resources to building so they can finish
+	 */
+	private void testResources() {
+		buildingData.getResourceContainer().addResource(Resource.IRON, 100);
+		buildingData.getResourceContainer().addResource(Resource.OIL, 100);
+	}
+
 	/**
 	 * 
 	 */
 	private void init() {
 		possibleActions.add("worker");
+		//remove, only use in graphics layer
 		buildingData.setState(BuildingState.CONSTRUCTING);
 	}
 	

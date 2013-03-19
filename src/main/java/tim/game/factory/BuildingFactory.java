@@ -23,7 +23,7 @@ public class BuildingFactory {
 	public static Building constructBuilding(String buildingType) {
 		Building building = null;
 		if ("factory".equals(buildingType)) {
-			building = new Building("factory");
+			building = new Building("factory", "factory");
 //			building.setImageName("factory");
 			building.setType("factory");
 			building.setState(BuildingState.CONSTRUCTING);

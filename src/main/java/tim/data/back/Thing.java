@@ -50,10 +50,6 @@ public abstract class Thing extends Item implements Serializable {
 //		this.resourcesData = resourcesData;
 //	}
 	
-	public void addResource(int key, int amount) {
-		resourcesData.updateResource(key, amount);
-	}
-	
 	public void addResource(Resource resource, int amount) {
 		if (resources.containsKey(resource)) {
 			resources.get(resource).update(amount);

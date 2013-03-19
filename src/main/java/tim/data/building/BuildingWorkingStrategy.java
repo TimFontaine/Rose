@@ -6,6 +6,7 @@ package tim.data.building;
 import java.util.EnumMap;
 import java.util.Map;
 
+import tim.data.back.BuildingState;
 import tim.data.back.BuildingStateContext;
 import tim.data.back.BuildingStrategy;
 import tim.data.unit.Unit;
@@ -35,6 +36,7 @@ public class BuildingWorkingStrategy implements BuildingStrategy {
 		back = applicationFactory.getBack();
 		this.buildingData = buildingData;
 		buildingData.setImageName("factory");
+		buildingData.setState(BuildingState.IDLE);
 	}
 
 	/* (non-Javadoc)

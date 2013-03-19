@@ -27,6 +27,7 @@ public class BuildingData {
 	 * 
 	 */
 	public BuildingData() {
+		resourceContainer = new ResourceContainer();
 	}
 
 	public String getOrderName() {

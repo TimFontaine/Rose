@@ -37,6 +37,25 @@ public class ResourceContainer {
 		return true;
 	}
 	
+	public void addResource(Resource resource, int amount) {
+		if (resources.containsKey(resource)) {
+			resources.get(resource).update(amount);
+		} else {
+			MutableResource mutable = new MutableResource(resource);
+			mutable.update(amount);
+			resources.put(resource, mutable);
+		}
+	}
+	
+	public void retreiveResource(Resource resource, int amount) {
+		resources.get(resource).update(-amount);
+	}
+	
+	public void retreiveMultipleResources(EnumMap<Resource,Integer> requiredResources) {
+		for (Map.Entry<Resource, Integer> entry : requiredResources.entrySet()) {
+			retreiveResource(entry.getKey(), entry.getValue());
+		}
+	}
 	
 
 }
