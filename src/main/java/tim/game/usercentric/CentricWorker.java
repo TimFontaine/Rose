@@ -55,15 +55,6 @@ public class CentricWorker extends Unit implements Actor{
 	}
 
 	/* (non-Javadoc)
-	 * @see tim.data.unit.Unit#getUsedRoutes()
-	 */
-	@Override
-	public List<Path> getUsedRoutes() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
 	 * @see tim.data.unit.Unit#giveOrder(tim.game.back.scheduler.Order)
 	 */
 	@Override
@@ -93,8 +84,7 @@ public class CentricWorker extends Unit implements Actor{
 	
 	public void move(int x, int y) {
 		back.moveUnit(this, x, y);
-		unitData.getLocation().x = x;
-		unitData.getLocation().y = y;
+		unitData.setLocation(new Point(x, y));
 	}
 	
 	public void specialAction(SpecialAction action){
@@ -128,6 +118,14 @@ public class CentricWorker extends Unit implements Actor{
 	@Override
 	public ActorData getData() {
 		return unitData;
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.usercentric.Actor#attack(java.awt.Point)
+	 */
+	@Override
+	public void attack(Point point) {
+		throw new UnsupportedOperationException();
 	}
 	
 }

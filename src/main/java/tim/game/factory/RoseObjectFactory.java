@@ -9,6 +9,7 @@ import tim.game.ai.SimpleGoalAI;
 import tim.game.ai.SimplePlayerAI;
 import tim.game.back.scheduler.GridPlayer;
 import tim.game.usercentric.CentricWorker;
+import tim.game.usercentric.Infantery;
 
 /**
  * @author tfontaine
@@ -49,6 +50,8 @@ public class RoseObjectFactory {
 			roseObject = new SimpleGoalAI();
 		} else if ("GridPlayer".equals(name)) {
 			roseObject = new GridPlayer();
+		} else if ("infantery".equals(name)) {
+			roseObject = new Infantery("infantery");
 		}
 		return roseObject;
 	}

@@ -51,8 +51,6 @@ public abstract class Unit extends Thing {
 	
 	public abstract void initJob();
 	
-	public abstract List<Path> getUsedRoutes();
-	
 	public void useOil() {
 		oil-=OIL_USAGE;
 	}

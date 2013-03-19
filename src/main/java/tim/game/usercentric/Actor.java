@@ -12,6 +12,7 @@ import java.awt.Point;
 public interface Actor {
 	
 	public void move(int x, int y);
+	public void attack(Point point);
 	public void specialAction(SpecialAction action);
 	
 

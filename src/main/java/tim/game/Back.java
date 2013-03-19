@@ -321,6 +321,12 @@ public class Back {
 		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
 	}
 	
+	public void removeUnit(Point point) {
+		
+	}
+	
+	
+	
 	//add an item if it used by another item
 	public void addUsedItem(Item item) {
 		activePlayer.addUsedItem(item);
@@ -366,6 +372,15 @@ public class Back {
 
 	public void setTrans(InterfaceTranslator trans) {
 		this.trans = trans;
+	}
+
+	/**
+	 * remove buildings and units from tile
+	 */
+	public void clearNode(Point point) {
+		Node node = getNode(point.x, point.y);
+		node.getUnits().clear();
+		node.setItem(null);
 	}
 
 	

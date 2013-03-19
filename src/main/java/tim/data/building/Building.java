@@ -70,7 +70,7 @@ public class Building extends Thing implements Actor {
 	 */
 	private void init() {
 		possibleActions.add("worker");
-		possibleActions.add("soldier");
+		possibleActions.add("infantery");
 		//remove, only use in graphics layer
 		buildingData.setState(BuildingState.CONSTRUCTING);
 	}
@@ -155,6 +155,15 @@ public class Building extends Thing implements Actor {
 	public ActorData getData() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.usercentric.Actor#attack(java.awt.Point)
+	 */
+	@Override
+	public void attack(Point point) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 //	public void setResourceLink(Building resourceLink) {

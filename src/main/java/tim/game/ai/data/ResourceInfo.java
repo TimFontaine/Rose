@@ -74,7 +74,7 @@ public class ResourceInfo {
 		EnumMap<Resource, Integer> soldierCost = new EnumMap<MutableResource.Resource, Integer>(Resource.class);
 		soldierCost.put(Resource.IRON, 20);
 		soldierCost.put(Resource.OIL, 10);
-		resources.put("soldier", soldierCost);
+		resources.put("infantery", soldierCost);
 		
 		
 		
