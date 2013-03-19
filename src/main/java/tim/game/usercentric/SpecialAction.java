@@ -8,7 +8,8 @@ package tim.game.usercentric;
  *
  */
 public enum SpecialAction {
-	BUILD;
+	BUILD,
+	PRODUCE;
 	
 	private String data;
 

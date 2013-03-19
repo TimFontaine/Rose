@@ -9,9 +9,8 @@ import java.awt.Point;
  * @author tfontaine
  *
  */
-public class UnitData {
+public class UnitData extends ActorData {
 	
-	private Point location;
 	private ComplexOrder complexOrder;
 	private UnitState state;
 	
@@ -25,16 +24,7 @@ public class UnitData {
 	 * 
 	 */
 	public UnitData() {
-		location = new Point();
 		setState(UnitState.IDLE);
-	}
-
-	public Point getLocation() {
-		return location;
-	}
-
-	public void setLocation(Point location) {
-		this.location = location;
 	}
 
 	public ComplexOrder getComplexOrder() {

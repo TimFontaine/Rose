@@ -19,7 +19,7 @@ import tim.game.usercentric.UnitData.UnitState;
  * @author tfontaine
  * centric worker is a unit that should be extended and override basic functions
  */
-public class CentricWorker extends Unit {
+public class CentricWorker extends Unit implements Actor{
 	
 	SpecialActionManager specialActionManager;
 	private UnitData unitData;
@@ -120,6 +120,14 @@ public class CentricWorker extends Unit {
 
 	public void setPossibleBuildings(List<String> possibleBuildings) {
 		this.possibleBuildings = possibleBuildings;
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.usercentric.Actor#getData()
+	 */
+	@Override
+	public ActorData getData() {
+		return unitData;
 	}
 	
 	

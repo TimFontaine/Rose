@@ -14,13 +14,16 @@ import tim.data.back.Thing;
 import tim.game.ai.data.MutableResource;
 import tim.game.ai.data.MutableResource.Resource;
 import tim.game.ai.data.ResourcesRequest;
+import tim.game.usercentric.Actor;
+import tim.game.usercentric.ActorData;
+import tim.game.usercentric.SpecialAction;
 
 /**
  * @author tfontaine
  * a building is a thing that can not move
  *
  */
-public class Building extends Thing {
+public class Building extends Thing implements Actor {
 	
 	protected BuildingStateContext context;
 	
@@ -67,6 +70,7 @@ public class Building extends Thing {
 	 */
 	private void init() {
 		possibleActions.add("worker");
+		possibleActions.add("soldier");
 		//remove, only use in graphics layer
 		buildingData.setState(BuildingState.CONSTRUCTING);
 	}
@@ -123,6 +127,34 @@ public class Building extends Thing {
 		this.x = location.x;
 		this.y = location.y;
 		buildingData.setLocation(location);
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.usercentric.CentricActions#move(int, int)
+	 */
+	@Override
+	public void move(int x, int y) {
+		throw new UnsupportedOperationException();
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.usercentric.Actor#specialAction(tim.game.usercentric.SpecialAction)
+	 */
+	@Override
+	public void specialAction(SpecialAction action) {
+		System.out.println("special order to building given");
+		if (action == SpecialAction.PRODUCE) {
+			buildingData.setOrderName(action.getData());
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.usercentric.Actor#getData()
+	 */
+	@Override
+	public ActorData getData() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 //	public void setResourceLink(Building resourceLink) {

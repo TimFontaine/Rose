@@ -26,7 +26,9 @@ public class BuildingOrderAction extends RoseAction {
 	 */
 	@Override
 	public void doAction() {
-		translator.buildingOrder(item);
+		SpecialAction action = SpecialAction.PRODUCE;
+		action.setData(item);
+		translator.specialAction(action);
 	}
 
 }

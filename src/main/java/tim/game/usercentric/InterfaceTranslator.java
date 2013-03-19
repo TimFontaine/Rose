@@ -20,6 +20,8 @@ import tim.game.usercentric.UnitData.UnitState;
 /**
  * TODO this is an AI but driven by a user inteface
  * contains a link to playerdata
+ * 
+ * -split in usertranslator and buildingtranslator
  * @author tfontaine
  *
  */
@@ -27,7 +29,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	
 	
 	private PlayerData playerData;
-	CentricWorker activeUnit;
+	CentricWorker activeItem;
 	Building selectedBuilding;//human player only
 	CentricWorker centricWorker;
 	
@@ -53,9 +55,9 @@ public class InterfaceTranslator extends BasicPlayer {
 	
 	public void doLogic() {
 		for (Unit unit : playerData.getUnits()) {
-			activeUnit = (CentricWorker) unit;
-			if (activeUnit.getUnitData().getState() == UnitState.MULTI) {
-				activeUnit.doLogic();
+			activeItem = (CentricWorker) unit;
+			if (activeItem.getUnitData().getState() == UnitState.MULTI) {
+				activeItem.doLogic();
 			}
 		}
 	}
@@ -66,7 +68,11 @@ public class InterfaceTranslator extends BasicPlayer {
 	 * @param amount
 	 */
 	public void move(Direction direction, int amount) {
-		Point location = activeUnit.getLocation();
+		//remove later
+		if (activeItem == null) {
+			return;
+		}
+		Point location = activeItem.getLocation();
 		switch (direction) {
 		case DOWN:
 			location.y+=amount;
@@ -83,23 +89,24 @@ public class InterfaceTranslator extends BasicPlayer {
 		default:
 			break;
 		}
-		activeUnit.move(location.x, location.y);
-	}
-	
-	public void buildingOrder(String itemName) {
-		selectedBuilding.giveOrder(itemName);
+		activeItem.move(location.x, location.y);
 	}
 	
 	public void gotoLocation(Point destination) {
 		ComplexOrder order = new ComplexOrder();
-		Job job = new GotoJob(activeUnit, destination);
+		Job job = new GotoJob(activeItem, destination);
 		job.setType(JobType.PATH);
 		order.addJob(job);
-		activeUnit.setComplexOrder(order);
+		activeItem.setComplexOrder(order);
 	}
 	
 	public void specialAction(SpecialAction action) {
-		activeUnit.specialAction(action);
+		//remove later
+		if (activeItem != null) {//assert unit is selected
+			activeItem.specialAction(action);
+		} else if (selectedBuilding != null) {
+			selectedBuilding.specialAction(action);
+		}
 	}
 
 	public PlayerData getPlayerData() {
@@ -114,26 +121,28 @@ public class InterfaceTranslator extends BasicPlayer {
 	 * @param destination
 	 */
 	public Selection selectScreenItem(Point location) {
+		activeItem = null;
+		selectedBuilding = null;
 		Node node = back.getNode(location.x, location.y);
 		if (node.containsUnit()) {
 			Unit unit = node.getUnits().get(0);
-			activeUnit = (CentricWorker) unit;
+			activeItem = (CentricWorker) unit;
 			return Selection.UNIT;
 		}else if (node.containsItem()) {
 			selectedBuilding = (Building) node.getItem();
 			return Selection.BUILDING;
 		} else {
-			activeUnit = null;
+			activeItem = null;
 			return Selection.NONE;
 		}
 	}
 
 	public CentricWorker getActiveUnit() {
-		return activeUnit;
+		return activeItem;
 	}
 
 	public void setActiveUnit(CentricWorker activeUnit) {
-		this.activeUnit = activeUnit;
+		this.activeItem = activeUnit;
 	}
 
 	public Building getSelectedBuilding() {

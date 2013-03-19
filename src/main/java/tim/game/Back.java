@@ -21,6 +21,7 @@ import tim.data.back.Road;
 import tim.data.back.Thing;
 import tim.data.building.Building;
 import tim.data.unit.Unit;
+import tim.game.usercentric.Actor;
 import tim.game.usercentric.InterfaceTranslator;
 import tim.pathfinding.AStar;
 import tim.pathfinding.ClosestHeuristic;
@@ -169,12 +170,25 @@ public class Back {
 		return path;
 	}
 	
-	public int moveUnit(Unit unit, int x, int y) {
-		map.getNode(unit.getX(), unit.getY()).removeUnit(unit);
-		map.getNode(x, y).addUnit(unit);
+//	public int moveUnit(Unit unit, int x, int y) {
+//		map.getNode(unit.getX(), unit.getY()).removeUnit(unit);
+//		map.getNode(x, y).addUnit(unit);
+//		unit.setX(x);
+//		unit.setY(y);
+//		return 0;
+//	}
+//	
+	public void moveUnit(Actor actor, int x, int y) {
+		Point location = actor.getData().getLocation(); 
+		map.getNode(location.x, location.y).removeUnit(actor);
+		int size = map.getNode(location.x, location.y).getUnits().size();
+		System.out.println("size:" + size);
+		map.getNode(x, y).addUnit(actor);
+		location.setLocation(x, y);
+		Unit unit = (Unit) actor;
 		unit.setX(x);
 		unit.setY(y);
-		return 0;
+		actor.getData().setLocation(new Point(x,y));
 	}
 	
 	public Path findNearestObject(Thing thing, String itemName) {
@@ -253,10 +267,6 @@ public class Back {
 	
 	public void nextTurn() {
 		playerIterator = playerList.iterator();
-	}
-	
-	public void move(Point point, int x, int y) {
-		point.move(x, y);
 	}
 	
 	public void addPlayer(Player player) {

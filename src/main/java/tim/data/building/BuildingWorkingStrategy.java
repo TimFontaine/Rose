@@ -75,18 +75,6 @@ public class BuildingWorkingStrategy implements BuildingStrategy {
 //		producedUnits++;
 	}
 
-	
-//	private void handleResourseCost() {
-//		Map<String,Integer> required = requiredResources;
-//		for (Map.Entry<String, Integer> resource : required.entrySet() ) {
-//			int cost = resource.getValue();
-//			int available = getResources().get(resource.getKey());
-//			int rest = available - cost;
-//			getResources().put(resource.getKey(), rest);
-//		}
-//		
-//	}
-
 	private boolean testCanBuild(EnumMap<Resource, Integer> requiredResources) {
 		ResourceContainer resourceContainer = buildingData.getResourceContainer();
 		for (Map.Entry<Resource, Integer> entry : requiredResources.entrySet()) {
@@ -97,10 +85,6 @@ public class BuildingWorkingStrategy implements BuildingStrategy {
 			int available = resourceContainer.getAvailableResources(entry.getKey());
 			int rest = cost - available;
 			if (rest >0) {
-//				if (resourceShortage == null) {
-//					resourceShortage = new int[resourceInfo.NUM_RESOURCES];
-//				}
-//				resourceShortage[key] = rest;
 				return false;
 			}
 			

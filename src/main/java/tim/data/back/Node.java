@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tim.data.unit.Unit;
+import tim.game.usercentric.Actor;
 
 /**
  * @author tim
@@ -194,7 +195,16 @@ public class Node implements Comparable<Node>, Serializable{
     	units.add(unit);
     }
     
+    public void addUnit(Actor actor) {
+    	units.add((Unit) actor);
+    }
+    
     public void removeUnit(Unit unit) {
+    	units.remove(unit);
+    }
+    
+    public void removeUnit(Actor actor) {
+    	Unit unit = (Unit) actor;
     	units.remove(unit);
     }
     
