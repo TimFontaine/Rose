@@ -3,10 +3,10 @@
  */
 package tim.game.factory;
 
-import tim.data.back.Building;
 import tim.data.back.BuildingState;
 import tim.data.back.Factory;
 import tim.data.back.Storage;
+import tim.data.building.Building;
 
 /**
  * @author tfontaine

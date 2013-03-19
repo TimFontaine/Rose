@@ -16,9 +16,9 @@ import java.util.TreeSet;
 
 import tim.data.ai.ActionType;
 import tim.data.ai.PlayerOrder;
-import tim.data.back.Building;
 import tim.data.back.Factory;
 import tim.data.back.Node;
+import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.data.unit.UnitState;
 import tim.data.unit.Worker;

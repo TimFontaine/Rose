@@ -3,6 +3,7 @@
  */
 package tim.data.back;
 
+import tim.data.building.Building;
 import tim.game.ai.ResourcesData;
 
 /**

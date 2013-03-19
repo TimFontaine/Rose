@@ -5,8 +5,8 @@ package tim.game.back.scheduler;
 
 import java.util.List;
 
-import tim.data.back.Building;
 import tim.data.back.Node;
+import tim.data.building.Building;
 
 /**
  * @author tfontaine

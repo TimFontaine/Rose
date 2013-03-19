@@ -9,8 +9,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import tim.data.back.Building;
 import tim.data.back.Node;
+import tim.data.building.Building;
 import tim.game.ai.ResourcesData;
 import tim.game.ai.data.MutableResource;
 import tim.game.ai.data.MutableResource.Resource;

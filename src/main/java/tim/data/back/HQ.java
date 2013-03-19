@@ -3,6 +3,8 @@
  */
 package tim.data.back;
 
+import tim.data.building.Building;
+
 /**
  * @author tfontaine
  *

@@ -11,8 +11,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import tim.data.unit.Unit;
 
-import tim.data.back.Building;
 import tim.data.back.Node;
+import tim.data.building.Building;
 import tim.game.back.scheduler.Order.OrderAction;
 
 /**

@@ -1,12 +1,15 @@
 /**
  * 
  */
-package tim.data.back;
+package tim.data.building;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import tim.data.back.BuildingState;
+import tim.data.back.BuildingStateContext;
+import tim.data.back.Thing;
 import tim.game.ai.data.MutableResource;
 import tim.game.ai.data.MutableResource.Resource;
 import tim.game.ai.data.ResourcesRequest;
@@ -18,7 +21,6 @@ import tim.game.ai.data.ResourcesRequest;
  */
 public class Building extends Thing {
 	
-	private BuildingState state;
 	protected BuildingStateContext context;
 	
 	//the building connected too, to find resources (hq or storage)
@@ -33,14 +35,17 @@ public class Building extends Thing {
 		REMOTE
 	}
 	
+	private BuildingData buildingData;
+	
 	
 	/**
 	 * 
 	 */
 	public Building(String name) {
 		super(name);
+		buildingData = new BuildingData();
 		resourceLocation = RESOURCELINK.LOCAL;
-		context = new BuildingStateContext(this);
+		context = new BuildingStateContext(buildingData);
 		possibleActions = new ArrayList<String>();
 		init();
 	}
@@ -50,14 +55,14 @@ public class Building extends Thing {
 	 */
 	private void init() {
 		possibleActions.add("worker");
+		buildingData.setState(BuildingState.CONSTRUCTING);
 	}
 	
 	public BuildingState getState() {
-		return state;
+		return buildingData.getState();
 	}
 
 	public void setState(BuildingState state) {
-		this.state = state;
 		context.switchState(state);
 	}
 	
@@ -78,12 +83,6 @@ public class Building extends Thing {
 		resourceLocation = RESOURCELINK.REMOTE;
 	}
 
-	public void switchState(BuildingState newState) {
-		if (state != newState) {
-			
-		}
-	}
-
 	public Building getResourceLink() {
 		return resourceLink;
 	}
@@ -96,6 +95,13 @@ public class Building extends Thing {
 		this.possibleActions = possibleActions;
 	}
 
+	/**
+	 * @param itemName
+	 */
+	public void giveOrder(String itemName) {
+		buildingData.setOrderName(itemName);
+	}
+	
 //	public void setResourceLink(Building resourceLink) {
 //		this.resourceLink = resourceLink;
 //	}

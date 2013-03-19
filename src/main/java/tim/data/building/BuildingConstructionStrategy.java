@@ -1,10 +1,13 @@
 /**
  * 
  */
-package tim.data.back;
+package tim.data.building;
 
 import java.util.EnumMap;
 
+import tim.data.back.BuildingState;
+import tim.data.back.BuildingStateContext;
+import tim.data.back.BuildingStrategy;
 import tim.game.ai.ResourcesData;
 import tim.game.ai.data.MutableResource.Resource;
 import tim.game.ai.data.ResourceInfo;
@@ -16,7 +19,7 @@ import tim.game.factory.GameApplicationFactory;
  */
 public class BuildingConstructionStrategy implements BuildingStrategy {
 	
-	Building building;
+	BuildingData buildingData;
 	ResourceInfo info;
 	
 	EnumMap<Resource, Integer> requiredResources;
@@ -25,14 +28,13 @@ public class BuildingConstructionStrategy implements BuildingStrategy {
 	/**
 	 * 
 	 */
-	public BuildingConstructionStrategy(Building building, BuildingStateContext context) {
+	public BuildingConstructionStrategy(BuildingData buildingData, BuildingStateContext context) {
 		GameApplicationFactory applicationFactory;
 		applicationFactory = GameApplicationFactory.getInstance();
 		info = applicationFactory.getResourceInfo();
-		this.building = building;
-		building.setImageName("underconstruction");
+		buildingData.setImageName("underconstruction");
 		
-		String type = building.getType();
+		String type = buildingData.getType();
 		requiredResources = info.getResourcesForThing(type);
 	}
 	
@@ -40,7 +42,7 @@ public class BuildingConstructionStrategy implements BuildingStrategy {
 	public void doAction(BuildingStateContext context) {
 		//are there enough resources to finish construction ?
 		
-		boolean test = building.hasResourcesAvailable(requiredResources);
+		boolean test = buildingData.getResourceContainer().hasResourcesAvailable(requiredResources);
 		if (test) {
 			context.switchState(BuildingState.IDLE);
 		} else {

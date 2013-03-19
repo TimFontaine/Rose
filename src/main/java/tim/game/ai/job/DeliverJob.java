@@ -5,9 +5,9 @@ package tim.game.ai.job;
 
 import java.awt.Point;
 
-import tim.data.back.Building;
 import tim.data.back.Node;
 import tim.data.back.Thing;
+import tim.data.building.Building;
 import tim.data.unit.TransferResource;
 import tim.data.unit.Unit;
 import tim.game.ai.data.MutableResource.Resource;

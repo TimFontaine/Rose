@@ -3,7 +3,7 @@
  */
 package tim.game.usercentric;
 
-import tim.data.back.Building;
+import tim.data.building.Building;
 import tim.game.Back;
 import tim.game.factory.BuildingFactory;
 import tim.game.factory.GameApplicationFactory;

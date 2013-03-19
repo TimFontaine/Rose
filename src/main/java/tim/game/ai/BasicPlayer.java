@@ -6,10 +6,10 @@ package tim.game.ai;
 import java.util.ArrayList;
 import java.util.List;
 
-import tim.data.back.Building;
 import tim.data.back.Event;
 import tim.data.back.Item;
 import tim.data.back.RoseObject;
+import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.data.unit.UnitOrder;
 import tim.game.Player;

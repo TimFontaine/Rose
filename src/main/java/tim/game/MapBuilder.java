@@ -3,7 +3,6 @@
  */
 package tim.game;
 
-import tim.data.back.Building;
 import tim.data.back.Factory;
 import tim.data.back.Item;
 import tim.data.back.Mine;
@@ -11,6 +10,7 @@ import tim.data.back.Node;
 import tim.data.back.Oilwell;
 import tim.data.back.Path;
 import tim.data.back.Thing;
+import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.factory.RoseObjectFactory;

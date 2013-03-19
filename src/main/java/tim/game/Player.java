@@ -3,9 +3,9 @@
  */
 package tim.game;
 
-import tim.data.back.Building;
 import tim.data.back.Event;
 import tim.data.back.Item;
+import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.data.unit.UnitOrder;
 

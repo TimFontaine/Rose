@@ -6,9 +6,9 @@ package tim.game.ai.job;
 import java.awt.Point;
 import java.util.EnumMap;
 
-import tim.data.back.Building;
 import tim.data.back.BuildingState;
 import tim.data.back.Node;
+import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.game.ai.data.Grid;
 import tim.game.ai.data.ResourceInfo;

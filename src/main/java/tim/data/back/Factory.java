@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import tim.data.building.Building;
 import tim.data.unit.TransferResource;
 import tim.data.unit.Unit;
 import tim.game.ai.data.RequestType;

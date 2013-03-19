@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 import tim.data.ai.ActionType;
-import tim.data.back.Building;
 import tim.data.back.BuildingState;
 import tim.data.back.Factory;
 import tim.data.back.Item;
 import tim.data.back.MapItem;
 import tim.data.back.Node;
 import tim.data.back.Thing;
+import tim.data.building.Building;
 import tim.game.ai.data.Goal;
 import tim.game.ai.data.Goal.GoalStatus;
 import tim.game.ai.data.Grid;

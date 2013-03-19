@@ -1,11 +1,13 @@
 /**
  * 
  */
-package tim.data.back;
+package tim.data.building;
 
 import java.util.EnumMap;
 import java.util.Map;
 
+import tim.data.back.BuildingStateContext;
+import tim.data.back.BuildingStrategy;
 import tim.data.unit.Unit;
 import tim.game.Back;
 import tim.game.ai.data.ResourceInfo;
@@ -20,19 +22,19 @@ import tim.game.factory.RoseObjectFactory;
 public class BuildingWorkingStrategy implements BuildingStrategy {
 	
 	Back back;
-	Building building;
+	BuildingData buildingData;
 	ResourceInfo resourceInfo;
 
 	/**
 	 * 
 	 */
-	public BuildingWorkingStrategy(Building building) {
+	public BuildingWorkingStrategy(BuildingData buildingData) {
 		GameApplicationFactory applicationFactory;
 		applicationFactory = GameApplicationFactory.getInstance();
 		resourceInfo = applicationFactory.getResourceInfo();
 		back = applicationFactory.getBack();
-		this.building = building;
-		building.setImageName("factory");
+		this.buildingData = buildingData;
+		buildingData.setImageName("factory");
 	}
 
 	/* (non-Javadoc)

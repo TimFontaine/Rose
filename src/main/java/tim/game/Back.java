@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import tim.data.back.Building;
 import tim.data.back.Direction;
 import tim.data.back.Event;
 import tim.data.back.Factory;
@@ -20,6 +19,7 @@ import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.data.back.Road;
 import tim.data.back.Thing;
+import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.game.usercentric.InterfaceTranslator;
 import tim.pathfinding.AStar;

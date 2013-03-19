@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import tim.data.back.Building;
+import tim.data.building.Building;
 import tim.game.Back;
 import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;

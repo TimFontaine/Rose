@@ -5,9 +5,9 @@ package tim.game.usercentric;
 
 import java.awt.Point;
 
-import tim.data.back.Building;
 import tim.data.back.Direction;
 import tim.data.back.Node;
+import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.game.Back;
 import tim.game.ai.BasicPlayer;
@@ -78,6 +78,10 @@ public class InterfaceTranslator extends BasicPlayer {
 			break;
 		}
 		activeUnit.move(location.x, location.y);
+	}
+	
+	public void build(String itemName) {
+		selectedBuilding.giveOrder(itemName);
 	}
 	
 	public void gotoLocation(Point destination) {
