@@ -86,7 +86,7 @@ public class InterfaceTranslator extends BasicPlayer {
 		activeUnit.move(location.x, location.y);
 	}
 	
-	public void build(String itemName) {
+	public void buildingOrder(String itemName) {
 		selectedBuilding.giveOrder(itemName);
 	}
 	

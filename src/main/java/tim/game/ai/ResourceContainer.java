@@ -57,5 +57,23 @@ public class ResourceContainer {
 		}
 	}
 	
+	public int getAvailableResources(Resource resource) {
+		if (resources.containsKey(resource)) {
+			return resources.get(resource).getAmount();
+		}
+		return 0;
+	}
+	
+	/**
+	 * @param key
+	 * @return
+	 */
+	public boolean containsResource(Resource key) {
+		if (resources.containsKey(key)) {
+			return true;
+		}
+		return false;
+	}
+	
 
 }

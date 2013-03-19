@@ -103,8 +103,7 @@ public class Back {
 	
 	public void buildOnTile(int x, int y, Building building) {
 		map.getNode(x, y).setItem(building);
-		building.setX(x);
-		building.setY(y);
+		building.setLocation(new Point(x,y));
 		map.getMapItems().add(building);
 		activePlayer.addBuilding(building);
 	}

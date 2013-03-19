@@ -11,6 +11,7 @@ import tim.data.back.BuildingStateContext;
 import tim.data.back.BuildingStrategy;
 import tim.data.unit.Unit;
 import tim.game.Back;
+import tim.game.ai.ResourceContainer;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.data.MutableResource.Resource;
 import tim.game.factory.GameApplicationFactory;
@@ -44,26 +45,32 @@ public class BuildingWorkingStrategy implements BuildingStrategy {
 	 */
 	@Override
 	public void doAction(BuildingStateContext context) {
-		EnumMap<Resource, Integer> requiredResources = resourceInfo.getResourcesForThing("worker");
+		if (buildingData.getOrderName() == null) {
+			return;
+		}
+		String orderName = buildingData.getOrderName();
+		EnumMap<Resource, Integer> requiredResources = resourceInfo.getResourcesForThing(orderName);
 		boolean test = testCanBuild(requiredResources);
 		if (test) {
-			buildUnit(requiredResources);
+			buildUnit(orderName);
+			useResources(requiredResources);
+			buildingData.setOrderName(null);
 		} else {
-			
-			
-			
 		}
 	}
 	
-	private void buildUnit(EnumMap<Resource, Integer> requiredResources) {
-		Unit unit = (Unit) RoseObjectFactory.getInstance().getRoseObject("worker");
-		unit.setName("worker");
-		unit.setType("worker");
-		unit.setOil(100);
-		unit.setX(building.getX());
-		unit.setY(building.getY());
+	/**
+	 * 
+	 */
+	private void useResources(EnumMap<Resource, Integer> requiredResources) {
+		buildingData.getResourceContainer().retreiveMultipleResources(requiredResources);
+	}
+
+	private void buildUnit(String orderName) {
+		Unit unit = (Unit) RoseObjectFactory.getInstance().getRoseObject(orderName);
+		unit.setLocation(buildingData.getLocation());
 		back.addUnit(unit);
-		building.retreiveMultipleResources(requiredResources);
+		
 		System.out.println("factory has build unit");
 //		producedUnits++;
 	}
@@ -81,12 +88,13 @@ public class BuildingWorkingStrategy implements BuildingStrategy {
 //	}
 
 	private boolean testCanBuild(EnumMap<Resource, Integer> requiredResources) {
+		ResourceContainer resourceContainer = buildingData.getResourceContainer();
 		for (Map.Entry<Resource, Integer> entry : requiredResources.entrySet()) {
-			if (!building.containsResource(entry.getKey())) {
+			if (!resourceContainer.containsResource(entry.getKey())) {
 				return false;
 			}
 			int cost = entry.getValue();
-			int available = building.getAvailableResources(entry.getKey());
+			int available = resourceContainer.getAvailableResources(entry.getKey());
 			int rest = cost - available;
 			if (rest >0) {
 //				if (resourceShortage == null) {

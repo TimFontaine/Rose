@@ -3,6 +3,7 @@
  */
 package tim.data.building;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -112,6 +113,16 @@ public class Building extends Thing {
 	 */
 	public void giveOrder(String itemName) {
 		buildingData.setOrderName(itemName);
+	}
+	
+	public Point getLocation() {
+		return buildingData.getLocation();
+	}
+	
+	public void setLocation(Point location) {
+		this.x = location.x;
+		this.y = location.y;
+		buildingData.setLocation(location);
 	}
 	
 //	public void setResourceLink(Building resourceLink) {

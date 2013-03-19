@@ -11,11 +11,13 @@ import javax.swing.JPanel;
 
 import tim.data.building.Building;
 import tim.game.Back;
+import tim.game.Logic;
 import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.usercentric.CentricWorker;
 import tim.game.usercentric.InterfaceTranslator;
 import tim.rose.buttons.actions.BuildAction;
+import tim.rose.buttons.actions.BuildingOrderAction;
 
 /**
  * @author tim
@@ -37,10 +39,10 @@ InterfaceTranslator translator;
 	 */
 	private void build() {
 		Building building = translator.getSelectedBuilding();
-		List<String> buildings = building.getPossibleActions();
-		for (String name : buildings) {
+		List<String> buildingActions = building.getPossibleActions();
+		for (String name : buildingActions) {
 			GameButton button = new GameButton(this);
-			button.setRoseAction(new BuildAction(name));
+			button.setRoseAction(new BuildingOrderAction(name));
 			button.setIcon(name);
 			add(button);
 		}
@@ -51,7 +53,13 @@ InterfaceTranslator translator;
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+GameButton button = (GameButton) e.getSource();
+		
+		//put the event in a queue and process later
+			Logic.addToEventQueue(button);
+			if (button.getRoseAction() != null) {
+				Logic.addToEventQueue(button.getRoseAction());
+			}
 		
 	}
 }
