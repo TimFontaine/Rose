@@ -178,6 +178,12 @@ public class Back {
 //		return 0;
 //	}
 //	
+	public void moveUnit(Point source, Point target, Actor actor) {
+		map.getNode(source.x, source.y).removeUnit(actor);
+		map.getNode(target.x, target.y).addUnit(actor);
+		System.out.println("moved unit with name" + ((Unit)actor).getName());
+	}
+	
 	public void moveUnit(Actor actor, int x, int y) {
 		Point location = actor.getData().getLocation(); 
 		map.getNode(location.x, location.y).removeUnit(actor);
@@ -189,6 +195,7 @@ public class Back {
 		unit.setX(x);
 		unit.setY(y);
 		actor.getData().setLocation(new Point(x,y));
+		System.out.println("moved unit with name" + ((Unit)actor).getName());
 	}
 	
 	public Path findNearestObject(Thing thing, String itemName) {
@@ -299,12 +306,14 @@ public class Back {
 
 	//for the mapbuilder
 	public void addUnit(Player player, Unit unit) {
+		System.out.println("adding unit to player");
 		getMapItems().add(unit);
 		player.addUnit(unit);
 		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
 	}
 	
 	public void addUnit(Unit unit) {
+		System.out.println("adding unit");
 		String name = unit.getName() + itemId++;
 		unit.setName(name);
 		getMapItems().add(unit);

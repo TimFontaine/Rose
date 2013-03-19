@@ -16,6 +16,7 @@ import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.data.MutableResource.Resource;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.factory.RoseObjectFactory;
+import tim.game.usercentric.CentricWorker;
 
 /**
  * @author tfontaine
@@ -69,6 +70,7 @@ public class BuildingWorkingStrategy implements BuildingStrategy {
 	private void buildUnit(String orderName) {
 		Unit unit = (Unit) RoseObjectFactory.getInstance().getRoseObject(orderName);
 		unit.setLocation(buildingData.getLocation());
+		((CentricWorker)unit).getData().setLocation(buildingData.getLocation());
 		back.addUnit(unit);
 		
 		System.out.println("factory has build unit");

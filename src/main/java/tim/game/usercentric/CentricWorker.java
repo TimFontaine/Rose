@@ -130,6 +130,4 @@ public class CentricWorker extends Unit implements Actor{
 		return unitData;
 	}
 	
-	
-
 }
