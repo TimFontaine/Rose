@@ -13,7 +13,8 @@ import tim.game.Back;
 import tim.game.Logic;
 import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;
-import tim.game.usercentric.CentricWorker;
+import tim.game.usercentric.Actor;
+import tim.game.usercentric.WorkerActor;
 import tim.game.usercentric.InterfaceTranslator;
 import tim.rose.buttons.actions.BuildAction;
 
@@ -36,8 +37,7 @@ public class UnitPanel extends JPanel implements ActionListener {
 	 * 
 	 */
 	private void build() {
-		CentricWorker worker = translator.getActiveUnit();
-		List<String> buildings = worker.getPossibleBuildings();
+		List<String> buildings = translator.getPossibleUnitActions();
 		for (String name : buildings) {
 			GameButton button = new GameButton(this);
 			button.setRoseAction(new BuildAction(name));

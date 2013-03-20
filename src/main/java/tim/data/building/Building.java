@@ -70,7 +70,7 @@ public class Building extends Thing implements Actor {
 	 */
 	private void init() {
 		possibleActions.add("worker");
-		possibleActions.add("infantery");
+		possibleActions.add("infantry");
 		//remove, only use in graphics layer
 		buildingData.setState(BuildingState.CONSTRUCTING);
 	}

@@ -203,6 +203,7 @@ public class Node implements Comparable<Node>, Serializable{
     	units.remove(unit);
     }
     
+    @Deprecated
     public void removeUnit(Actor actor) {
     	Unit unit = (Unit) actor;
     	units.remove(unit);
@@ -297,6 +298,13 @@ public class Node implements Comparable<Node>, Serializable{
 		if (road != null) {
 			travelWeight = default_travelWeight / Road.EXTRA_SPEED;
 		}
+	}
+
+	/**
+	 * @param item2
+	 */
+	public void removeItem(Item item) {
+		item = null;
 	}
 	
 

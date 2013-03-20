@@ -14,16 +14,15 @@ import tim.game.back.scheduler.Order;
  * @author tim
  *
  */
-public class Infantery extends Unit implements Actor {
+public class Infantry extends Unit implements Actor {
 	
 	private UnitData unitData;
 
 	/**
 	 * @param name
 	 */
-	public Infantery(String name) {
-		super(name);
-		setType("infantery");
+	public Infantry(String name) {
+		super("infantry", name);
 		unitData = new UnitData();
 	}
 
@@ -62,6 +61,8 @@ public class Infantery extends Unit implements Actor {
 		if (back.getNode(x, y).containsMapItem()) {
 			attack(new Point(x, y));
 		}
+		back.moveUnit(this, x, y);
+		setLocation(new Point(x,y));
 	}
 	
 	/* (non-Javadoc)
@@ -88,6 +89,24 @@ public class Infantery extends Unit implements Actor {
 	@Override
 	public ActorData getData() {
 		return unitData;
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.usercentric.Actor#handleMultiOrder()
+	 */
+	@Override
+	public void handleMultiOrder() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.usercentric.Actor#setComplexOrder(tim.game.usercentric.ComplexOrder)
+	 */
+	@Override
+	public void setComplexOrder(ComplexOrder order) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -11,12 +11,13 @@ import tim.data.back.Thing;
 import tim.game.ai.Task;
 import tim.game.ai.job.Job;
 import tim.game.back.scheduler.Order;
+import tim.game.usercentric.Actor;
 
 /**
  * @author tfontaine
  *
  */
-public abstract class Unit extends Thing {
+public class Unit extends Thing {
 	
 	public static final int RESOURCE_TRANSFER = 20;
 	public static final int MAX_MOVES = 200;
@@ -36,11 +37,13 @@ public abstract class Unit extends Thing {
 	protected Order order;
 	
 	
+	private Actor actor; 
 	/**
 	 * 
 	 */
-	public Unit(String name) {
+	public Unit(String type, String name) {
 		super(name);
+		this.setType(type);
 		//setup job
 		task = new Task();
 		task.addDestination("mine");
@@ -49,12 +52,19 @@ public abstract class Unit extends Thing {
 		state= UnitState.IDLE;
 	}
 	
-	public abstract void initJob();
+	@Deprecated
+	public void initJob() {
+		
+	}
 	
 	public void useOil() {
 		oil-=OIL_USAGE;
 	}
-	public abstract void giveOrder(Order order);
+	
+	@Deprecated
+	public void giveOrder(Order order) {
+		
+	}
 
 	public int getOil() {
 		return oil;
@@ -119,6 +129,23 @@ public abstract class Unit extends Thing {
 	 */
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.data.back.Thing#doLogic()
+	 */
+	@Override
+	public void doLogic() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Actor getActor() {
+		return actor;
+	}
+
+	public void setActor(Actor actor) {
+		this.actor = actor;
 	}
 
 

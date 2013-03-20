@@ -24,7 +24,7 @@ public class ImageMapper {
 		map.put("autoroute", "double-road");
 		map.put("worker", "builder");
 		map.put("construction", "underconstruction");
-		map.put("infantery", "soldier");
+		map.put("infantry", "soldier");
 	}
 
 	public String getImageName(String name) {

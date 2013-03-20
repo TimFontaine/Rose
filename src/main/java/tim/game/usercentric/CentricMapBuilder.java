@@ -45,15 +45,15 @@ public class CentricMapBuilder {
 //		back.getOtherPlayer().x = 10;
 //		back.getOtherPlayer().y = 10;
 		
-		CentricWorker worker = new CentricWorker("centric");
-		CentricWorker workerAi = new CentricWorker("centricAI");
-		List<Unit> units = new ArrayList<Unit>();
-		List<Unit> unitsAI = new ArrayList<Unit>();
+		WorkerActor worker = new WorkerActor("worker", "worker");
+		WorkerActor workerAi = new WorkerActor("worker", "worker");
+		List<Actor> units = new ArrayList<Actor>();
+		List<Actor> unitsAI = new ArrayList<Actor>();
 		units.add(worker);
 		unitsAI.add(workerAi);
 		CentricAIPlayer aiPlayer = new CentricAIPlayer(playerDataAi);
-		playerData.setUnits(units);
-		playerDataAi.setUnits(unitsAI);
+		playerData.setActors(units);
+		playerDataAi.setActors(unitsAI);
 		interfaceTranslator = new InterfaceTranslator(playerData);
 		
 		back.addHumam(interfaceTranslator);

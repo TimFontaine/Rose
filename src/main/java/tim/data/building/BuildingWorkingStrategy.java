@@ -17,7 +17,7 @@ import tim.game.ai.data.MutableResource.Resource;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.factory.RoseObjectFactory;
 import tim.game.usercentric.Actor;
-import tim.game.usercentric.CentricWorker;
+import tim.game.usercentric.WorkerActor;
 
 /**
  * @author tfontaine

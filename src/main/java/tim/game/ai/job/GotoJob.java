@@ -9,6 +9,7 @@ import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.data.unit.Unit;
 import tim.game.ai.MoveJob;
+import tim.game.usercentric.Actor;
 
 /**
  * @author tfontaine
@@ -25,13 +26,13 @@ public class GotoJob extends MoveJob {
 	 * @param node 
 	 * 
 	 */
-	public GotoJob(Unit unit, Point destination) {
+	public GotoJob(Actor unit, Point destination) {
 		super(unit);
 		this.destination = destination;
 		start();
 	}
 	
-	public GotoJob(Unit unit, String mapItemType) {
+	public GotoJob(Actor unit, String mapItemType) {
 		super(unit);
 		this.mapItemType = mapItemType;
 	}
@@ -60,7 +61,9 @@ public class GotoJob extends MoveJob {
 		if (mapItemType != null) {
 			path = back.findNearestObject(unit, mapItemType);
 		} else if (destination != null) {
-			path = back.findShortestPath(unit.getX(), unit.getY(), destination.x, destination.y);
+			int x = unit.getLocation().x;
+			int y = unit.getLocation().y;
+			path = back.findShortestPath(x, y, destination.x, destination.y);
 		}
 	}
 	

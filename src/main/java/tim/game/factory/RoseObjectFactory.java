@@ -8,8 +8,8 @@ import tim.data.unit.Worker;
 import tim.game.ai.SimpleGoalAI;
 import tim.game.ai.SimplePlayerAI;
 import tim.game.back.scheduler.GridPlayer;
-import tim.game.usercentric.CentricWorker;
-import tim.game.usercentric.Infantery;
+import tim.game.usercentric.WorkerActor;
+import tim.game.usercentric.Infantry;
 
 /**
  * @author tfontaine
@@ -42,7 +42,7 @@ public class RoseObjectFactory {
 			roseObject = new SimplePlayerAI("simplePlayer");
 			roseObject.setImageName("player");
 		} else if ("worker".equals(name)) {
-			roseObject = new CentricWorker("worker");
+			roseObject = new WorkerActor("worker", "worker");
 			//roseObject = new Worker("worker");
 			roseObject.setType("worker");
 			roseObject.setImageName("builder");
@@ -50,8 +50,8 @@ public class RoseObjectFactory {
 			roseObject = new SimpleGoalAI();
 		} else if ("GridPlayer".equals(name)) {
 			roseObject = new GridPlayer();
-		} else if ("infantery".equals(name)) {
-			roseObject = new Infantery("infantery");
+		} else if ("infantry".equals(name)) {
+			roseObject = new Infantry("infantry");
 		}
 		return roseObject;
 	}

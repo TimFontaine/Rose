@@ -13,7 +13,7 @@ import tim.game.ai.BasicPlayer;
 public class CentricAIPlayer extends BasicPlayer {
 	
 	private PlayerData playerData;
-	private CentricWorker activeUnit;
+	private Actor activeUnit;
 
 	/**
 	 * @param playerData 
@@ -25,10 +25,10 @@ public class CentricAIPlayer extends BasicPlayer {
 	
 	
 	public void doLogic() {
-		for (Unit unit : playerData.getUnits()) {
-			activeUnit = (CentricWorker) unit;
-			UnitData data = activeUnit.getUnitData();
-			activeUnit.move(data.getLocation().x + 1, data.getLocation().y);
+		for (Actor actor : playerData.getActors()) {
+			activeUnit = actor;
+//			UnitData data = activeUnit.getUnitData();
+//			activeUnit.move(data.getLocation().x + 1, data.getLocation().y);
 		}
 	}
 
@@ -40,12 +40,12 @@ public class CentricAIPlayer extends BasicPlayer {
 		this.playerData = playerData;
 	}
 
-	public Unit getActiveUnit() {
-		return activeUnit;
-	}
-
-	public void setActiveUnit(Unit activeUnit) {
-		this.activeUnit = (CentricWorker) activeUnit;
-	}
+//	public Unit getActiveUnit() {
+//		return activeUnit;
+//	}
+//
+//	public void setActiveUnit(Unit activeUnit) {
+//		this.activeUnit = (CentricWorker) activeUnit;
+//	}
 
 }

@@ -8,7 +8,8 @@ import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.data.unit.Unit;
 import tim.game.ai.job.Job;
-import tim.game.usercentric.CentricWorker;
+import tim.game.usercentric.Actor;
+import tim.game.usercentric.WorkerActor;
 
 /**
  * @author tfontaine
@@ -18,12 +19,12 @@ public abstract class MoveJob extends Job {
 
 	protected Path path;
 	protected int step;
-	protected Unit unit;
+	protected Actor unit;
 	
 	/**
 	 * 
 	 */
-	public MoveJob(Unit unit) {
+	public MoveJob(Actor unit) {
 		this.unit = unit;
 	}
 	
@@ -40,7 +41,8 @@ public abstract class MoveJob extends Job {
 	
 	protected void move() {
 		Node nextNode = path.getPathNodes().get(step);
-		back.moveUnit((CentricWorker)unit, nextNode.getX(), nextNode.getY());
+		unit.move(nextNode.getX(), nextNode.getY());
+//		back.moveUnit(unit, nextNode.getX(), nextNode.getY());
 		step++;
 	}
 

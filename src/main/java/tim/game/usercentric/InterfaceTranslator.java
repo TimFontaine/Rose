@@ -4,6 +4,7 @@
 package tim.game.usercentric;
 
 import java.awt.Point;
+import java.util.List;
 
 import tim.data.back.Direction;
 import tim.data.back.Node;
@@ -11,6 +12,7 @@ import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.game.Back;
 import tim.game.ai.BasicPlayer;
+import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.job.GotoJob;
 import tim.game.ai.job.Job;
 import tim.game.ai.job.Job.JobType;
@@ -27,11 +29,11 @@ import tim.game.usercentric.UnitData.UnitState;
  */
 public class InterfaceTranslator extends BasicPlayer {
 	
+	ResourceInfo resourceInfo;
 	
 	private PlayerData playerData;
-	CentricWorker activeItem;
+	Actor activeItem;
 	Building selectedBuilding;//human player only
-	CentricWorker centricWorker;
 	
 	public enum Selection {
 		UNIT,
@@ -44,6 +46,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	public InterfaceTranslator(PlayerData playerData) {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		back = applicationFactory.getBack();
+		resourceInfo = applicationFactory.getResourceInfo();
 		this.playerData = playerData;
 	}
 	
@@ -54,10 +57,10 @@ public class InterfaceTranslator extends BasicPlayer {
 	}
 	
 	public void doLogic() {
-		for (Unit unit : playerData.getUnits()) {
-			activeItem = (CentricWorker) unit;
-			if (activeItem.getUnitData().getState() == UnitState.MULTI) {
-				activeItem.doLogic();
+		for (Actor actor : playerData.getActors()) {
+			activeItem = actor;
+			if (((UnitData)activeItem.getData()).getState() == UnitState.MULTI) {
+				activeItem.handleMultiOrder();
 			}
 		}
 	}
@@ -72,7 +75,7 @@ public class InterfaceTranslator extends BasicPlayer {
 		if (activeItem == null) {
 			return;
 		}
-		Point location = activeItem.getLocation();
+		Point location = activeItem.getData().getLocation();
 		switch (direction) {
 		case DOWN:
 			location.y+=amount;
@@ -126,7 +129,7 @@ public class InterfaceTranslator extends BasicPlayer {
 		Node node = back.getNode(location.x, location.y);
 		if (node.containsUnit()) {
 			Unit unit = node.getUnits().get(0);
-			activeItem = (CentricWorker) unit;
+			activeItem = (Actor)unit;
 			return Selection.UNIT;
 		}else if (node.containsItem()) {
 			selectedBuilding = (Building) node.getItem();
@@ -136,12 +139,16 @@ public class InterfaceTranslator extends BasicPlayer {
 			return Selection.NONE;
 		}
 	}
+	
+	public List<String> getPossibleUnitActions() {
+		return resourceInfo.getUnitActions(activeItem.getType());
+	}
 
-	public CentricWorker getActiveUnit() {
+	public Actor getActiveUnit() {
 		return activeItem;
 	}
 
-	public void setActiveUnit(CentricWorker activeUnit) {
+	public void setActiveUnit(WorkerActor activeUnit) {
 		this.activeItem = activeUnit;
 	}
 

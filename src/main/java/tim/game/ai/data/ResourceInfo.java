@@ -3,8 +3,10 @@
  */
 package tim.game.ai.data;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import tim.game.ai.data.MutableResource.Resource;
@@ -17,6 +19,8 @@ public class ResourceInfo {
 	
 	private Map<String, String> location;
 	private Map<String, EnumMap<Resource, Integer>> resources;
+	private Map<String,List<String>> unitActions;
+	private Map<String,List<String>> buildingActions;
 	private static ResourceInfo INSTANCE;
 
 	public enum AvailableResources {
@@ -42,6 +46,7 @@ public class ResourceInfo {
 	 * 
 	 */
 	private ResourceInfo() {
+		unitActions = new HashMap<String, List<String>>();
 		location = new HashMap<String, String>();
 		location.put("iron", "mine");
 		location.put("oil", "oilwell");
@@ -74,12 +79,38 @@ public class ResourceInfo {
 		EnumMap<Resource, Integer> soldierCost = new EnumMap<MutableResource.Resource, Integer>(Resource.class);
 		soldierCost.put(Resource.IRON, 20);
 		soldierCost.put(Resource.OIL, 10);
-		resources.put("infantery", soldierCost);
+		resources.put("infantry", soldierCost);
 		
-		
+		initUnitActions();
+		initBuildingActions();
 		
 	}
 	
+	/**
+	 * 
+	 */
+	private void initBuildingActions() {
+		List<String> factoryActions = new ArrayList<String>();
+		factoryActions.add("worker");
+		factoryActions.add("infantry");
+		unitActions.put("factory", factoryActions);
+	}
+
+	/**
+	 * 
+	 */
+	private void initUnitActions() {
+		List<String> workerActions = new ArrayList<String>();
+		workerActions.add("factory");
+		unitActions.put("worker", workerActions);
+		
+		List<String> infantryActions = new ArrayList<String>();
+		infantryActions.add("hide");
+		unitActions.put("infantry", infantryActions);
+	}
+	
+	
+
 	public AvailableResources getResourceByKey(int key) {
 		return AvailableResources.values()[key];
 	}
@@ -120,6 +151,14 @@ public class ResourceInfo {
 		AvailableResources a = getResourceByKey(key);
 		return getLocation(a.toString().toLowerCase());
 		
+	}
+	
+	public List<String> getUnitActions(String actorName) {
+		return unitActions.get(actorName);
+	}
+	
+	public List<String> getBuildingActions(String actorName) {
+		return unitActions.get(actorName);
 	}
 
 }

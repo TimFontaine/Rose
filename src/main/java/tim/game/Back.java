@@ -184,22 +184,21 @@ public class Back {
 		System.out.println("moved unit with name" + ((Unit)actor).getName());
 	}
 	
-	public void moveUnit(Actor actor, int x, int y) {
-		Point location = actor.getData().getLocation(); 
-		map.getNode(location.x, location.y).removeUnit(actor);
+	public void moveUnit(Unit unit, int x, int y) {
+		Point location = unit.getLocation(); 
+		map.getNode(location.x, location.y).removeUnit(unit);
 		int size = map.getNode(location.x, location.y).getUnits().size();
 		System.out.println("size:" + size);
-		map.getNode(x, y).addUnit(actor);
+		map.getNode(x, y).addUnit(unit);
 		location.setLocation(x, y);
-		Unit unit = (Unit) actor;
-		unit.setX(x);
-		unit.setY(y);
-		actor.getData().setLocation(new Point(x,y));
-		System.out.println("moved unit with name" + ((Unit)actor).getName());
 	}
 	
 	public Path findNearestObject(Thing thing, String itemName) {
 		return findNearestObject(thing.getX(), thing.getY(), itemName);
+	}
+	
+	public Path findNearestObject(Actor actor, String itemName) {
+		return findNearestObject(actor.getLocation().x, actor.getLocation().y, itemName);
 	}
 	
 	public Path findNearestObject(int startX, int startY, String itemName) {
@@ -379,8 +378,14 @@ public class Back {
 	 */
 	public void clearNode(Point point) {
 		Node node = getNode(point.x, point.y);
-		node.getUnits().clear();
-		node.setItem(null);
+		for (Unit unit : node.getUnits()) {
+			map.getMapItems().remove(unit);
+		}
+		if (node.containsItem()) {
+			Item item = node.getItem();
+			node.removeItem(item);
+			map.getMapItems().remove(item);
+		}
 	}
 
 	

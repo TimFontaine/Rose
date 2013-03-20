@@ -6,7 +6,6 @@ package tim.game.usercentric;
 import java.util.ArrayList;
 import java.util.List;
 
-import tim.data.unit.Unit;
 
 /**
  * @author tfontaine
@@ -14,21 +13,21 @@ import tim.data.unit.Unit;
  */
 public class PlayerData {
 	
-	private List<Unit> units;
+	private List<Actor> actors;
 
 	/**
 	 * 
 	 */
 	public PlayerData() {
-		setUnits(new ArrayList<Unit>());
+		setActors(new ArrayList<Actor>());
 	}
 
-	public List<Unit> getUnits() {
-		return units;
+	public List<Actor> getActors() {
+		return actors;
 	}
 
-	public void setUnits(List<Unit> units) {
-		this.units = units;
+	public void setActors(List<Actor> units) {
+		this.actors = units;
 	}
 
 }
