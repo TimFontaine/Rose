@@ -8,6 +8,7 @@ import java.util.List;
 
 import tim.data.back.Path;
 import tim.data.back.Thing;
+import tim.game.Player;
 import tim.game.ai.Task;
 import tim.game.ai.job.Job;
 import tim.game.back.scheduler.Order;
@@ -36,8 +37,9 @@ public class Unit extends Thing {
 //	protected UnitOrder order;
 	protected Order order;
 	
+	private Player player;
+	private Actor actor;
 	
-	private Actor actor; 
 	/**
 	 * 
 	 */
@@ -140,6 +142,14 @@ public class Unit extends Thing {
 		
 	}
 
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
 	public Actor getActor() {
 		return actor;
 	}
@@ -148,8 +158,4 @@ public class Unit extends Thing {
 		this.actor = actor;
 	}
 
-
-	
-
-	
 }

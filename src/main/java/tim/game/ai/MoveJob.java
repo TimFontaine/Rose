@@ -19,12 +19,12 @@ public abstract class MoveJob extends Job {
 
 	protected Path path;
 	protected int step;
-	protected Actor unit;
+	protected Unit unit;
 	
 	/**
 	 * 
 	 */
-	public MoveJob(Actor unit) {
+	public MoveJob(Unit unit) {
 		this.unit = unit;
 	}
 	
@@ -41,7 +41,7 @@ public abstract class MoveJob extends Job {
 	
 	protected void move() {
 		Node nextNode = path.getPathNodes().get(step);
-		unit.move(nextNode.getX(), nextNode.getY());
+//		unit.move(nextNode.getX(), nextNode.getY());
 //		back.moveUnit(unit, nextNode.getX(), nextNode.getY());
 		step++;
 	}

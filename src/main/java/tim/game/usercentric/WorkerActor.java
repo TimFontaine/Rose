@@ -21,39 +21,29 @@ import tim.game.usercentric.UnitData.UnitState;
  * @author tfontaine
  * centric worker is a unit that should be extended and override basic functions
  */
-public class WorkerActor extends Unit implements Actor{
+public class WorkerActor extends BasicActor implements Actor{
 	
 	Back back;
 	
 	SpecialActionManager specialActionManager;
 	private UnitData unitData;
 	
-//	private Unit unit;
+	//link to the unit on the map
 	
-	private List<String> possibleBuildings;
-
 	/**
+	 * @param unit
 	 * @param name
 	 */
-	public WorkerActor(String type, String name) {
-		super(type, name);
-//		super(name);
-//		setType("worker");
+	public WorkerActor(Unit unit) {
+		super(unit);
+		this.unit = unit;
+		unit.setActor(this);
 		unitData = new UnitData();
-		specialActionManager = new WorkerSpecialAction(unitData);
-		possibleBuildings = new ArrayList<String>();
+		specialActionManager = new WorkerSpecialAction(unit);
 		
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		back = applicationFactory.getBack();
 		
-		init();
-	}
-
-	/**
-	 * 
-	 */
-	private void init() {
-		possibleBuildings.add("factory");
 	}
 
 	/* (non-Javadoc)
@@ -76,8 +66,7 @@ public class WorkerActor extends Unit implements Actor{
 	}
 	
 	public void move(int x, int y) {
-		back.moveUnit(this, x, y);
-		setLocation(new Point(x,y));
+		back.moveUnit(unit, x, y);
 	}
 	
 	public void specialAction(SpecialAction action){
@@ -97,18 +86,6 @@ public class WorkerActor extends Unit implements Actor{
 		this.unitData = unitData;
 	}
 
-	public void setPossibleBuildings(List<String> possibleBuildings) {
-		this.possibleBuildings = possibleBuildings;
-	}
-
-	/* (non-Javadoc)
-	 * @see tim.game.usercentric.Actor#getData()
-	 */
-	@Override
-	public ActorData getData() {
-		return unitData;
-	}
-
 	/* (non-Javadoc)
 	 * @see tim.game.usercentric.Actor#attack(java.awt.Point)
 	 */
@@ -116,5 +93,16 @@ public class WorkerActor extends Unit implements Actor{
 	public void attack(Point point) {
 		throw new UnsupportedOperationException();
 	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.usercentric.Actor#initTurn()
+	 */
+	@Override
+	public void initTurn() {
+		if (unitData.getState() == UnitState.MULTI) {
+			handleMultiOrder();
+		}
+	}
+
 
 }

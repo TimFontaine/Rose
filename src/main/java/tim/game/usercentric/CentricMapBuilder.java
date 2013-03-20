@@ -36,21 +36,15 @@ public class CentricMapBuilder {
 		
 		PlayerData playerData = new PlayerData();
 		PlayerData playerDataAi = new PlayerData();
-//		Player playerAI = (Player) factory.getRoseObject("simpleGoalPlayer");
-//		back.addPlayer(human);
-//		back.addPlayer(playerAI);
 //		
-//		back.getPlayer().x = 0;
-//		back.getPlayer().y = 0;
-//		back.getOtherPlayer().x = 10;
-//		back.getOtherPlayer().y = 10;
+		Unit unit = factory.getUnit("worker");
 		
-		WorkerActor worker = new WorkerActor("worker", "worker");
-		WorkerActor workerAi = new WorkerActor("worker", "worker");
+		Actor worker = unit.getActor();
+//		WorkerActor workerAi = new WorkerActor();
 		List<Actor> units = new ArrayList<Actor>();
 		List<Actor> unitsAI = new ArrayList<Actor>();
 		units.add(worker);
-		unitsAI.add(workerAi);
+//		unitsAI.add(workerAi);
 		CentricAIPlayer aiPlayer = new CentricAIPlayer(playerDataAi);
 		playerData.setActors(units);
 		playerDataAi.setActors(unitsAI);
@@ -58,9 +52,9 @@ public class CentricMapBuilder {
 		
 		back.addHumam(interfaceTranslator);
 		back.addPlayer(interfaceTranslator);
-		back.addPlayer(aiPlayer);
-		back.addUnit(worker);
-		back.addUnit(workerAi);
+//		back.addPlayer(aiPlayer);
+		back.addUnit(interfaceTranslator, unit);
+		//back.addUnit(workerAi);
 		
 //		Building building = new Factory("factory");
 		Item mine = new Mine("mine");
@@ -102,9 +96,9 @@ public class CentricMapBuilder {
 //		oilTruck.setOil(1000);
 //		oilTruck.setPlayer(playerAI);
 		
-		Unit unit = (Unit) factory.getRoseObject("worker");
-		unit.setX(10);
-		unit.setY(15);
+//		Unit unit = (Unit) factory.getRoseObject("worker");
+//		unit.setX(10);
+//		unit.setY(15);
 //		back.addUnit(playerAI, unit);
 //		back.addUnit(playerAI, unit);
 //		back.addUnit(playerAI, oilTruck);

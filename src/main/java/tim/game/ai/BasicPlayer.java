@@ -13,6 +13,7 @@ import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.data.unit.UnitOrder;
 import tim.game.Player;
+import tim.game.usercentric.Actor;
 
 /**
  * @author tfontaine
@@ -93,6 +94,16 @@ public class BasicPlayer extends RoseObject implements Player {
 	public void addUsedItem(Item item) {
 		// TODO Auto-generated method stub
 
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see tim.game.Player#addActor(tim.game.usercentric.Actor)
+	 */
+	@Override
+	public void addActor(Actor actor) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

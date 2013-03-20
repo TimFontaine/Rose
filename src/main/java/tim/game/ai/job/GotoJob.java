@@ -26,13 +26,13 @@ public class GotoJob extends MoveJob {
 	 * @param node 
 	 * 
 	 */
-	public GotoJob(Actor unit, Point destination) {
+	public GotoJob(Unit unit, Point destination) {
 		super(unit);
 		this.destination = destination;
 		start();
 	}
 	
-	public GotoJob(Actor unit, String mapItemType) {
+	public GotoJob(Unit unit, String mapItemType) {
 		super(unit);
 		this.mapItemType = mapItemType;
 	}

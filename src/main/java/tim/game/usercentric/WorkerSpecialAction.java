@@ -4,6 +4,7 @@
 package tim.game.usercentric;
 
 import tim.data.building.Building;
+import tim.data.unit.Unit;
 import tim.game.Back;
 import tim.game.factory.BuildingFactory;
 import tim.game.factory.GameApplicationFactory;
@@ -15,15 +16,15 @@ import tim.game.factory.GameApplicationFactory;
 public class WorkerSpecialAction implements SpecialActionManager {
 
 	Back back;
-	UnitData unitData;
+	Unit unit;
 	
 	/**
 	 * @param unitData 
 	 * 
 	 */
-	public WorkerSpecialAction(UnitData unitData) {
+	public WorkerSpecialAction(Unit unit) {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
-		this.unitData = unitData;
+		this.unit = unit ;
 		back = applicationFactory.getBack();
 	}
 
@@ -36,7 +37,7 @@ public class WorkerSpecialAction implements SpecialActionManager {
 		case BUILD:
 			String buildingType = action.getData();
 			Building building = BuildingFactory.constructBuilding(buildingType);
-			back.buildOnTile(unitData.getLocation().x, unitData.getLocation().y, building);
+			back.buildOnTile(unit.getLocation().x, unit.getLocation().y, building);
 			break;
 		}
 		

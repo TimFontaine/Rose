@@ -59,9 +59,6 @@ public class InterfaceTranslator extends BasicPlayer {
 	public void doLogic() {
 		for (Actor actor : playerData.getActors()) {
 			activeItem = actor;
-			if (((UnitData)activeItem.getData()).getState() == UnitState.MULTI) {
-				activeItem.handleMultiOrder();
-			}
 		}
 	}
 	
@@ -75,7 +72,7 @@ public class InterfaceTranslator extends BasicPlayer {
 		if (activeItem == null) {
 			return;
 		}
-		Point location = activeItem.getData().getLocation();
+		Point location = activeItem.getUnit().getLocation();
 		switch (direction) {
 		case DOWN:
 			location.y+=amount;
@@ -97,7 +94,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	
 	public void gotoLocation(Point destination) {
 		ComplexOrder order = new ComplexOrder();
-		Job job = new GotoJob(activeItem, destination);
+		Job job = new GotoJob(activeItem.getUnit(), destination);
 		job.setType(JobType.PATH);
 		order.addJob(job);
 		activeItem.setComplexOrder(order);
@@ -129,7 +126,7 @@ public class InterfaceTranslator extends BasicPlayer {
 		Node node = back.getNode(location.x, location.y);
 		if (node.containsUnit()) {
 			Unit unit = node.getUnits().get(0);
-			activeItem = (Actor)unit;
+			activeItem = unit.getActor();
 			return Selection.UNIT;
 		}else if (node.containsItem()) {
 			selectedBuilding = (Building) node.getItem();
@@ -140,8 +137,12 @@ public class InterfaceTranslator extends BasicPlayer {
 		}
 	}
 	
+	public void addActor(Actor actor) {
+		
+	}
+	
 	public List<String> getPossibleUnitActions() {
-		return resourceInfo.getUnitActions(activeItem.getType());
+		return resourceInfo.getUnitActions(activeItem.getUnit().getType());
 	}
 
 	public Actor getActiveUnit() {

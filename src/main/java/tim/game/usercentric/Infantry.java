@@ -6,6 +6,7 @@ package tim.game.usercentric;
 import java.awt.Point;
 import java.util.List;
 
+import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.data.unit.Unit;
 import tim.game.back.scheduler.Order;
@@ -14,43 +15,17 @@ import tim.game.back.scheduler.Order;
  * @author tim
  *
  */
-public class Infantry extends Unit implements Actor {
+public class Infantry extends BasicActor implements Actor {
 	
 	private UnitData unitData;
 
 	/**
-	 * @param name
+	 * @param unit
 	 */
-	public Infantry(String name) {
-		super("infantry", name);
+	public Infantry(Unit unit) {
+		super(unit);
+		unit.setActor(this);
 		unitData = new UnitData();
-	}
-
-	/* (non-Javadoc)
-	 * @see tim.data.unit.Unit#initJob()
-	 */
-	@Override
-	public void initJob() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	/* (non-Javadoc)
-	 * @see tim.data.unit.Unit#giveOrder(tim.game.back.scheduler.Order)
-	 */
-	@Override
-	public void giveOrder(Order order) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see tim.data.back.Thing#doLogic()
-	 */
-	@Override
-	public void doLogic() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	/* (non-Javadoc)
@@ -58,11 +33,11 @@ public class Infantry extends Unit implements Actor {
 	 */
 	@Override
 	public void move(int x, int y) {
-		if (back.getNode(x, y).containsMapItem()) {
+		Node node = back.getNode(x, y);
+		if (containsEnemy(node)) {
 			attack(new Point(x, y));
 		}
-		back.moveUnit(this, x, y);
-		setLocation(new Point(x,y));
+		back.moveUnit(unit, x, y);
 	}
 	
 	/* (non-Javadoc)
@@ -84,14 +59,6 @@ public class Infantry extends Unit implements Actor {
 	}
 
 	/* (non-Javadoc)
-	 * @see tim.game.usercentric.Actor#getData()
-	 */
-	@Override
-	public ActorData getData() {
-		return unitData;
-	}
-
-	/* (non-Javadoc)
 	 * @see tim.game.usercentric.Actor#handleMultiOrder()
 	 */
 	@Override
@@ -105,6 +72,15 @@ public class Infantry extends Unit implements Actor {
 	 */
 	@Override
 	public void setComplexOrder(ComplexOrder order) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.usercentric.Actor#initTurn()
+	 */
+	@Override
+	public void initTurn() {
 		// TODO Auto-generated method stub
 		
 	}

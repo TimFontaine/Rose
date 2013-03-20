@@ -4,10 +4,12 @@
 package tim.game.factory;
 
 import tim.data.back.RoseObject;
+import tim.data.unit.Unit;
 import tim.data.unit.Worker;
 import tim.game.ai.SimpleGoalAI;
 import tim.game.ai.SimplePlayerAI;
 import tim.game.back.scheduler.GridPlayer;
+import tim.game.usercentric.Actor;
 import tim.game.usercentric.WorkerActor;
 import tim.game.usercentric.Infantry;
 
@@ -42,7 +44,8 @@ public class RoseObjectFactory {
 			roseObject = new SimplePlayerAI("simplePlayer");
 			roseObject.setImageName("player");
 		} else if ("worker".equals(name)) {
-			roseObject = new WorkerActor("worker", "worker");
+			roseObject = new Unit("worker", "worker");
+			Actor actor = new WorkerActor((Worker)roseObject);
 			//roseObject = new Worker("worker");
 			roseObject.setType("worker");
 			roseObject.setImageName("builder");
@@ -50,10 +53,22 @@ public class RoseObjectFactory {
 			roseObject = new SimpleGoalAI();
 		} else if ("GridPlayer".equals(name)) {
 			roseObject = new GridPlayer();
-		} else if ("infantry".equals(name)) {
-			roseObject = new Infantry("infantry");
-		}
+		} 
 		return roseObject;
+	}
+	
+	public Unit getUnit(String name) {
+		Unit unit = null;
+		if (name.equals("worker")) {
+			unit = new Unit("worker", "worker");
+			Actor actor = new WorkerActor(unit);
+			unit.setImageName("builder");
+		} else if (name.equals("infantry")) {
+			unit = new Unit("infantry", "infantry");
+			Actor actor = new Infantry(unit);
+			unit.setImageName("infantry");
+		}
+		return unit;
 	}
 
 }

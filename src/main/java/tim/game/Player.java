@@ -8,6 +8,7 @@ import tim.data.back.Item;
 import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.data.unit.UnitOrder;
+import tim.game.usercentric.Actor;
 
 /**
  * @author tfontaine
@@ -28,4 +29,9 @@ public interface Player {
 	void addBuilding(Building building);
 	
 	public void addUsedItem(Item item);
+
+	/**
+	 * @param unit
+	 */
+	public void addActor(Actor actor);
 }

@@ -35,7 +35,6 @@ public class Back {
 	
 	private Map map;
 	private List<Event> events;
-//	private Thing flag;
 	
 	private List<Player> playerList;
 	private Player activePlayer;
@@ -187,18 +186,16 @@ public class Back {
 	public void moveUnit(Unit unit, int x, int y) {
 		Point location = unit.getLocation(); 
 		map.getNode(location.x, location.y).removeUnit(unit);
-		int size = map.getNode(location.x, location.y).getUnits().size();
-		System.out.println("size:" + size);
 		map.getNode(x, y).addUnit(unit);
-		location.setLocation(x, y);
+		unit.setLocation(new Point(x, y));
 	}
 	
 	public Path findNearestObject(Thing thing, String itemName) {
 		return findNearestObject(thing.getX(), thing.getY(), itemName);
 	}
 	
-	public Path findNearestObject(Actor actor, String itemName) {
-		return findNearestObject(actor.getLocation().x, actor.getLocation().y, itemName);
+	public Path findNearestObject(Unit unit, String itemName) {
+		return findNearestObject(unit.getLocation().x, unit.getLocation().y, itemName);
 	}
 	
 	public Path findNearestObject(int startX, int startY, String itemName) {
@@ -306,8 +303,11 @@ public class Back {
 	//for the mapbuilder
 	public void addUnit(Player player, Unit unit) {
 		System.out.println("adding unit to player");
+		String name = unit.getName() + itemId++;
+		unit.setName(name);
 		getMapItems().add(unit);
-		player.addUnit(unit);
+		player.addActor(unit.getActor());
+		unit.setPlayer(player);
 		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
 	}
 	
@@ -316,16 +316,12 @@ public class Back {
 		String name = unit.getName() + itemId++;
 		unit.setName(name);
 		getMapItems().add(unit);
-//		activePlayer.addUnit(unit);
+		activePlayer.addActor(unit.getActor());
+		unit.setPlayer(activePlayer);
 		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
 	}
 	
-	public void removeUnit(Point point) {
 		
-	}
-	
-	
-	
 	//add an item if it used by another item
 	public void addUsedItem(Item item) {
 		activePlayer.addUsedItem(item);
