@@ -14,6 +14,7 @@ import tim.data.unit.Unit;
 import tim.data.unit.UnitOrder;
 import tim.game.Player;
 import tim.game.usercentric.Actor;
+import tim.game.usercentric.PlayerData;
 
 /**
  * @author tfontaine
@@ -21,8 +22,10 @@ import tim.game.usercentric.Actor;
  */
 public class BasicPlayer extends RoseObject implements Player {
 	
+	
 	protected List<Unit> units; 
 	protected List<Building> buildings;
+	protected PlayerData playerData;
 
 	/**
 	 * 
@@ -31,6 +34,7 @@ public class BasicPlayer extends RoseObject implements Player {
 		super("basicPlayer");
 		units = new ArrayList<Unit>();
 		buildings = new ArrayList<Building>();
+		playerData = new PlayerData();
 				
 	}
 
@@ -102,8 +106,7 @@ public class BasicPlayer extends RoseObject implements Player {
 	 */
 	@Override
 	public void addActor(Actor actor) {
-		// TODO Auto-generated method stub
-		
+		playerData.addActor(actor);
 	}
 
 }

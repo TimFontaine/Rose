@@ -54,12 +54,12 @@ public class Interface implements ActionListener {
 		panel.setSize(frame.getWidth(), 100);
 		panel.setLocation(0, frame.getHeight() - 100);
 		frame.getContentPane().add(panel);
-		JPanel travel = new TravelSpeedMenu(mediator);
+//		JPanel travel = new TravelSpeedMenu(mediator);
 		mediator.switchItemPanel(Selection.NONE);
 		
-		travel.setBackground(Color.white);
+//		travel.setBackground(Color.white);
 //		travel.setSize(300, 300);
-		travel.setLocation(300, 300);
+//		travel.setLocation(300, 300);
 
 	}
 	

@@ -70,7 +70,7 @@ public class Mediator {
 	}
 
 	public void updateSpeed(Map speedMap) {
-		back.updateSpeed(speedMap);
+//		back.updateSpeed(speedMap);
 		frame.setFocusable(true);
 		frame.requestFocusInWindow();
 	}
@@ -86,7 +86,7 @@ public class Mediator {
 	}
 	
 	public Map<String, Integer> getSpeedSettings() {
-		return back.getSpeed();
+		return null;
 	}
 
 	public void handleEvents() {

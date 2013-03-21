@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tim.data.unit.Unit;
+import tim.game.Player;
 import tim.game.usercentric.Actor;
 
 /**
@@ -33,6 +34,8 @@ public class Node implements Comparable<Node>, Serializable{
 	
 	private int travelWeight = 50;
 	private static final int default_travelWeight= 10;
+	
+	private Player owner;
 	
 	public Node(int x, int y) {
 		this.x = x;
@@ -193,14 +196,16 @@ public class Node implements Comparable<Node>, Serializable{
      
     public void addUnit(Unit unit) {
     	units.add(unit);
+    	updateOwner();
     }
-    
-    public void addUnit(Actor actor) {
+
+	public void addUnit(Actor actor) {
     	units.add((Unit) actor);
     }
     
     public void removeUnit(Unit unit) {
     	units.remove(unit);
+    	updateOwner();
     }
     
     @Deprecated
@@ -226,6 +231,22 @@ public class Node implements Comparable<Node>, Serializable{
     	}
     	return null;
     }
+    
+
+    /**
+	 * @param unit
+	 */
+	private void updateOwner() {
+		if (containsMapItem()) {
+			if (containsUnit()) {
+				owner = units.get(0).getPlayer();
+			} else {
+				owner = item.getPlayer();
+			}
+		} else {
+			owner = null;
+		}
+	}
 
 
 	/**
@@ -305,6 +326,14 @@ public class Node implements Comparable<Node>, Serializable{
 	 */
 	public void removeItem(Item item) {
 		item = null;
+	}
+
+	public Player getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Player owner) {
+		this.owner = owner;
 	}
 	
 

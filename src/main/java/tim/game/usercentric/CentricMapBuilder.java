@@ -31,28 +31,34 @@ public class CentricMapBuilder {
 	
 	public void init() {
 		RoseObjectFactory factory = RoseObjectFactory.getInstance();
-		back.getMap().setupTiles(30,30, Back.defaultSpeed);
+		back.createMap(30, 30);
 //		back.buildOnTile(3, 3, "flag");
 		
 		PlayerData playerData = new PlayerData();
 		PlayerData playerDataAi = new PlayerData();
 //		
 		Unit unit = factory.getUnit("worker");
+		Unit unitAi = factory.getUnit("worker");
 		
-		Actor worker = unit.getActor();
+//		Actor worker = unit.getActor();
+//		Actor workerAi = unit.getActor();
 //		WorkerActor workerAi = new WorkerActor();
 		List<Actor> units = new ArrayList<Actor>();
 		List<Actor> unitsAI = new ArrayList<Actor>();
-		units.add(worker);
+//		units.add(worker);
 //		unitsAI.add(workerAi);
-		CentricAIPlayer aiPlayer = new CentricAIPlayer(playerDataAi);
+//		unitsAI.add(workerAi);
+		CentricAIPlayer aiPlayer = new CentricAIPlayer();
 		playerData.setActors(units);
 		playerDataAi.setActors(unitsAI);
-		interfaceTranslator = new InterfaceTranslator(playerData);
 		
+		
+		interfaceTranslator = new InterfaceTranslator();
+		back.addUnit(interfaceTranslator, unit);
+		back.addUnit(aiPlayer, unitAi);
 		back.addHumam(interfaceTranslator);
 		back.addPlayer(interfaceTranslator);
-//		back.addPlayer(aiPlayer);
+		back.addPlayer(aiPlayer);
 		back.addUnit(interfaceTranslator, unit);
 		//back.addUnit(workerAi);
 		

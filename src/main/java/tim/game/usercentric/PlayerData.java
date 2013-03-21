@@ -29,5 +29,13 @@ public class PlayerData {
 	public void setActors(List<Actor> units) {
 		this.actors = units;
 	}
+	
+	public void addActor(Actor actor) {
+		actors.add(actor);
+	}
+	
+	public void removeActor(Actor actor) {
+		actors.remove(actor);
+	}
 
 }

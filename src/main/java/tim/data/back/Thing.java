@@ -30,6 +30,8 @@ public abstract class Thing extends Item implements Serializable {
 	protected ResourcesData resourcesData;
 	protected EnumMap<Resource, MutableResource> resources;
 	
+	
+	
 	public Thing(String name) {
 		super(name);
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
@@ -115,15 +117,7 @@ public abstract class Thing extends Item implements Serializable {
 	public int getFreeStorage() {
 		return resourcesData.getFreeStorage();
 	}
-
-	public EnumMap<Resource, MutableResource> getResources() {
-		return resources;
-	}
-
-	public void setResources(EnumMap<Resource, MutableResource> resources) {
-		this.resources = resources;
-	}
-
+	
 //	public ResourcesData getResourcesData() {
 //		return resourcesData;
 //	}

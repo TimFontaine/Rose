@@ -42,7 +42,9 @@ public class Back {
 	private InterfaceTranslator trans;
 
 	public static final int defaultSpeed = 10;
-	private java.util.Map<String, Integer> speed;
+
+	private Point bounderies;
+	
 	
 	private int itemId;
 	/**
@@ -51,48 +53,15 @@ public class Back {
 	public Back() {
 		map = new Map();
 		events = new ArrayList<Event>();
-		setPlayerList(new ArrayList<Player>());
-//		otherPlayer = new Point();
-//		flag = new Thing();
-//		flag.setX(3);
-//		flag.setY(3);
-//		flag.setName("flag");
-		
-		speed = new HashMap<String, Integer>();
-		speed.put("default", defaultSpeed);
-		speed.put("road", 50);
-		speed.put("double-road", 70);
+		playerList = new ArrayList<Player>();
 	}
-	
-//	public int getX() {
-//		return x;
-//	}
-//
-//	public void setX(int x) {
-//		this.x = x;
-//	}
-//
-//	public int getY() {
-//		return y;
-//	}
-//
-//	public void setY(int y) {
-//		this.y = y;
-//	}
-
-//	public void putThing() {
-//		Thing thing = new Thing();
-//		thing.setX(x);
-//		thing.setY(y);
-//		map.getThingList().add(thing);
-//	}
 	
 	/**
 	 * 
 	 */
 	public void startGame() {
 		playerIterator = playerList.listIterator();
-		nextPlayer();
+		nextPlayer();//take the first plaer from the list
 		nextStep();
 	}
 	
@@ -125,42 +94,6 @@ public class Back {
 		map.getNode(x, y).setRoad(road);
 		map.getMapItems().add(road);
 	}
-
-	public void buildOnTile(int x, int y, String name) {
-		Building building = new Factory("building");
-		building.setX(x);
-		building.setY(y);
-		building.setName(name);
-		building.setType(name);
-		building.setImageName(name);
-		System.out.println("item build:" + name);
-		if (name.equals("block")) {
-			getNode(building.getX(), building.getY()).setObstacle(true);
-		}
-		if (speed.get(name) != null) {
-			map.getNode(x, y).setTravelWeight(speed.get(name));
-			System.out.println("item build with speed:" + name + map.getNode(x, y).getTravelWeight());
-		}
-		map.getMapItems().add(building);
-		map.getNode(x, y).setItem(building);
-	}
-	
-	public Path calcPath(Point start) {
-		removePath();
-		getMap().shuffleNeighbours();
-		map.resetNodes();
-		AStar star = new AStar(map, new ClosestHeuristic());
-//		Path path = star.findShortestPath(start.x, start.y, flag.getX(), flag.getY());
-//		for (Node node: path.getPathNodes()) {
-//			Thing thing = new Thing();
-//			thing.setX(node.getX());
-//			thing.setY(node.getY());
-//			thing.setName("path");
-//			back.getThingList().add(thing);
-//		}
-//		return path;
-		return null;
-	}
 	
 	public Path findShortestPath(int startX, int startY, int endX, int endY) {
 		initSearchMap();
@@ -169,14 +102,6 @@ public class Back {
 		return path;
 	}
 	
-//	public int moveUnit(Unit unit, int x, int y) {
-//		map.getNode(unit.getX(), unit.getY()).removeUnit(unit);
-//		map.getNode(x, y).addUnit(unit);
-//		unit.setX(x);
-//		unit.setY(y);
-//		return 0;
-//	}
-//	
 	public void moveUnit(Point source, Point target, Actor actor) {
 		map.getNode(source.x, source.y).removeUnit(actor);
 		map.getNode(target.x, target.y).addUnit(actor);
@@ -190,10 +115,6 @@ public class Back {
 		unit.setLocation(new Point(x, y));
 	}
 	
-	public Path findNearestObject(Thing thing, String itemName) {
-		return findNearestObject(thing.getX(), thing.getY(), itemName);
-	}
-	
 	public Path findNearestObject(Unit unit, String itemName) {
 		return findNearestObject(unit.getLocation().x, unit.getLocation().y, itemName);
 	}
@@ -203,16 +124,6 @@ public class Back {
 		Dijkstra dijkstra = new Dijkstra();
 		Path path = dijkstra.findClosestItem(startX, startY, map, itemName);
 		return path;
-	}
-	
-	public void addPath(Path path) {
-//		for (Node node: path.getPathNodes()) {
-//			Item thing = new Item("path item");
-//			thing.setX(node.getX());
-//			thing.setY(node.getY());
-//			thing.setName("path");
-//			back.getThingList().add(thing);
-//		}
 	}
 	
 	private void removePath() {
@@ -231,26 +142,8 @@ public class Back {
 	
 	private void initSearchMap() {
 		removePath();
-		getMap().shuffleNeighbours();
+		map.shuffleNeighbours();
 		map.resetNodes();
-	}
-	
-
-	public void updateSpeed(java.util.Map<String, Integer> travelSpeed) {
-		for (int i = 0; i < map.getSizeX(); i++) {
-			for (int j=0; j<map.getSizeY(); j++) {
-				Node node = map.getNode(i, j);
-				node.setTravelWeight(travelSpeed.get("default"));
-			}
-		}
-		for (MapItem mapItem: map.getMapItems()) {
-			if (travelSpeed.containsKey(mapItem.getName())) {
-				int speed = travelSpeed.get(mapItem.getName());
-				map.getNode(mapItem.getX(), mapItem.getY()).setTravelWeight(speed);
-			}
-		}
-		this.speed = travelSpeed;
-		
 	}
 	
 	public void nextPlayer() {
@@ -280,24 +173,8 @@ public class Back {
 		return events;
 	}	
 
-	public Map getMap() {
-		return map;
-	}
-	
-	public void setMap(Map map) {
-		this.map = map;
-	}
-
-	public java.util.Map<String, Integer> getSpeed() {
-		return speed;
-	}
-
 	public List<Player> getPlayerList() {
 		return playerList;
-	}
-
-	public void setPlayerList(List<Player> playerList) {
-		this.playerList = playerList;
 	}
 
 	//for the mapbuilder
@@ -327,11 +204,10 @@ public class Back {
 		activePlayer.addUsedItem(item);
 	}
 	
-//	public void addBuilding(Player player, Building building) {
-//		back.getMapItems().add(building);
-//		player.addBuilding(building);
-//		map.getNode(building.getX(), building.getY()).setBuilding(building);
-//	}
+	public void createMap(int sizeX, int sizeY) {
+		map.setupTiles(sizeX, sizeY, 1);
+		setBounderies(new Point(sizeX, sizeY));
+	}
 	
 	public void addItem(Item item) {
 		getMapItems().add(item);
@@ -346,19 +222,9 @@ public class Back {
 		addItem(building);
 		player.addBuilding(building);
 	}
-	
-	public Player getActivePlayer() {
-		return activePlayer;
-	}
 
 	public Node getNode(int x, int y) {
 		return map.getNode(x, y);
-	}
-
-	
-	public void addHumam(InterfaceTranslator trans) {
-		this.trans = trans;
-		
 	}
 
 	public InterfaceTranslator getTrans() {
@@ -367,6 +233,19 @@ public class Back {
 
 	public void setTrans(InterfaceTranslator trans) {
 		this.trans = trans;
+	}
+	
+	public void addHumam(InterfaceTranslator trans) {
+		this.trans = trans;
+	}
+	
+	public boolean containsEnemy(Point location) {
+		Node target = getNode(location.x, location.y);
+		Player owner = target.getOwner();
+		if (owner != null && activePlayer != target.getOwner()) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -382,6 +261,14 @@ public class Back {
 			node.removeItem(item);
 			map.getMapItems().remove(item);
 		}
+	}
+
+	public Point getBounderies() {
+		return bounderies;
+	}
+
+	public void setBounderies(Point bounderies) {
+		this.bounderies = bounderies;
 	}
 
 	

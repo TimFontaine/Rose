@@ -12,14 +12,12 @@ import tim.game.ai.BasicPlayer;
  */
 public class CentricAIPlayer extends BasicPlayer {
 	
-	private PlayerData playerData;
 	private Actor activeUnit;
 
 	/**
-	 * @param playerData 
 	 * 
 	 */
-	public CentricAIPlayer(PlayerData playerData) {
+	public CentricAIPlayer() {
 		this.playerData = playerData;
 	}
 	

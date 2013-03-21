@@ -19,6 +19,7 @@ public interface Actor {
 	public void attack(Point point);
 	public void specialAction(SpecialAction action);
 	public void handleMultiOrder();
+	public boolean canAttack();
 	
 
 	/**

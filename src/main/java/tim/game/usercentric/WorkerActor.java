@@ -93,6 +93,10 @@ public class WorkerActor extends BasicActor implements Actor{
 	public void attack(Point point) {
 		throw new UnsupportedOperationException();
 	}
+	
+	public boolean canAttack() {
+		return false;
+	}
 
 	/* (non-Javadoc)
 	 * @see tim.game.usercentric.Actor#initTurn()

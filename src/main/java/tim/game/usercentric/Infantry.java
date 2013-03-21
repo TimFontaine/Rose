@@ -17,15 +17,12 @@ import tim.game.back.scheduler.Order;
  */
 public class Infantry extends BasicActor implements Actor {
 	
-	private UnitData unitData;
-
 	/**
 	 * @param unit
 	 */
 	public Infantry(Unit unit) {
 		super(unit);
 		unit.setActor(this);
-		unitData = new UnitData();
 	}
 
 	/* (non-Javadoc)
@@ -33,10 +30,6 @@ public class Infantry extends BasicActor implements Actor {
 	 */
 	@Override
 	public void move(int x, int y) {
-		Node node = back.getNode(x, y);
-		if (containsEnemy(node)) {
-			attack(new Point(x, y));
-		}
 		back.moveUnit(unit, x, y);
 	}
 	
@@ -83,6 +76,14 @@ public class Infantry extends BasicActor implements Actor {
 	public void initTurn() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.game.usercentric.Actor#canAttack()
+	 */
+	@Override
+	public boolean canAttack() {
+		return true;
 	}
 
 }

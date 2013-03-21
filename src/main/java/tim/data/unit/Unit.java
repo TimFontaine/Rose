@@ -37,7 +37,6 @@ public class Unit extends Thing {
 //	protected UnitOrder order;
 	protected Order order;
 	
-	private Player player;
 	private Actor actor;
 	
 	/**
@@ -140,14 +139,6 @@ public class Unit extends Thing {
 	public void doLogic() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
 	}
 
 	public Actor getActor() {

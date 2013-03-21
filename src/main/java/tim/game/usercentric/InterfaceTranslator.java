@@ -6,6 +6,8 @@ package tim.game.usercentric;
 import java.awt.Point;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import tim.data.back.Direction;
 import tim.data.back.Node;
 import tim.data.building.Building;
@@ -24,6 +26,7 @@ import tim.game.usercentric.UnitData.UnitState;
  * contains a link to playerdata
  * 
  * -split in usertranslator and buildingtranslator
+ * user player differs from simple player that they do validation
  * @author tfontaine
  *
  */
@@ -31,9 +34,9 @@ public class InterfaceTranslator extends BasicPlayer {
 	
 	ResourceInfo resourceInfo;
 	
-	private PlayerData playerData;
 	Actor activeItem;
 	Building selectedBuilding;//human player only
+	
 	
 	public enum Selection {
 		UNIT,
@@ -43,11 +46,10 @@ public class InterfaceTranslator extends BasicPlayer {
 	
 	Back back;
 	
-	public InterfaceTranslator(PlayerData playerData) {
+	public InterfaceTranslator() {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		back = applicationFactory.getBack();
 		resourceInfo = applicationFactory.getResourceInfo();
-		this.playerData = playerData;
 	}
 	
 	public void initTurn() {
@@ -64,6 +66,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	
 	/**
 	 * humans can make mistakes, check
+	 * humans just move, translate in move or attack
 	 * @param direction
 	 * @param amount
 	 */
@@ -72,24 +75,60 @@ public class InterfaceTranslator extends BasicPlayer {
 		if (activeItem == null) {
 			return;
 		}
+		
+		Point newLocation = translateMove(direction);
+		boolean legal = testMoveLegal(newLocation);
+		if (!legal) {
+			return;
+		}
+		
+		boolean containsEnemy = back.containsEnemy(newLocation);
+		if (containsEnemy && activeItem.canAttack()) {
+			activeItem.attack(newLocation);
+		} else {
+			activeItem.move(newLocation.x, newLocation.y);
+		}
+	}
+	
+	/**
+	 * @param newLocation
+	 * @return
+	 */
+	private boolean testMoveLegal(Point location) {
+		if (location.x < 0 || location.y < 0) {
+			return false;
+		}
+		Point bounderies = back.getBounderies();
+		if (location.x >= bounderies.x || location.y >= bounderies.y) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * move to bridge pattern
+	 */
+	private Point translateMove(Direction direction) {
+		
 		Point location = activeItem.getUnit().getLocation();
 		switch (direction) {
 		case DOWN:
-			location.y+=amount;
+			location.y++;
 			break;
 		case UP:
-			location.y-=amount;
+			location.y--;
 			break;
 		case LEFT:
-			location.x-=amount;
+			location.x--;
 			break;
 		case RIGHT:
-			location.x+=amount;
+			location.x++;
 			break;
 		default:
 			break;
 		}
-		activeItem.move(location.x, location.y);
+		
+		return location;
 	}
 	
 	public void gotoLocation(Point destination) {
@@ -135,10 +174,6 @@ public class InterfaceTranslator extends BasicPlayer {
 			activeItem = null;
 			return Selection.NONE;
 		}
-	}
-	
-	public void addActor(Actor actor) {
-		
 	}
 	
 	public List<String> getPossibleUnitActions() {
