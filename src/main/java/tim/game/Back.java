@@ -47,6 +47,7 @@ public class Back {
 	
 	
 	private int itemId;
+	
 	/**
 	 * 
 	 */
@@ -199,6 +200,11 @@ public class Back {
 	}
 	
 		
+	public void removeUnit(Unit unit) {
+		map.getNode(unit.getX(), unit.getY()).removeUnit(unit);
+		map.getMapItems().remove(unit);
+	}
+	
 	//add an item if it used by another item
 	public void addUsedItem(Item item) {
 		activePlayer.addUsedItem(item);
@@ -269,6 +275,28 @@ public class Back {
 
 	public void setBounderies(Point bounderies) {
 		this.bounderies = bounderies;
+	}
+
+	/**
+	 * @param location
+	 */
+	public void attack(Unit attacker, Point location) {
+		Node target = map.getNode(location.x, location.y);
+		Unit defender = target.getUnits().get(0);
+		
+		int defence = defender.getStrength();//ignore for the moment
+		int attack = attacker.getAttack();
+		int defenderStrength = defender.getStrength();
+		
+		defenderStrength-= attack;
+		if (defenderStrength < 0) {
+			//defender dies
+			removeUnit(defender);
+		} else {
+			//update defender strength
+			defender.setStrength(defenderStrength);
+		}
+		
 	}
 
 	

@@ -63,10 +63,13 @@ public class RoseObjectFactory {
 			unit = new Unit("worker", "worker");
 			Actor actor = new WorkerActor(unit);
 			unit.setImageName("builder");
+			unit.setStrength(10);
 		} else if (name.equals("infantry")) {
 			unit = new Unit("infantry", "infantry");
 			Actor actor = new Infantry(unit);
 			unit.setImageName("infantry");
+			unit.setStrength(20);
+			unit.setAttack(5);
 		}
 		return unit;
 	}

@@ -24,7 +24,6 @@ public class Unit extends Thing {
 	public static final int MAX_MOVES = 200;
 	public static final int MIN_MOVE_COST = 1;
 	protected UnitState defaultState = UnitState.IDLE;
-	public static int OIL_USAGE = 1;
 	
 	Job job;
 	Task task;
@@ -56,10 +55,6 @@ public class Unit extends Thing {
 	@Deprecated
 	public void initJob() {
 		
-	}
-	
-	public void useOil() {
-		oil-=OIL_USAGE;
 	}
 	
 	@Deprecated

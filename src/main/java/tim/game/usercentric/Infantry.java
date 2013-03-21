@@ -37,9 +37,12 @@ public class Infantry extends BasicActor implements Actor {
 	 * @see tim.game.usercentric.Actor#attack(java.awt.Point)
 	 */
 	@Override
-	public void attack(Point point) {
+	public void attack(Point location) {
 		//fight in actor layer or back ?
-		back.clearNode(point);
+		back.attack(unit,location);
+		if (!back.containsEnemy(location)) {
+			move(location.x, location.y);
+		}
 	}
 
 	/* (non-Javadoc)

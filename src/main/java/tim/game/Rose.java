@@ -29,6 +29,7 @@ import tim.game.factory.GameApplicationFactory;
 import tim.game.hud.Interface;
 import tim.game.hud.Mediator;
 import tim.game.usercentric.CentricMapBuilder;
+import tim.game.usercentric.InterfaceTranslator;
 
 
 /**
@@ -177,7 +178,8 @@ public class Rose extends Core {
 			gui.buildSystemMenu();
 		}
 		if (actionMap.get("nextTurn").isPressed()) {
-			applicationFactory.getBack().nextPlayer();
+			InterfaceTranslator trans = applicationFactory.getBack().getTrans();
+			trans.nextPlayer();
 		}
 		
 	}

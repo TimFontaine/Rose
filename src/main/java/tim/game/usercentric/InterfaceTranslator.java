@@ -37,6 +37,8 @@ public class InterfaceTranslator extends BasicPlayer {
 	Actor activeItem;
 	Building selectedBuilding;//human player only
 	
+	private boolean active;
+	
 	
 	public enum Selection {
 		UNIT,
@@ -53,9 +55,11 @@ public class InterfaceTranslator extends BasicPlayer {
 	}
 	
 	public void initTurn() {
+		active = true;
 		for (Building building : buildings) {
 			building.doLogic();
 		}
+		activeItem = playerData.getActors().get(0);
 	}
 	
 	public void doLogic() {
@@ -72,7 +76,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	 */
 	public void move(Direction direction, int amount) {
 		//remove later
-		if (activeItem == null) {
+		if (!active || activeItem == null) {
 			return;
 		}
 		
@@ -83,7 +87,7 @@ public class InterfaceTranslator extends BasicPlayer {
 		}
 		
 		boolean containsEnemy = back.containsEnemy(newLocation);
-		if (containsEnemy && activeItem.canAttack()) {
+		if (activeItem.canAttack() && containsEnemy) {
 			activeItem.attack(newLocation);
 		} else {
 			activeItem.move(newLocation.x, newLocation.y);
@@ -194,6 +198,14 @@ public class InterfaceTranslator extends BasicPlayer {
 
 	public void setSelectedBuilding(Building selectedBuilding) {
 		this.selectedBuilding = selectedBuilding;
+	}
+
+	/**
+	 * 
+	 */
+	public void nextPlayer() {
+		active = false;
+		back.nextPlayer();
 	}
 
 }
