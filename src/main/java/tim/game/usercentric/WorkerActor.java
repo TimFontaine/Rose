@@ -11,6 +11,7 @@ import tim.data.back.MapItem;
 import tim.data.back.Path;
 import tim.data.unit.Unit;
 import tim.game.Back;
+import tim.game.ai.data.MutableResource.Resource;
 import tim.game.ai.job.GotoJob;
 import tim.game.ai.job.Job;
 import tim.game.back.scheduler.Order;
@@ -67,6 +68,11 @@ public class WorkerActor extends BasicActor implements Actor{
 	
 	public void move(int x, int y) {
 		back.moveUnit(unit, x, y);
+		//are we on a resource location?
+		Resource resource = back.getResourceEntitiy(new Point(x,y));
+		if (resource != Resource.NONE) {
+			back.transferResource(this.getUnit(), new Point(x,y));
+		}
 	}
 	
 	public void specialAction(SpecialAction action){

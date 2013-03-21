@@ -21,8 +21,10 @@ import tim.data.back.Road;
 import tim.data.back.Thing;
 import tim.data.building.Building;
 import tim.data.unit.Unit;
+import tim.game.ai.data.MutableResource.Resource;
 import tim.game.usercentric.Actor;
 import tim.game.usercentric.InterfaceTranslator;
+import tim.game.usercentric.ResourceEntity;
 import tim.pathfinding.AStar;
 import tim.pathfinding.ClosestHeuristic;
 import tim.pathfinding.Dijkstra;
@@ -297,6 +299,29 @@ public class Back {
 			defender.setStrength(defenderStrength);
 		}
 		
+	}
+	
+	public Resource getResourceEntitiy(Point location) {
+		Node target = map.getNode(location.x, location.y);
+		if (target.containsItem() && target.getItem() instanceof ResourceEntity) {
+			ResourceEntity e = (ResourceEntity)target.getItem();
+			return e.provides();
+		}
+		return Resource.NONE;
+	}
+
+	/**
+	 * @param workerActor
+	 * @param point
+	 */
+	public void transferResource(Unit unit , Point location) {
+		Node target = map.getNode(location.x, location.y);
+		ResourceEntity e = (ResourceEntity)target.getItem();
+		//retreive from entity;
+		int amount = e.retreive();
+		Resource resource = e.provides();
+		
+		unit.getResourceContainer().addResource(resource, amount);
 	}
 
 	

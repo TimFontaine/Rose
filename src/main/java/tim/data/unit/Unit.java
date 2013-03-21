@@ -9,6 +9,7 @@ import java.util.List;
 import tim.data.back.Path;
 import tim.data.back.Thing;
 import tim.game.Player;
+import tim.game.ai.ResourceContainer;
 import tim.game.ai.Task;
 import tim.game.ai.job.Job;
 import tim.game.back.scheduler.Order;
@@ -38,6 +39,8 @@ public class Unit extends Thing {
 	
 	private Actor actor;
 	
+	private ResourceContainer resourceContainer;
+	
 	/**
 	 * 
 	 */
@@ -48,7 +51,7 @@ public class Unit extends Thing {
 		task = new Task();
 		task.addDestination("mine");
 		task.addDestination("factory");
-		
+		resourceContainer = new ResourceContainer();
 		state= UnitState.IDLE;
 	}
 	
@@ -142,6 +145,14 @@ public class Unit extends Thing {
 
 	public void setActor(Actor actor) {
 		this.actor = actor;
+	}
+
+	public ResourceContainer getResourceContainer() {
+		return resourceContainer;
+	}
+
+	public void setResourceContainer(ResourceContainer resourceContainer) {
+		this.resourceContainer = resourceContainer;
 	}
 
 }

@@ -13,6 +13,7 @@ public class MutableResource {
 	private int amount;
 	
 	public enum Resource {
+		NONE,
 		IRON,
 		OIL;
 	}
