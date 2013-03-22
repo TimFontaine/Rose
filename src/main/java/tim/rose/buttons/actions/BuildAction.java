@@ -35,10 +35,11 @@ public class BuildAction extends RoseAction {
 	public void doAction() {
 //		MouseInfoItem.mouseState = MouseState.SELECTED;
 //		MouseInfoItem.item = item;
-//		ScreenUtils.getInstance().changeMouseCursor(item);
-		SpecialAction action = SpecialAction.BUILD;
-		action.setData(item);
-		translator.specialAction(action);
+////		ScreenUtils.getInstance().changeMouseCursor(item);
+//		SpecialAction action = SpecialAction.BUILD;
+//		action.setData(item);
+//		translator.specialAction(action);
+		translator.addBuilding(item);
 	}
 	
 

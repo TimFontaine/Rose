@@ -13,6 +13,8 @@ import tim.game.ai.data.PlayerData;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.hud.Mediator;
 import tim.game.usercentric.InterfaceTranslator;
+import tim.pathfinding.AStar;
+import tim.pathfinding.ClosestHeuristic;
 
 /**
  * @author tfontaine
@@ -28,7 +30,10 @@ public class GameApplicationFactory {
 	
 	//playerData stored with the data and playerName
 	private Map<String, PlayerData> playerData;
-
+	
+	private InterfaceTranslator interfaceTranslator;
+	
+	AStar Astar;
 	/**
 	 * 
 	 */
@@ -57,6 +62,8 @@ public class GameApplicationFactory {
 		back = new Back();
 		mediator = new Mediator();
 		resourceInfo = ResourceInfo.getInstance();
+		interfaceTranslator = new InterfaceTranslator();
+		Astar = new AStar(null, new ClosestHeuristic());
 	}
 
 	public Mediator getMediator() {
@@ -69,6 +76,14 @@ public class GameApplicationFactory {
 
 	public ResourceInfo getResourceInfo() {
 		return resourceInfo;
+	}
+
+	public InterfaceTranslator getInterfaceTranslator() {
+		return interfaceTranslator;
+	}
+	
+	public AStar getAStar() {
+		return Astar;
 	}
 
 

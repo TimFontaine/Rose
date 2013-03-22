@@ -59,6 +59,8 @@ public class Rose extends Core {
 	GameAction nextStep = new GameAction();
 	Interface gui;
 	
+	InterfaceTranslator interfaceTranslator;
+	
 	int human = 1;
 
 	/**
@@ -67,14 +69,16 @@ public class Rose extends Core {
 	public Rose(GraphicsDevice gd) {
 		super(gd);
 		applicationFactory = GameApplicationFactory.getInstance();
-		CentricMapBuilder m = new CentricMapBuilder();
 		backGround = new BackGround(getWidth(), getWidth());
 		foreGround = new ForeGround(getWidth(), getHeight());
 		actionMap = new HashMap<String, GameAction>();
 		ResourceManager resourceManager = ResourceManager.getInstance();
 		mediator = applicationFactory.getMediator();
 		drawInterFace(null, this);
-		logic = new Logic(m.getInterfaceTranslator(),actionMap);
+		
+		
+		interfaceTranslator = applicationFactory.getInterfaceTranslator();
+		logic = new Logic(interfaceTranslator,actionMap);
 		play = true;
 		
 		initGame();
@@ -88,7 +92,10 @@ public class Rose extends Core {
         }
        
 		 this.validate();
-		 applicationFactory.getBack().startGame();
+		 
+		 CentricMapBuilder m = new CentricMapBuilder();
+		 m.construct();
+		 
 		run();
 	}
 
@@ -178,8 +185,7 @@ public class Rose extends Core {
 			gui.buildSystemMenu();
 		}
 		if (actionMap.get("nextTurn").isPressed()) {
-			InterfaceTranslator trans = applicationFactory.getBack().getTrans();
-			trans.nextPlayer();
+			interfaceTranslator.nextPlayer();
 		}
 		
 	}

@@ -29,7 +29,7 @@ public class UnitPanel extends JPanel implements ActionListener {
 	public UnitPanel() {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		Back back = applicationFactory.getBack();
-		translator = back.getTrans();
+		translator = applicationFactory.getInterfaceTranslator();
 		build();
 	}
 

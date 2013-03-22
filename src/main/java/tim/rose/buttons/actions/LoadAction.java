@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import tim.game.Map;
+import tim.pathfinding.PathfindingMap;
 
 /**
  * @author tfontaine
@@ -30,7 +30,7 @@ public class LoadAction extends RoseAction {
 		try {
 			FileInputStream fileInputStream = new FileInputStream("rose.ser");
 			ObjectInputStream ois = new ObjectInputStream(fileInputStream);
-			Map map = (Map) ois.readObject();
+			PathfindingMap map = (PathfindingMap) ois.readObject();
 			ois.close();
 			back.setMap(map);
 		} catch (FileNotFoundException e) {

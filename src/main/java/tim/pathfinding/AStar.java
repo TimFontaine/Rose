@@ -9,7 +9,6 @@ import java.util.List;
 
 import tim.data.back.Node;
 import tim.data.back.Path;
-import tim.game.Map;
 
 /**
  * @author tim
@@ -17,19 +16,19 @@ import tim.game.Map;
  */
 public class AStar {
 	
-	Map map;
-	List<Node> closedList;
+	PathfindingMap map;
+	List<AStarNode> closedList;
 	SortedNodeList openList;
 	Heuristic heuristic;
 
-	public AStar(Map map, Heuristic heuristic) {
+	public AStar(PathfindingMap map, Heuristic heuristic) {
 		this.map = map;
 		this.heuristic = heuristic;
 		
 	}
 	
 	public Path findShortestPath(int startX, int startY, int destinationX, int destinationY) { 
-		this.closedList = new ArrayList<Node>();
+		this.closedList = new ArrayList<AStarNode>();
 		this.openList = new SortedNodeList();
 		map.setStartLocation(startX, startY);
 		map.setGoalLocation(destinationX, destinationY);
@@ -42,7 +41,7 @@ public class AStar {
 		
 		while (openList.size() != 0) {
 			
-			Node current = openList.getFirst();
+			AStarNode current = openList.getFirst();
 		
 			 // check if our current Node location is the goal Node. If it is, we are done.
 			if (current.getX() == map.getGoalLocationX() && current.getY() == map.getGoalLocationY()) {
@@ -53,7 +52,7 @@ public class AStar {
 			closedList.add(current);
 			
 			
-			for (Node neighbour : current.getNeighbourList()) {
+			for (AStarNode neighbour : current.getNeighbourList()) {
 				boolean isNeighbourBetter = false;
 				if (closedList.contains(neighbour)) {
 					continue;
@@ -96,7 +95,7 @@ public class AStar {
 
 	private class SortedNodeList {
 
-		private ArrayList<Node> list = new ArrayList<Node>();
+		private ArrayList<AStarNode> list = new ArrayList<AStarNode>();
 
 		public int size() {
 			return list.size();
@@ -106,21 +105,21 @@ public class AStar {
 			list.clear();
 		}
 
-		public void add(Node node) {
+		public void add(AStarNode node) {
 			list.add(node);
 			Collections.sort(list);
 		}
 
-		public boolean contains(Node neighbour) {
+		public boolean contains(AStarNode neighbour) {
 			return list.contains(neighbour);
 		}
 
-		public void remove(Node current) {
+		public void remove(AStarNode current) {
 			list.remove(current);
 			
 		}
 
-		public Node getFirst() {
+		public AStarNode getFirst() {
 			return list.get(0);
 		}
 		

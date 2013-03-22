@@ -8,7 +8,6 @@ import java.util.PriorityQueue;
 import tim.data.back.Node;
 import tim.data.back.Path;
 import tim.data.back.Thing;
-import tim.game.Map;
 
 /**
  * @author tfontaine
@@ -23,7 +22,7 @@ public class Dijkstra {
 
 	}
 	
-	public Path findClosestItem(int startX, int startY, Map map, String type) {
+	public Path findClosestItem(int startX, int startY, PathfindingMap map, String type) {
 		Node start = map.getNode(startX, startY);
 		start.setDistanceFromStart(0);
 		PriorityQueue<Node> queue = new PriorityQueue<Node>();

@@ -3,14 +3,17 @@
  */
 package tim.game.usercentric;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
 import tim.data.back.Item;
+import tim.data.back.MapItem;
 import tim.data.back.Mine;
 import tim.data.back.Oilwell;
 import tim.data.unit.Unit;
 import tim.game.Back;
+import tim.game.Map;
 import tim.game.Player;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.factory.RoseObjectFactory;
@@ -21,17 +24,38 @@ import tim.game.factory.RoseObjectFactory;
  */
 public class CentricMapBuilder {
 	
-	Back back;
+	Back world;
 	private InterfaceTranslator interfaceTranslator;
 	
+	private int sizeX = 30;
+	private int sizeY = 30;
+	
+	Map map;
+	private List<Player> playerList;
+	private List<MapItem> mapItems;
+	
 	public CentricMapBuilder() {
-		back = GameApplicationFactory.getInstance().getBack();
-		init();
+		world = GameApplicationFactory.getInstance().getBack();
+		mapItems = new ArrayList<MapItem>();
+//		init();
+	}
+	
+	public void construct() {
+		constructMap();
+		constructPlayers();
+		assemble();
+		constructUnits();
+		setGraphics();
+		startGame();
+	}
+	
+	public void assemble() {
+		world.setMap(map);
+		world.setPlayerList(playerList);
 	}
 	
 	public void init() {
 		RoseObjectFactory factory = RoseObjectFactory.getInstance();
-		back.createMap(30, 30);
 //		back.buildOnTile(3, 3, "flag");
 		
 		PlayerData playerData = new PlayerData();
@@ -54,7 +78,7 @@ public class CentricMapBuilder {
 		
 		
 		interfaceTranslator = new InterfaceTranslator();
-		back.addUnit(interfaceTranslator, unit);
+		back.addUnit(unit);
 		back.addUnit(aiPlayer, unitAi);
 		back.addHumam(interfaceTranslator);
 		back.addPlayer(interfaceTranslator);
@@ -117,6 +141,77 @@ public class CentricMapBuilder {
 
 	public void setInterfaceTranslator(InterfaceTranslator interfaceTranslator) {
 		this.interfaceTranslator = interfaceTranslator;
+	}
+
+	/**
+	 * 
+	 */
+	public void constructMap() {
+		map = new Map(sizeX, sizeY);
+		//allocate resources;
+		Item mine = new Mine("mine");
+		Item oilwell = new Oilwell("oilwell");
+		mine.setImageName("mine");
+		mine.setX(2);
+		mine.setY(2);
+		mine.setType("mine");
+		
+		map.addItem(mine, 2,2);
+	
+		oilwell.setType("oilwell");
+		oilwell.setImageName("oilwell");
+		oilwell.setX(6);
+		oilwell.setY(8);
+		
+		map.addItem(oilwell, 6,8);
+		mapItems.add(mine);
+		mapItems.add(oilwell);
+		
+	}
+	
+	public void setGraphics() {
+		world.setMapItems(mapItems);
+	}
+	
+	public void constructPlayers() {
+		playerList = new ArrayList<Player>();
+		PlayerHand hand = new PlayerHand();
+		InterfaceTranslator trans = new InterfaceTranslator();
+		playerList.add(hand);
+	}
+	
+	public void constructUnits() {
+		for (Player player : playerList) {
+			Unit unit = new Unit("worker","worker");
+			player.addUnit(unit);
+			mapItems.add(unit);
+			world.addUnit(player, unit, new Point(0,0));
+		}
+	}
+	
+	private void startGame() {
+		world.startGame();
+	}
+
+	/**
+	 * @return
+	 */
+	public Map getMap() {
+		return map;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<Player> getPlayerList() {
+		return playerList;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<MapItem> getMapItems() {
+		return mapItems;
 	}
 
 }

@@ -39,7 +39,6 @@ public class InterfaceTranslator extends BasicPlayer {
 	
 	private boolean active;
 	
-	
 	public enum Selection {
 		UNIT,
 		BUILDING,
@@ -76,22 +75,22 @@ public class InterfaceTranslator extends BasicPlayer {
 	 */
 	public void move(Direction direction, int amount) {
 		//remove later
-		if (!active || activeItem == null) {
-			return;
-		}
-		
+//		if (!active || activeItem == null) {
+//			return;
+//		}
+//		
 		Point newLocation = translateMove(direction);
 		boolean legal = testMoveLegal(newLocation);
 		if (!legal) {
 			return;
 		}
 		
-		boolean containsEnemy = back.containsEnemy(newLocation);
-		if (activeItem.canAttack() && containsEnemy) {
-			activeItem.attack(newLocation);
-		} else {
-			activeItem.move(newLocation.x, newLocation.y);
-		}
+//		boolean containsEnemy = back.containsEnemy(newLocation);
+//		if (activeItem.canAttack() && containsEnemy) {
+//			activeItem.attack(newLocation);
+//		} else {
+			back.moveUnit(newLocation.x, newLocation.y);
+//		}
 	}
 	
 	/**
@@ -113,8 +112,8 @@ public class InterfaceTranslator extends BasicPlayer {
 	 * move to bridge pattern
 	 */
 	private Point translateMove(Direction direction) {
-		
-		Point location = activeItem.getUnit().getLocation();
+		Unit unit = back.getActiveUnit();
+		Point location = unit.getLocation();
 		switch (direction) {
 		case DOWN:
 			location.y++;
@@ -151,6 +150,14 @@ public class InterfaceTranslator extends BasicPlayer {
 			selectedBuilding.specialAction(action);
 		}
 	}
+	
+	/**
+	 * TODO return building data with link and blalbla
+	 * 
+	 */
+	public void addBuilding(String type) {
+		back.addBuilding(type);
+	}
 
 	public PlayerData getPlayerData() {
 		return playerData;
@@ -181,7 +188,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	}
 	
 	public List<String> getPossibleUnitActions() {
-		return resourceInfo.getUnitActions(activeItem.getUnit().getType());
+		return resourceInfo.getUnitActions(back.getActiveUnit().getType());
 	}
 
 	public Actor getActiveUnit() {

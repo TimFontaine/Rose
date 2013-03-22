@@ -53,6 +53,8 @@ public class Unit extends Thing {
 		task.addDestination("factory");
 		resourceContainer = new ResourceContainer();
 		state= UnitState.IDLE;
+		
+		setImageName("builder");
 	}
 	
 	@Deprecated

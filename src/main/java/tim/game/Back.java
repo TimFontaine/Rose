@@ -22,12 +22,15 @@ import tim.data.back.Thing;
 import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.game.ai.data.MutableResource.Resource;
+import tim.game.factory.GameApplicationFactory;
 import tim.game.usercentric.Actor;
+import tim.game.usercentric.CentricMapBuilder;
 import tim.game.usercentric.InterfaceTranslator;
 import tim.game.usercentric.ResourceEntity;
 import tim.pathfinding.AStar;
 import tim.pathfinding.ClosestHeuristic;
 import tim.pathfinding.Dijkstra;
+import tim.pathfinding.PathfindingMap;
 
 /**
  * @author tfontaine
@@ -40,6 +43,7 @@ public class Back {
 	
 	private List<Player> playerList;
 	private Player activePlayer;
+	private Unit activeUnit;
 	Iterator<Player> playerIterator;
 	private InterfaceTranslator trans;
 
@@ -50,71 +54,58 @@ public class Back {
 	
 	private int itemId;
 	
+	private List<MapItem> mapItems;
+	
+	GameApplicationFactory applicationFactory;
+	AStar aStar;
+	
 	/**
 	 * 
 	 */
 	public Back() {
-		map = new Map();
 		events = new ArrayList<Event>();
 		playerList = new ArrayList<Player>();
+		mapItems = new ArrayList<MapItem>();
 	}
 	
 	/**
 	 * 
 	 */
 	public void startGame() {
+		//assert builder has all configuration			
+//		CentricMapBuilder builder = new CentricMapBuilder();
+//		builder.constructMap();
+//		builder.constructPlayers();
+//		map = builder.getMap();
+//		playerList = builder.getPlayerList();
+//		builder.constructUnits();
+//		mapItems = builder.getMapItems();
+		
+		
 		playerIterator = playerList.listIterator();
 		nextPlayer();//take the first plaer from the list
 		nextStep();
+		
+		applicationFactory = GameApplicationFactory.getInstance();
+		aStar = applicationFactory.getAStar();
 	}
 	
 
 	public List<MapItem> getMapItems() {
-		return map.getMapItems();
-	}
-	
-	public void buildOnTile(int x, int y, Building building) {
-		map.getNode(x, y).setItem(building);
-		building.setLocation(new Point(x,y));
-		map.getMapItems().add(building);
-		activePlayer.addBuilding(building);
-	}
-	
-	public void buildOnTile(int x, int y, Item item) {
-		map.getNode(x, y).setItem(item);
-		item.setX(x);
-		item.setY(y);
-		/**
-		 * TODO
-		 * improve draw function later
-		 */
-		map.getMapItems().add(item);
-	}
-	
-	public void buildOnTile(int x, int y, Road road) {
-		road.setX(x);
-		road.setY(y);
-		map.getNode(x, y).setRoad(road);
-		map.getMapItems().add(road);
+		return mapItems;
 	}
 	
 	public Path findShortestPath(int startX, int startY, int endX, int endY) {
 		initSearchMap();
-		AStar star = new AStar(map, new ClosestHeuristic());
-		Path path = star.findShortestPath(startX, startY, endX, endY);
+		Path path = aStar.findShortestPath(startX, startY, endX, endY);
 		return path;
 	}
 	
-	public void moveUnit(Point source, Point target, Actor actor) {
-		map.getNode(source.x, source.y).removeUnit(actor);
-		map.getNode(target.x, target.y).addUnit(actor);
-		System.out.println("moved unit with name" + ((Unit)actor).getName());
-	}
-	
-	public void moveUnit(Unit unit, int x, int y) {
-		Point location = unit.getLocation(); 
-		map.getNode(location.x, location.y).removeUnit(unit);
-		map.getNode(x, y).addUnit(unit);
+	public void moveUnit(int x, int y) {
+		Unit unit = activeUnit;
+		Point location = unit.getLocation();
+		map.removeUnit(unit, location.x, location.y);
+		map.addUnit(unit, x, y);
 		unit.setLocation(new Point(x, y));
 	}
 	
@@ -128,23 +119,8 @@ public class Back {
 		Path path = dijkstra.findClosestItem(startX, startY, map, itemName);
 		return path;
 	}
-	
-	private void removePath() {
-		List<MapItem> newList = new ArrayList<MapItem>();
 		
-		List<MapItem> mapItems = map.getMapItems();
-		for (MapItem mapItem: mapItems) {
-			if (!mapItem.getName().equals("path")) {
-				newList.add(mapItem);
-			}
-		}
-		
-		map.setMapItemsList(newList);
-		
-	}
-	
 	private void initSearchMap() {
-		removePath();
 		map.shuffleNeighbours();
 		map.resetNodes();
 	}
@@ -181,56 +157,39 @@ public class Back {
 	}
 
 	//for the mapbuilder
-	public void addUnit(Player player, Unit unit) {
+	public void addUnit(Player player, Unit unit, Point location) {
 		System.out.println("adding unit to player");
 		String name = unit.getName() + itemId++;
 		unit.setName(name);
 		getMapItems().add(unit);
 		player.addActor(unit.getActor());
 		unit.setPlayer(player);
-		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
+		map.addUnit(unit, location.x, location.y);
+		unit.setLocation(location);
 	}
 	
-	public void addUnit(Unit unit) {
-		System.out.println("adding unit");
-		String name = unit.getName() + itemId++;
-		unit.setName(name);
-		getMapItems().add(unit);
-		activePlayer.addActor(unit.getActor());
-		unit.setPlayer(activePlayer);
-		map.getNode(unit.getX(), unit.getY()).addUnit(unit);
+	public void addUnit(Unit unit, Point location) {
+		addUnit(activePlayer, unit, location);
 	}
 	
 		
 	public void removeUnit(Unit unit) {
-		map.getNode(unit.getX(), unit.getY()).removeUnit(unit);
-		map.getMapItems().remove(unit);
+		map.removeUnit(unit, unit.getLocation().x, unit.getLocation().y);
+		getMapItems().remove(unit);
 	}
 	
-	//add an item if it used by another item
-	public void addUsedItem(Item item) {
-		activePlayer.addUsedItem(item);
+	public void addBuilding(Building building, Point location) {
+		addBuilding(activePlayer, building, location);
 	}
 	
-	public void createMap(int sizeX, int sizeY) {
-		map.setupTiles(sizeX, sizeY, 1);
-		setBounderies(new Point(sizeX, sizeY));
+	public void addBuilding(Player player, Building item, Point location) {
+		map.addItem(item, location.y, location.y);
+		player.addBuilding(item);
+		item.setX(location.x);
+		item.setY(location.y);
+		mapItems.add(item);
 	}
 	
-	public void addItem(Item item) {
-		getMapItems().add(item);
-		map.getNode(item.getX(), item.getY()).setItem(item);
-	}
-	
-	public void addBuilding(Building building) {
-		addItem(building);
-	}
-	
-	public void addBuilding(Player player, Building building) {
-		addItem(building);
-		player.addBuilding(building);
-	}
-
 	public Node getNode(int x, int y) {
 		return map.getNode(x, y);
 	}
@@ -256,23 +215,8 @@ public class Back {
 		return false;
 	}
 
-	/**
-	 * remove buildings and units from tile
-	 */
-	public void clearNode(Point point) {
-		Node node = getNode(point.x, point.y);
-		for (Unit unit : node.getUnits()) {
-			map.getMapItems().remove(unit);
-		}
-		if (node.containsItem()) {
-			Item item = node.getItem();
-			node.removeItem(item);
-			map.getMapItems().remove(item);
-		}
-	}
-
 	public Point getBounderies() {
-		return bounderies;
+		return map.getBounderies();
 	}
 
 	public void setBounderies(Point bounderies) {
@@ -322,6 +266,48 @@ public class Back {
 		Resource resource = e.provides();
 		
 		unit.getResourceContainer().addResource(resource, amount);
+	}
+
+	public void setMapItems(List<MapItem> mapItems) {
+		this.mapItems = mapItems;
+	}
+
+	/**
+	 * @return
+	 */
+	public Unit getActiveUnit() {
+		if (activeUnit == null) {
+			activeUnit = activePlayer.provideUnit();
+		}
+		return activeUnit;
+	}
+
+	public Player getActivePlayer() {
+		return activePlayer;
+	}
+
+	public void setActivePlayer(Player activePlayer) {
+		this.activePlayer = activePlayer;
+	}
+
+	public void setPlayerList(List<Player> playerList) {
+		this.playerList = playerList;
+	}
+
+	/**
+	 * 
+	 */
+	public void setMap(Map map) {
+		this.map = map;
+	}
+
+	/**
+	 * add a building on the position of the activeunit
+	 * TODO, use resources 
+	 */
+	public void addBuilding(String type) {
+		Building building = new Building(type, type);
+		addBuilding(building, activeUnit.getLocation());
 	}
 
 	

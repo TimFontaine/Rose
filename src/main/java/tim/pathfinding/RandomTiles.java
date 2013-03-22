@@ -21,7 +21,7 @@ public class RandomTiles {
 	/**
 	 * 
 	 */
-		  public static void shuffleList(List<Node> a) {
+		  public static void shuffleList(List<AStarNode> a) {
 		    int n = a.size();
 		    Random random = new Random();
 		    random.nextInt();
@@ -42,8 +42,8 @@ public class RandomTiles {
 			  }
 
 
-		  private static void swap(List<Node> a, int i, int change) {
-		    Node helper = a.get(i);
+		  private static void swap(List<AStarNode> a, int i, int change) {
+		    AStarNode helper = a.get(i);
 		    a.set(i, a.get(change));
 		    a.set(change, helper);
 		  }

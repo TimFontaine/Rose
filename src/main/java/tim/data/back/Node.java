@@ -11,21 +11,16 @@ import java.util.List;
 import tim.data.unit.Unit;
 import tim.game.Player;
 import tim.game.usercentric.Actor;
+import tim.pathfinding.AStarNode;
 
 /**
  * @author tim
  *
  */
-public class Node implements Comparable<Node>, Serializable{
+public class Node implements Serializable{
 	int x;
 	int y;
-	private boolean goal;
-	private boolean start;
-	private boolean obstacle;
-	private int distanceFromStart;
-	int heuristicDistanceFromGoal;
 	private transient Node previousNode = null;
-	private transient List<Node> neigborNodes;
 	private boolean visited;
 	
 	private List<Unit> units;
@@ -40,17 +35,9 @@ public class Node implements Comparable<Node>, Serializable{
 	public Node(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.distanceFromStart = Integer.MAX_VALUE;
+		
 		units = new ArrayList<Unit>();
 		travelWeight = default_travelWeight;
-	}
-	
-	public void setNeighborList(List<Node> neighbors) {
-		neigborNodes = neighbors;
-	}
-	
-	public List<Node> getNeighbourList() {
-		return neigborNodes;
 	}
 	
 	public int getX() {
@@ -70,56 +57,6 @@ public class Node implements Comparable<Node>, Serializable{
 		return new Point(x, y);
 	}
 
-	public boolean isGoal() {
-		return goal;
-	}
-
-	public void setGoal(boolean goal) {
-		this.goal = goal;
-	}
-
-	/**
-	 * @return the start
-	 */
-	public boolean isStart() {
-		return start;
-	}
-
-	/**
-	 * @param start the start to set
-	 */
-	public void setStart(boolean start) {
-		this.start = start;
-	}
-
-	public boolean isObstacle() {
-//		if (unit != null) {
-//			return true;
-//		}
-		return obstacle;
-	}
-
-	/**
-	 * @param obstacle the obstacle to set
-	 */
-	public void setObstacle(boolean obstacle) {
-		this.obstacle = obstacle;
-	}
-
-	/**
-	 * @return the distanceFromStart
-	 */
-	public int getDistanceFromStart() {
-		return distanceFromStart;
-	}
-
-	/**
-	 * @param distanceFromStart the distanceFromStart to set
-	 */
-	public void setDistanceFromStart(int distanceFromStart) {
-		this.distanceFromStart = distanceFromStart;
-	}
-
 	/**
 	 * @return the previousNode
 	 */
@@ -135,21 +72,6 @@ public class Node implements Comparable<Node>, Serializable{
 	}
 	
 
-	@Override
-	public int compareTo(Node other) {
-		int thisTotalDistanceFromGoal = heuristicDistanceFromGoal + distanceFromStart;
-		int otherTotalDistanceFromGoal = other.getHeuristicDistanceFromGoal() + other.getDistanceFromStart();
-		if (thisTotalDistanceFromGoal < otherTotalDistanceFromGoal) {
-			return -1;
-		} else if(thisTotalDistanceFromGoal > otherTotalDistanceFromGoal) {
-			return 1;
-		} else {
-			return 0;
-		}
-		
-		
-	}
-	
     public boolean equals(Node node) {
         return (node.x == x) && (node.y == y);
     }
@@ -248,20 +170,6 @@ public class Node implements Comparable<Node>, Serializable{
 		}
 	}
 
-
-	/**
-	 * @return the heuristicDistanceFromGoal
-	 */
-	public int getHeuristicDistanceFromGoal() {
-		return heuristicDistanceFromGoal;
-	}
-
-	/**
-	 * @param heuristicDistanceFromGoal the heuristicDistanceFromGoal to set
-	 */
-	public void setHeuristicDistanceFromGoal(int heuristicDistanceFromGoal) {
-		this.heuristicDistanceFromGoal = heuristicDistanceFromGoal;
-	}
 
 	public int getTravelWeight() {
 		return travelWeight;

@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import tim.game.Map;
+import tim.pathfinding.PathfindingMap;
 
 /**
  * @author tfontaine
@@ -28,7 +28,7 @@ public class SaveAction extends RoseAction {
 	 */
 	@Override
 	public void doAction() {
-		Map map = back.getMap();
+		PathfindingMap map = back.getMap();
 		try {
 			FileOutputStream fos = new FileOutputStream("rose.ser");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);

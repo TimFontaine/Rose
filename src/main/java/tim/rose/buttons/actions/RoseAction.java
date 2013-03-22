@@ -20,8 +20,7 @@ public abstract class RoseAction {
 	 * 
 	 */
 	public RoseAction() {
-		back = GameApplicationFactory.getInstance().getBack();
-		translator = back.getTrans();
+		translator = GameApplicationFactory.getInstance().getInterfaceTranslator();
 		
 	}
 	
