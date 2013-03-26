@@ -33,7 +33,6 @@ public class GameApplicationFactory {
 	
 	private InterfaceTranslator interfaceTranslator;
 	
-	AStar Astar;
 	/**
 	 * 
 	 */
@@ -63,7 +62,6 @@ public class GameApplicationFactory {
 		mediator = new Mediator();
 		resourceInfo = ResourceInfo.getInstance();
 		interfaceTranslator = new InterfaceTranslator();
-		Astar = new AStar(null, new ClosestHeuristic());
 	}
 
 	public Mediator getMediator() {
@@ -82,9 +80,4 @@ public class GameApplicationFactory {
 		return interfaceTranslator;
 	}
 	
-	public AStar getAStar() {
-		return Astar;
-	}
-
-
 }

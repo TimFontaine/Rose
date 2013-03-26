@@ -113,33 +113,35 @@ public class InterfaceTranslator extends BasicPlayer {
 	 */
 	private Point translateMove(Direction direction) {
 		Unit unit = back.getActiveUnit();
-		Point location = unit.getLocation();
+		Point newLocation = new Point(unit.getLocation());
 		switch (direction) {
 		case DOWN:
-			location.y++;
+			newLocation.y++;
 			break;
 		case UP:
-			location.y--;
+			newLocation.y--;
 			break;
 		case LEFT:
-			location.x--;
+			newLocation.x--;
 			break;
 		case RIGHT:
-			location.x++;
+			newLocation.x++;
 			break;
 		default:
 			break;
 		}
 		
-		return location;
+		return newLocation;
 	}
 	
+	
+	
+	/**
+	 * check destination is blocked
+	 * @param destination
+	 */
 	public void gotoLocation(Point destination) {
-		ComplexOrder order = new ComplexOrder();
-		Job job = new GotoJob(activeItem.getUnit(), destination);
-		job.setType(JobType.PATH);
-		order.addJob(job);
-		activeItem.setComplexOrder(order);
+		back.gotoLocation(destination);
 	}
 	
 	public void specialAction(SpecialAction action) {
@@ -176,7 +178,7 @@ public class InterfaceTranslator extends BasicPlayer {
 		Node node = back.getNode(location.x, location.y);
 		if (node.containsUnit()) {
 			Unit unit = node.getUnits().get(0);
-			activeItem = unit.getActor();
+			back.switchSelectedUnit(unit);
 			return Selection.UNIT;
 		}else if (node.containsItem()) {
 			selectedBuilding = (Building) node.getItem();

@@ -26,17 +26,36 @@ public class PathfindingMap implements Serializable {
 	private int goalLocationY;
 	
 	private Map map;
+	private AStarNode[][] nodes;
 	
 	private List<MapItem> mapItemsList;
 	
 	public PathfindingMap(Map map) {
 		mapItemsList = new ArrayList<MapItem>();
 		this.map = map;
-		init(sizeX, sizeY);
+		
+		init(map.getBounderies().x, map.getBounderies().y);
 	}
 	
 	
 	
+	/**
+	 * @param sizeX2
+	 * @param sizeY2
+	 */
+	private void init(int sizeX, int sizeY) {
+		nodes = new AStarNode[sizeX][sizeY];
+		for (int i = 0; i< sizeX; i++) {
+			for (int j=0; j< sizeY; j++) {
+				nodes[i][j] = new AStarNode(i, j);
+			}
+		}
+		
+		setupNeigbors(sizeX, sizeY);
+	}
+
+
+
 	public void setGoalLocation(int x, int y) {
 		nodes[goalLocationX][goalLocationY].setGoal(false);
 		nodes[x][y].setGoal(true);
@@ -69,6 +88,33 @@ public class PathfindingMap implements Serializable {
 				node.setStart(false);
 			}
 		}
+	}
+	
+	private void setupNeigbors(int width, int height) {
+		for (int x = 0; x< width; x++) {
+			for (int y=0; y< height; y++) {
+				List<AStarNode> list = new ArrayList<AStarNode>();
+				if (x + 1 < width ) {
+					list.add(nodes[x + 1][y]);
+				}
+				if (x != 0) {
+					list.add(nodes[x - 1][y]);
+				}
+				if (y + 1 < height ) {
+					list.add(nodes[x][y + 1]);
+				}
+				if (y != 0) {
+					list.add(nodes[x][y - 1]);
+				}
+				nodes[x][y].setNeighborList(list);
+				Collections.shuffle(list);
+			}
+		}
+	}
+	
+	public void initSearchMap() {
+		shuffleNeighbours();
+		resetNodes();
 	}
 	
 	public AStarNode getStartNode() {

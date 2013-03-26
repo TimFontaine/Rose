@@ -23,7 +23,7 @@ import tim.game.usercentric.SpecialAction;
  * a building is a thing that can not move
  *
  */
-public class Building extends Thing implements Actor {
+public class Building extends Thing {
 	
 	protected BuildingStateContext context;
 	
@@ -49,6 +49,7 @@ public class Building extends Thing implements Actor {
 		super(name);
 		buildingData = new BuildingData();
 		buildingData.setType(type);
+		this.setType(type);
 		resourceLocation = RESOURCELINK.LOCAL;
 		context = new BuildingStateContext(buildingData);
 		possibleActions = new ArrayList<String>();
@@ -73,6 +74,7 @@ public class Building extends Thing implements Actor {
 		possibleActions.add("infantry");
 		//remove, only use in graphics layer
 		buildingData.setState(BuildingState.CONSTRUCTING);
+		buildingData.setLocation(this.getLocation());
 	}
 	
 	public BuildingState getState() {
@@ -119,28 +121,12 @@ public class Building extends Thing implements Actor {
 		buildingData.setOrderName(itemName);
 	}
 	
-	public Point getLocation() {
-		return buildingData.getLocation();
-	}
-	
-	public void setLocation(Point location) {
-		this.x = location.x;
-		this.y = location.y;
-		buildingData.setLocation(location);
-	}
+//	public void setLocation(Point location) {
+//		this.x = location.x;
+//		this.y = location.y;
+//		buildingData.setLocation(location);
+//	}
 
-	/* (non-Javadoc)
-	 * @see tim.game.usercentric.CentricActions#move(int, int)
-	 */
-	@Override
-	public void move(int x, int y) {
-		throw new UnsupportedOperationException();
-	}
-
-	/* (non-Javadoc)
-	 * @see tim.game.usercentric.Actor#specialAction(tim.game.usercentric.SpecialAction)
-	 */
-	@Override
 	public void specialAction(SpecialAction action) {
 		System.out.println("special order to building given");
 		if (action == SpecialAction.PRODUCE) {
@@ -148,23 +134,6 @@ public class Building extends Thing implements Actor {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see tim.game.usercentric.Actor#getData()
-	 */
-	@Override
-	public ActorData getData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see tim.game.usercentric.Actor#attack(java.awt.Point)
-	 */
-	@Override
-	public void attack(Point point) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 //	public void setResourceLink(Building resourceLink) {
 //		this.resourceLink = resourceLink;

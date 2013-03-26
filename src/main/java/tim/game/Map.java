@@ -14,6 +14,7 @@ import tim.data.back.Node;
 import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.pathfinding.AStarNode;
+import tim.pathfinding.PathfindingMap;
 
 /**
  * @author tfontaine
@@ -22,8 +23,6 @@ import tim.pathfinding.AStarNode;
 public class Map {
 	
 	private Node[][] nodes;
-	
-	
 
 	/**
 	 * 
@@ -32,7 +31,7 @@ public class Map {
 		nodes = new Node[sizeX][sizeY];
 		for (int i = 0; i< sizeX; i++) {
 			for (int j=0; j< sizeY; j++) {
-				nodes[i][j] = new Node(i, j);;
+				nodes[i][j] = new Node(i, j);
 			}
 		}
 	}
@@ -90,7 +89,7 @@ public class Map {
 	 * @param y
 	 */
 	public void removeUnit(Unit unit, int x, int y) {
-		nodes[x][y].addUnit(unit);
+		nodes[x][y].removeUnit(unit);
 	}
 
 	/**

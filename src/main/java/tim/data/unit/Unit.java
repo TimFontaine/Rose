@@ -4,16 +4,14 @@
 package tim.data.unit;
 
 import java.awt.Point;
-import java.util.List;
 
-import tim.data.back.Path;
 import tim.data.back.Thing;
-import tim.game.Player;
 import tim.game.ai.ResourceContainer;
 import tim.game.ai.Task;
 import tim.game.ai.job.Job;
 import tim.game.back.scheduler.Order;
 import tim.game.usercentric.Actor;
+import tim.game.usercentric.ComplexOrder;
 
 /**
  * @author tfontaine
@@ -35,9 +33,8 @@ public class Unit extends Thing {
 	protected UnitState state;
 	
 //	protected UnitOrder order;
-	protected Order order;
+	protected ComplexOrder complexOrder;
 	
-	private Actor actor;
 	
 	private ResourceContainer resourceContainer;
 	
@@ -110,29 +107,7 @@ public class Unit extends Thing {
 		this.job = job;
 	}
 
-	/**
-	 * @param location
-	 */
-	public void setLocation(Point location) {
-		this.setX(location.x);
-		this.setY(location.y);
-	}
-
-	/**
-	 * @return the order
-	 */
-	public Order getOrder() {
-		return order;
-	}
-
-	/**
-	 * @param order the order to set
-	 */
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
-	/* (non-Javadoc)
+		/* (non-Javadoc)
 	 * @see tim.data.back.Thing#doLogic()
 	 */
 	@Override
@@ -141,20 +116,19 @@ public class Unit extends Thing {
 		
 	}
 
-	public Actor getActor() {
-		return actor;
-	}
-
-	public void setActor(Actor actor) {
-		this.actor = actor;
-	}
-
 	public ResourceContainer getResourceContainer() {
 		return resourceContainer;
 	}
 
 	public void setResourceContainer(ResourceContainer resourceContainer) {
 		this.resourceContainer = resourceContainer;
+	}
+
+	/**
+	 * @param order
+	 */
+	public void setComplexOrder(ComplexOrder order) {
+		this.complexOrder = order;
 	}
 
 }

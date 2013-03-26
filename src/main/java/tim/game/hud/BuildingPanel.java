@@ -25,12 +25,12 @@ import tim.rose.buttons.actions.BuildingOrderAction;
  */
 public class BuildingPanel extends JPanel implements ActionListener {
 	
-InterfaceTranslator translator;
+	InterfaceTranslator translator;
 	
 	public BuildingPanel() {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		Back back = applicationFactory.getBack();
-		translator = back.getTrans();
+		translator = applicationFactory.getInterfaceTranslator();
 		build();
 	}
 

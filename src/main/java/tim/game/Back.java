@@ -22,9 +22,14 @@ import tim.data.back.Thing;
 import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.game.ai.data.MutableResource.Resource;
+import tim.game.ai.job.GotoJob;
+import tim.game.ai.job.Job;
+import tim.game.ai.job.Job.JobType;
 import tim.game.factory.GameApplicationFactory;
+import tim.game.factory.RoseObjectFactory;
 import tim.game.usercentric.Actor;
 import tim.game.usercentric.CentricMapBuilder;
+import tim.game.usercentric.ComplexOrder;
 import tim.game.usercentric.InterfaceTranslator;
 import tim.game.usercentric.ResourceEntity;
 import tim.pathfinding.AStar;
@@ -39,6 +44,7 @@ import tim.pathfinding.PathfindingMap;
 public class Back {
 	
 	private Map map;
+	private PathfindingMap pathfindingMap;
 	private List<Event> events;
 	
 	private List<Player> playerList;
@@ -87,7 +93,6 @@ public class Back {
 		nextStep();
 		
 		applicationFactory = GameApplicationFactory.getInstance();
-		aStar = applicationFactory.getAStar();
 	}
 	
 
@@ -96,7 +101,7 @@ public class Back {
 	}
 	
 	public Path findShortestPath(int startX, int startY, int endX, int endY) {
-		initSearchMap();
+		aStar.resetMap();
 		Path path = aStar.findShortestPath(startX, startY, endX, endY);
 		return path;
 	}
@@ -107,6 +112,14 @@ public class Back {
 		map.removeUnit(unit, location.x, location.y);
 		map.addUnit(unit, x, y);
 		unit.setLocation(new Point(x, y));
+	}
+	
+	public void gotoLocation(Point destination) {
+		ComplexOrder order = new ComplexOrder();
+		Job job = new GotoJob(activeUnit, destination);
+		job.setType(JobType.PATH);
+		order.addJob(job);
+		activeUnit.setComplexOrder(order);
 	}
 	
 	public Path findNearestObject(Unit unit, String itemName) {
@@ -120,11 +133,6 @@ public class Back {
 		return path;
 	}
 		
-	private void initSearchMap() {
-		map.shuffleNeighbours();
-		map.resetNodes();
-	}
-	
 	public void nextPlayer() {
 		events.clear();
 		if (playerIterator.hasNext()) {
@@ -162,7 +170,6 @@ public class Back {
 		String name = unit.getName() + itemId++;
 		unit.setName(name);
 		getMapItems().add(unit);
-		player.addActor(unit.getActor());
 		unit.setPlayer(player);
 		map.addUnit(unit, location.x, location.y);
 		unit.setLocation(location);
@@ -183,7 +190,7 @@ public class Back {
 	}
 	
 	public void addBuilding(Player player, Building item, Point location) {
-		map.addItem(item, location.y, location.y);
+		map.addItem(item, location.x, location.y);
 		player.addBuilding(item);
 		item.setX(location.x);
 		item.setY(location.y);
@@ -306,8 +313,26 @@ public class Back {
 	 * TODO, use resources 
 	 */
 	public void addBuilding(String type) {
-		Building building = new Building(type, type);
+		Building building = RoseObjectFactory.getInstance().getBuilding(type);
 		addBuilding(building, activeUnit.getLocation());
+		System.out.println("building added on" + building.getLocation());
+	}
+
+	/**
+	 * @param aStar2
+	 */
+	public void setAStar(AStar aStar) {
+		this.aStar = aStar;
+	}
+
+	/**
+	 * 
+	 */
+	public void switchSelectedUnit(Unit unit) {
+		this.activeUnit = unit;
+	}
+	
+	public void switchSelectedBuilding(Building building) {
 	}
 
 	

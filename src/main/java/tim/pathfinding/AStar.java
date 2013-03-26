@@ -124,4 +124,11 @@ public class AStar {
 		}
 		
 	}
+
+	/**
+	 * 
+	 */
+	public void resetMap() {
+		map.initSearchMap();
+	}
 }

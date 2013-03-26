@@ -4,6 +4,7 @@
 package tim.game.factory;
 
 import tim.data.back.RoseObject;
+import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.data.unit.Worker;
 import tim.game.ai.SimpleGoalAI;
@@ -61,17 +62,20 @@ public class RoseObjectFactory {
 		Unit unit = null;
 		if (name.equals("worker")) {
 			unit = new Unit("worker", "worker");
-			Actor actor = new WorkerActor(unit);
 			unit.setImageName("builder");
 			unit.setStrength(10);
 		} else if (name.equals("infantry")) {
 			unit = new Unit("infantry", "infantry");
-			Actor actor = new Infantry(unit);
 			unit.setImageName("infantry");
 			unit.setStrength(20);
 			unit.setAttack(5);
 		}
 		return unit;
+	}
+	
+	public Building getBuilding(String name) {
+		Building building = new Building(name, name);
+		return building;
 	}
 
 }

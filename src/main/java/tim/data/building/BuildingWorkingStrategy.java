@@ -70,9 +70,9 @@ public class BuildingWorkingStrategy implements BuildingStrategy {
 
 	private void buildUnit(String orderName) {
 		Unit unit = (Unit) RoseObjectFactory.getInstance().getUnit(orderName);
-		unit.setLocation(buildingData.getLocation());
+		//unit.setLocation(buildingData.getLocation());
 		//((Actor)unit).getData().setLocation(buildingData.getLocation());
-		back.addUnit(unit);
+		back.addUnit(unit, buildingData.getLocation());
 		
 		System.out.println("factory has build unit");
 //		producedUnits++;

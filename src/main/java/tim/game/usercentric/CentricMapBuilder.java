@@ -17,6 +17,9 @@ import tim.game.Map;
 import tim.game.Player;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.factory.RoseObjectFactory;
+import tim.pathfinding.AStar;
+import tim.pathfinding.ClosestHeuristic;
+import tim.pathfinding.PathfindingMap;
 
 /**
  * @author tfontaine
@@ -31,6 +34,7 @@ public class CentricMapBuilder {
 	private int sizeY = 30;
 	
 	Map map;
+	AStar aStar;
 	private List<Player> playerList;
 	private List<MapItem> mapItems;
 	
@@ -42,6 +46,7 @@ public class CentricMapBuilder {
 	
 	public void construct() {
 		constructMap();
+		constructPathfinding();
 		constructPlayers();
 		assemble();
 		constructUnits();
@@ -49,8 +54,14 @@ public class CentricMapBuilder {
 		startGame();
 	}
 	
+	public void constructPathfinding() {
+		PathfindingMap pathfindingMap = new PathfindingMap(map);
+		aStar = new AStar(pathfindingMap, new ClosestHeuristic());
+	}
+	
 	public void assemble() {
 		world.setMap(map);
+		world.setAStar(aStar);
 		world.setPlayerList(playerList);
 	}
 	

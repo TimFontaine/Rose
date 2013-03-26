@@ -21,6 +21,7 @@ import tim.game.Player;
 public class PlayerHand implements Player {
 	
 	private List<Unit> units;
+	private List<Building> buildings;
 	
 	private Iterator<Unit> iterator;
 
@@ -29,6 +30,7 @@ public class PlayerHand implements Player {
 	 */
 	public PlayerHand() {
 		units = new ArrayList<Unit>();
+		buildings = new ArrayList<Building>();
 		
 	}
 	
@@ -38,6 +40,16 @@ public class PlayerHand implements Player {
 	@Override
 	public void initTurn() {
 		iterator= units.iterator();
+		handleBuildings();
+	}
+
+	/**
+	 * 
+	 */
+	private void handleBuildings() {
+		for (Building building : buildings) {
+			building.doLogic();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -88,8 +100,7 @@ public class PlayerHand implements Player {
 	 */
 	@Override
 	public void addBuilding(Building building) {
-		// TODO Auto-generated method stub
-
+		buildings.add(building);
 	}
 
 	/* (non-Javadoc)

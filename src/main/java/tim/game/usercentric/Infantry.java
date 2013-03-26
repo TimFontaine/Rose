@@ -15,14 +15,13 @@ import tim.game.back.scheduler.Order;
  * @author tim
  *
  */
-public class Infantry extends BasicActor implements Actor {
+public class Infantry extends Unit {
 	
 	/**
 	 * @param unit
 	 */
-	public Infantry(Unit unit) {
-		super(unit);
-		unit.setActor(this);
+	public Infantry(String type, String name) {
+		super();
 	}
 
 	/* (non-Javadoc)
