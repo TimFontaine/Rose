@@ -187,8 +187,10 @@ public class CentricMapBuilder {
 	public void constructPlayers() {
 		playerList = new ArrayList<Player>();
 		PlayerHand hand = new PlayerHand();
+		PlayerHand handAi = new PlayerHand();
 		InterfaceTranslator trans = new InterfaceTranslator();
 		playerList.add(hand);
+		playerList.add(handAi);
 	}
 	
 	public void constructUnits() {

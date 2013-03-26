@@ -63,16 +63,12 @@ public class Unit extends Thing {
 	public void giveOrder(Order order) {
 		
 	}
-
-	public int getOil() {
-		return oil;
-	}
-
-	public void setOil(int oil) {
-//		if (this.oil <=0 && oil > 0) {
-//			state = UnitState.ACTIVE;
-//		}
-		this.oil = oil;
+	
+	public boolean canAttack() {
+		if (attack > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public UnitState getState() {

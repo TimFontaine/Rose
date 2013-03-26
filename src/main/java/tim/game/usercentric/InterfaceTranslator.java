@@ -85,12 +85,13 @@ public class InterfaceTranslator extends BasicPlayer {
 			return;
 		}
 		
-//		boolean containsEnemy = back.containsEnemy(newLocation);
-//		if (activeItem.canAttack() && containsEnemy) {
-//			activeItem.attack(newLocation);
-//		} else {
+		boolean containsEnemy = back.containsEnemy(newLocation);
+		Unit activeUnit = back.getActiveUnit();
+		if (activeUnit.canAttack() && containsEnemy) {
+			back.attack(newLocation);
+		} else {
 			back.moveUnit(newLocation.x, newLocation.y);
-//		}
+		}
 	}
 	
 	/**

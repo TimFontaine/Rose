@@ -233,12 +233,12 @@ public class Back {
 	/**
 	 * @param location
 	 */
-	public void attack(Unit attacker, Point location) {
+	public void attack(Point location) {
 		Node target = map.getNode(location.x, location.y);
 		Unit defender = target.getUnits().get(0);
 		
 		int defence = defender.getStrength();//ignore for the moment
-		int attack = attacker.getAttack();
+		int attack = activeUnit.getAttack();
 		int defenderStrength = defender.getStrength();
 		
 		defenderStrength-= attack;

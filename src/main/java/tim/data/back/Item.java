@@ -13,9 +13,9 @@ import tim.game.Player;
 public class Item extends MapItem {
 	
 	private Player player;
-	private int strength;
-	private int attack;
-	private int defense;
+	protected int strength;
+	protected int attack;
+	protected int defense;
 	
 
 	/**
