@@ -22,18 +22,15 @@ import tim.data.back.Direction;
 import tim.data.back.Event;
 import tim.data.back.Node;
 import tim.data.back.Thing;
+import tim.data.back.TileInfo;
 import tim.data.front.MouseInfoItem;
 import tim.data.front.MouseState;
 import tim.data.front.ScreenInfo;
-import tim.game.ai.job.GotoJob;
-import tim.game.ai.job.Job;
 import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.hud.Interface;
 import tim.game.hud.Mediator;
-import tim.game.usercentric.ComplexOrder;
 import tim.game.usercentric.InterfaceTranslator;
-import tim.game.usercentric.InterfaceTranslator.Selection;
 import tim.rose.buttons.actions.RoseAction;
 
 /**
@@ -118,8 +115,8 @@ public class Logic {
 	private void doMouseLogic() {
 		if (actionMap.get("mouseLeft").isPressed()) {
 			Point destination = translateCoordsFromScreen();
-			Selection selection = translator.selectScreenItem(destination);
-			mediator.switchItemPanel(selection);
+			TileInfo tileInfo = translator.selectScreenItem(destination);
+			mediator.switchItemPanel(tileInfo);
 		} else if (actionMap.get("mouseRight").isPressed()) {
 			Point destination = translateCoordsFromScreen();
 			translator.gotoLocation(destination);

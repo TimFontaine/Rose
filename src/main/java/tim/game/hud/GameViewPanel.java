@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import tim.game.usercentric.InterfaceTranslator.Selection;
+import tim.data.back.TileInfo;
 
 /**
  * @author tim
@@ -25,14 +25,14 @@ public class GameViewPanel extends JPanel implements ActionListener {
 	}
 	
 	
-	public void update(Selection selection) {
+	public void update(TileInfo tileInfo) {
 		removeAll();
-		switch (selection) {
+		switch (tileInfo.getSelection()) {
 		case UNIT:
-			add(new UnitPanel());
+			add(new UnitPanel(tileInfo));
 			break;
 		case BUILDING:
-			add(new BuildingPanel());
+			add(new BuildingPanel(tileInfo));
 		case NONE:
 			add(new PlayerState());
 			break;

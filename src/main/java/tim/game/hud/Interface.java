@@ -19,7 +19,6 @@ import tim.game.Back;
 import tim.game.Logic;
 import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;
-import tim.game.usercentric.InterfaceTranslator.Selection;
 
 
 
@@ -55,7 +54,7 @@ public class Interface implements ActionListener {
 		panel.setLocation(0, frame.getHeight() - 100);
 		frame.getContentPane().add(panel);
 //		JPanel travel = new TravelSpeedMenu(mediator);
-		mediator.switchItemPanel(Selection.NONE);
+//		mediator.switchItemPanel(Selection.NONE);
 		
 //		travel.setBackground(Color.white);
 //		travel.setSize(300, 300);

@@ -50,6 +50,7 @@ public class Back {
 	private List<Player> playerList;
 	private Player activePlayer;
 	private Unit activeUnit;
+	private Building activeBuilding;
 	Iterator<Player> playerIterator;
 	private InterfaceTranslator trans;
 
@@ -213,15 +214,6 @@ public class Back {
 		this.trans = trans;
 	}
 	
-	public boolean containsEnemy(Point location) {
-		Node target = getNode(location.x, location.y);
-		Player owner = target.getOwner();
-		if (owner != null && activePlayer != target.getOwner()) {
-			return true;
-		}
-		return false;
-	}
-
 	public Point getBounderies() {
 		return map.getBounderies();
 	}
@@ -333,6 +325,7 @@ public class Back {
 	}
 	
 	public void switchSelectedBuilding(Building building) {
+		this.activeBuilding = building;
 	}
 
 	

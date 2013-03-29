@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import tim.game.Back;
+import tim.game.RoseRules;
 import tim.game.ai.data.PlayerData;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.hud.Mediator;
@@ -25,6 +26,7 @@ public class GameApplicationFactory {
 	private static GameApplicationFactory INSTANCE;
 	
 	private Back back;
+	private RoseRules roseRules;
 	private Mediator mediator;
 	private ResourceInfo resourceInfo;
 	
@@ -58,9 +60,10 @@ public class GameApplicationFactory {
 	 * 
 	 */
 	private void init() {
-		back = new Back();
-		mediator = new Mediator();
 		resourceInfo = ResourceInfo.getInstance();
+		back = new Back();
+		roseRules = new RoseRules();
+		mediator = new Mediator();
 		interfaceTranslator = new InterfaceTranslator();
 	}
 
@@ -78,6 +81,10 @@ public class GameApplicationFactory {
 
 	public InterfaceTranslator getInterfaceTranslator() {
 		return interfaceTranslator;
+	}
+
+	public RoseRules getRoseRules() {
+		return roseRules;
 	}
 	
 }

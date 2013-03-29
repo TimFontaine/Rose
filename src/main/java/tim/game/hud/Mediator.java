@@ -11,10 +11,10 @@ import javax.swing.JFrame;
 
 import tim.data.back.Event;
 import tim.data.back.Node;
+import tim.data.back.TileInfo;
 import tim.game.Back;
 import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;
-import tim.game.usercentric.InterfaceTranslator.Selection;
 
 /**
  * @author tfontaine
@@ -80,7 +80,7 @@ public class Mediator {
 		frame.requestFocusInWindow();
 	}
 	
-	public void switchItemPanel(Selection selection) {
+	public void switchItemPanel(TileInfo selection) {
 		gameViewPanel.update(selection);
 		
 	}

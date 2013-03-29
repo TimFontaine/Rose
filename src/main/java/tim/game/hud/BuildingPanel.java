@@ -9,9 +9,11 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import tim.data.back.TileInfo;
 import tim.data.building.Building;
 import tim.game.Back;
 import tim.game.Logic;
+import tim.game.ai.data.ResourceInfo;
 import tim.game.buttons.GameButton;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.usercentric.WorkerActor;
@@ -26,11 +28,14 @@ import tim.rose.buttons.actions.BuildingOrderAction;
 public class BuildingPanel extends JPanel implements ActionListener {
 	
 	InterfaceTranslator translator;
+	ResourceInfo resourceInfo;
+	TileInfo tileInfo;
 	
-	public BuildingPanel() {
+	public BuildingPanel(TileInfo tileInfo) {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
-		Back back = applicationFactory.getBack();
 		translator = applicationFactory.getInterfaceTranslator();
+		resourceInfo = applicationFactory.getResourceInfo();
+		this.tileInfo = tileInfo;
 		build();
 	}
 
@@ -38,8 +43,7 @@ public class BuildingPanel extends JPanel implements ActionListener {
 	 * 
 	 */
 	private void build() {
-		Building building = translator.getSelectedBuilding();
-		List<String> buildingActions = building.getPossibleActions();
+		List<String> buildingActions = tileInfo.getPossibleActions();
 		for (String name : buildingActions) {
 			GameButton button = new GameButton(this);
 			button.setRoseAction(new BuildingOrderAction(name));

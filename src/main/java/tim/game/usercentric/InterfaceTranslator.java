@@ -10,9 +10,13 @@ import javax.swing.SwingUtilities;
 
 import tim.data.back.Direction;
 import tim.data.back.Node;
+import tim.data.back.Thing;
+import tim.data.back.TileInfo;
+import tim.data.back.TileInfo.Selection;
 import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.game.Back;
+import tim.game.RoseRules;
 import tim.game.ai.BasicPlayer;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.ai.job.GotoJob;
@@ -27,6 +31,8 @@ import tim.game.usercentric.UnitData.UnitState;
  * 
  * -split in usertranslator and buildingtranslator
  * user player differs from simple player that they do validation
+ * 
+ * user/building actions control in this layer
  * @author tfontaine
  *
  */
@@ -34,23 +40,21 @@ public class InterfaceTranslator extends BasicPlayer {
 	
 	ResourceInfo resourceInfo;
 	
-	Actor activeItem;
 	Building selectedBuilding;//human player only
 	
 	private boolean active;
 	
-	public enum Selection {
-		UNIT,
-		BUILDING,
-		NONE;
-	}
+	private Selection selected;
 	
 	Back back;
+	RoseRules roseRules;
 	
 	public InterfaceTranslator() {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		back = applicationFactory.getBack();
+		roseRules = applicationFactory.getRoseRules();
 		resourceInfo = applicationFactory.getResourceInfo();
+		selected = Selection.NONE;
 	}
 	
 	public void initTurn() {
@@ -58,12 +62,10 @@ public class InterfaceTranslator extends BasicPlayer {
 		for (Building building : buildings) {
 			building.doLogic();
 		}
-		activeItem = playerData.getActors().get(0);
 	}
 	
 	public void doLogic() {
 		for (Actor actor : playerData.getActors()) {
-			activeItem = actor;
 		}
 	}
 	
@@ -85,12 +87,12 @@ public class InterfaceTranslator extends BasicPlayer {
 			return;
 		}
 		
-		boolean containsEnemy = back.containsEnemy(newLocation);
+		boolean containsEnemy = roseRules.containsEnemy(newLocation);
 		Unit activeUnit = back.getActiveUnit();
 		if (activeUnit.canAttack() && containsEnemy) {
-			back.attack(newLocation);
+			roseRules.attack(newLocation);
 		} else {
-			back.moveUnit(newLocation.x, newLocation.y);
+			roseRules.moveUnit(newLocation);
 		}
 	}
 	
@@ -99,6 +101,9 @@ public class InterfaceTranslator extends BasicPlayer {
 	 * @return
 	 */
 	private boolean testMoveLegal(Point location) {
+		if (selected != Selection.UNIT) {
+			return false;
+		}
 		if (location.x < 0 || location.y < 0) {
 			return false;
 		}
@@ -147,11 +152,11 @@ public class InterfaceTranslator extends BasicPlayer {
 	
 	public void specialAction(SpecialAction action) {
 		//remove later
-		if (activeItem != null) {//assert unit is selected
-			activeItem.specialAction(action);
-		} else if (selectedBuilding != null) {
-			selectedBuilding.specialAction(action);
-		}
+//		if (activeItem != null) {//assert unit is selected
+//			activeItem.specialAction(action);
+//		} else if (selectedBuilding != null) {
+//			selectedBuilding.specialAction(action);
+//		}
 	}
 	
 	/**
@@ -173,41 +178,50 @@ public class InterfaceTranslator extends BasicPlayer {
 	/**
 	 * @param destination
 	 */
-	public Selection selectScreenItem(Point location) {
-		activeItem = null;
+	public TileInfo selectScreenItem(Point location) {
 		selectedBuilding = null;
-		Node node = back.getNode(location.x, location.y);
-		if (node.containsUnit()) {
-			Unit unit = node.getUnits().get(0);
-			back.switchSelectedUnit(unit);
-			return Selection.UNIT;
-		}else if (node.containsItem()) {
-			selectedBuilding = (Building) node.getItem();
-			return Selection.BUILDING;
+		
+		TileInfo tileInfo = roseRules.getTileInfo(location);
+		if (tileInfo.getSelection() == Selection.UNIT) {
+			selectUnit(location);
+			selected = Selection.UNIT;
+		}else if (tileInfo.getSelection() == Selection.BUILDING) {
+			selectBuilding(location);
+			selected = Selection.BUILDING;
 		} else {
-			activeItem = null;
-			return Selection.NONE;
+			//
 		}
+		return tileInfo;
 	}
 	
-	public List<String> getPossibleUnitActions() {
-		return resourceInfo.getUnitActions(back.getActiveUnit().getType());
+	private void selectUnit(Point location) {
+		Node node = back.getNode(location.x, location.y);
+		back.switchSelectedUnit(node.getUnits().get(0));
 	}
-
-	public Actor getActiveUnit() {
-		return activeItem;
+	
+	private void selectBuilding(Point location) {
+		Node node = back.getNode(location.x, location.y);
+		back.switchSelectedBuilding((Building) node.getItem());
 	}
-
-	public void setActiveUnit(WorkerActor activeUnit) {
-		this.activeItem = activeUnit;
-	}
-
+	
 	public Building getSelectedBuilding() {
 		return selectedBuilding;
 	}
 
 	public void setSelectedBuilding(Building selectedBuilding) {
 		this.selectedBuilding = selectedBuilding;
+	}
+	
+	public List<String> getPossibleActions() {
+		if (selected == Selection.UNIT) {
+			return roseRules.getPossibleUnitActions();
+		} else if (selected == Selection.BUILDING){
+			return roseRules.getPossibleBuildingActions(selectedBuilding);
+		} else {
+			throw new UnsupportedOperationException();
+		}
+		
+		
 	}
 
 	/**
