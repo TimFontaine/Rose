@@ -13,6 +13,7 @@ import tim.data.building.Building;
 import tim.data.unit.Unit;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.factory.GameApplicationFactory;
+import tim.game.usercentric.SpecialAction;
 
 /**
  * @author tfontaine
@@ -75,6 +76,10 @@ public class RoseRules {
 	
 	public List<String> getPossibleBuildingActions(Building selectedBuilding) {
 		return resourceInfo.getBuildingActions(selectedBuilding.getType());
+	}
+	
+	public void specialAction(SpecialAction action) {
+		back.getActiveBuilding().specialAction(action);
 	}
 
 }

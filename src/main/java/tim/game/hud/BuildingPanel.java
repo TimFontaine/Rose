@@ -57,7 +57,7 @@ public class BuildingPanel extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-GameButton button = (GameButton) e.getSource();
+		GameButton button = (GameButton) e.getSource();
 		
 		//put the event in a queue and process later
 			Logic.addToEventQueue(button);

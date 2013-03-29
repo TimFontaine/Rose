@@ -151,12 +151,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	}
 	
 	public void specialAction(SpecialAction action) {
-		//remove later
-//		if (activeItem != null) {//assert unit is selected
-//			activeItem.specialAction(action);
-//		} else if (selectedBuilding != null) {
-//			selectedBuilding.specialAction(action);
-//		}
+		roseRules.specialAction(action);
 	}
 	
 	/**

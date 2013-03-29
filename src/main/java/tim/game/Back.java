@@ -328,6 +328,10 @@ public class Back {
 		this.activeBuilding = building;
 	}
 
+	public Building getActiveBuilding() {
+		return activeBuilding;
+	}
+
 	
 
 }
