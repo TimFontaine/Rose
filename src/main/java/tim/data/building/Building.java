@@ -11,6 +11,7 @@ import java.util.Map;
 import tim.data.back.BuildingState;
 import tim.data.back.BuildingStateContext;
 import tim.data.back.Thing;
+import tim.game.ai.ResourceContainer;
 import tim.game.ai.data.MutableResource;
 import tim.game.ai.data.MutableResource.Resource;
 import tim.game.ai.data.ResourcesRequest;
@@ -51,11 +52,12 @@ public class Building extends Thing {
 		buildingData.setType(type);
 		this.setType(type);
 		resourceLocation = RESOURCELINK.LOCAL;
-		context = new BuildingStateContext(buildingData);
 		possibleActions = new ArrayList<String>();
-		
+//		resourceLink.setLocation(location);
 		init();
 		testResources();
+		
+		context = new BuildingStateContext(buildingData);
 	}
 	
 	/**
@@ -90,6 +92,7 @@ public class Building extends Thing {
 		context.doLogic();
 	}
 	
+	@Deprecated
 	public void switchResourceLink(Building resourceLink) {
 		//set new resourcelink
 		//move all local resources to resourcelink
@@ -102,9 +105,9 @@ public class Building extends Thing {
 		resourceLocation = RESOURCELINK.REMOTE;
 	}
 
-	public Building getResourceLink() {
-		return resourceLink;
-	}
+//	public Building getResourceLink() {
+//		return resourceLink;
+//	}
 
 	public List<String> getPossibleActions() {
 		return possibleActions;
@@ -133,7 +136,17 @@ public class Building extends Thing {
 			buildingData.setOrderName(action.getData());
 		}
 	}
+	
+	public ResourceContainer getResourceContainer() {
+		return buildingData.getResourceContainer();
+	}
 
+	/**
+	 * @param resourceContainer
+	 */
+	public void setResourceLink(ResourceContainer resourceContainer) {
+		buildingData.setResourceContainer(resourceContainer);
+	}
 	
 //	public void setResourceLink(Building resourceLink) {
 //		this.resourceLink = resourceLink;

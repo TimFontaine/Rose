@@ -64,6 +64,8 @@ public class ResourceContainer {
 		return 0;
 	}
 	
+	
+	
 	/**
 	 * @param key
 	 * @return
@@ -73,6 +75,17 @@ public class ResourceContainer {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * 
+	 */
+	public void clear() {
+		resources.clear();
+	}
+
+	public EnumMap<Resource, MutableResource> getResources() {
+		return resources;
 	}
 	
 

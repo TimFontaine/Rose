@@ -102,6 +102,7 @@ public class ResourceInfo {
 	private void initUnitActions() {
 		List<String> workerActions = new ArrayList<String>();
 		workerActions.add("factory");
+		workerActions.add("storage");
 		unitActions.put("worker", workerActions);
 		
 		List<String> infantryActions = new ArrayList<String>();

@@ -193,8 +193,7 @@ public class Back {
 	public void addBuilding(Player player, Building item, Point location) {
 		map.addItem(item, location.x, location.y);
 		player.addBuilding(item);
-		item.setX(location.x);
-		item.setY(location.y);
+		item.setLocation(location);
 		mapItems.add(item);
 	}
 	
@@ -305,8 +304,8 @@ public class Back {
 	 * TODO, use resources 
 	 */
 	public void addBuilding(String type) {
-		Building building = RoseObjectFactory.getInstance().getBuilding(type);
-		addBuilding(building, activeUnit.getLocation());
+		Building building = RoseObjectFactory.getInstance().getBuilding(type, activeUnit);
+		addBuilding(building, building.getLocation());
 		System.out.println("building added on" + building.getLocation());
 	}
 

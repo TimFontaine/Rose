@@ -4,11 +4,12 @@
 package tim.data.building;
 
 import java.util.EnumMap;
+import java.util.Map;
 
-import tim.data.back.BuildingState;
 import tim.data.back.BuildingStateContext;
 import tim.data.back.BuildingStrategy;
-import tim.game.ai.ResourcesData;
+import tim.data.back.Node;
+import tim.game.Back;
 import tim.game.ai.data.MutableResource.Resource;
 import tim.game.ai.data.ResourceInfo;
 import tim.game.factory.GameApplicationFactory;
@@ -21,7 +22,7 @@ public class BuildingConstructionStrategy implements BuildingStrategy {
 	
 	BuildingData buildingData;
 	ResourceInfo info;
-	
+	Back back;	
 	EnumMap<Resource, Integer> requiredResources;
 	
 	
@@ -31,11 +32,20 @@ public class BuildingConstructionStrategy implements BuildingStrategy {
 	public BuildingConstructionStrategy(BuildingData buildingData, BuildingStateContext context) {
 		GameApplicationFactory applicationFactory;
 		applicationFactory = GameApplicationFactory.getInstance();
+		back = applicationFactory.getBack();
 		info = applicationFactory.getResourceInfo();
 		buildingData.setImageName("underconstruction");
 		this.buildingData = buildingData;
 		String type = buildingData.getType();
 		requiredResources = info.getResourcesForThing(type);
+		
+		init();
+	}
+	
+	/**
+	 * 
+	 */
+	private void init() {
 	}
 	
 	@Override
