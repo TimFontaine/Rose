@@ -158,7 +158,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	 * 
 	 */
 	public void addBuilding(String type) {
-		back.addBuilding(type);
+		roseRules.addBuilding(type);
 	}
 
 	public PlayerData getPlayerData() {
@@ -223,7 +223,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	 */
 	public void nextPlayer() {
 		active = false;
-		back.nextPlayer();
+		roseRules.nextPlayer();
 	}
 
 }

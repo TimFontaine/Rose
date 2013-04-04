@@ -27,7 +27,6 @@ public class RoseRules {
 	ResourceInfo resourceInfo;
 	Unit activeUnit;
 	private Player activePlayer;
-	private List<Player> playerList;
 	Iterator<Player> playerIterator;
 
 	/**
@@ -37,8 +36,6 @@ public class RoseRules {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		back = applicationFactory.getBack();
 		resourceInfo = applicationFactory.getResourceInfo();
-		
-		playerList = new ArrayList<Player>();
 	}
 	
 	/**
@@ -55,7 +52,7 @@ public class RoseRules {
 //		mapItems = builder.getMapItems();
 		
 		
-		playerIterator = playerList.listIterator();
+		playerIterator = back.getPlayers().listIterator();
 		nextPlayer();//take the first plaer from the list
 		nextStep();
 		
@@ -63,6 +60,8 @@ public class RoseRules {
 	
 	public void moveUnit(Point location) {
 		back.moveUnit(activeUnit, location.x, location.y);
+		checkConflict(null, location);
+		
 //		Unit unit = back.getActiveUnit();
 //		Node node = back.getNode(unit.getLocation().x, unit.getLocation().y);
 //		if (node.containsItem()) {
@@ -70,18 +69,23 @@ public class RoseRules {
 //		}
 	}
 	
+	public void checkConflict(Unit source, Point location) {
+		Node node = back.getNode(location.x, location.y);
+		activeUnit.checkConflict(node);
+	}
+	
 	public void attack(Point location) {
 		back.attack(location);
 		if (!containsEnemy(location)) {
 			//tile is free, move
-			back.moveUnit(location.x, location.y);
+			back.moveUnit(activeUnit, location.x, location.y);
 		}
 	}
 	
 	public boolean containsEnemy(Point location) {
 		Node target = back.getNode(location.x, location.y);
 		Player owner = target.getOwner();
-		if (owner != null && back.getActivePlayer() != target.getOwner()) {
+		if (owner != null && activePlayer != target.getOwner()) {
 			return true;
 		}
 		return false;
@@ -119,7 +123,7 @@ public class RoseRules {
 		if (playerIterator.hasNext()) {
 			activePlayer = playerIterator.next();
 		} else {
-			playerIterator = playerList.iterator();
+			nextTurn();
 			activePlayer = playerIterator.next();
 		}
 		activePlayer.initTurn();
@@ -130,20 +134,9 @@ public class RoseRules {
 	}
 	
 	public void nextTurn() {
-		playerIterator = playerList.iterator();
+		playerIterator = back.getPlayers().iterator();
 	}
 	
-	public void addPlayer(Player player) {
-		playerList.add(player);
-	}
-
-	/**
-	 * @param playerList2
-	 */
-	public void setPlayerList(List<Player> playerList) {
-		this.playerList = playerList;
-	}
-
 	/**
 	 * @return
 	 */
@@ -165,4 +158,15 @@ public class RoseRules {
 		return activeUnit;
 	}
 
+	/**
+	 * use resources,add building on map,...
+	 * @TODO
+	 * construct building here or in back layer?
+	 * @param type
+	 */
+	public void addBuilding(String type) {
+		Building building = back.addBuilding(type, activeUnit.getLocation());
+		activePlayer.addBuilding(building);
+	}
+	
 }

@@ -5,6 +5,7 @@ package tim.data.unit;
 
 import java.awt.Point;
 
+import tim.data.back.Node;
 import tim.data.back.Thing;
 import tim.game.ai.ResourceContainer;
 import tim.game.ai.Task;
@@ -40,6 +41,7 @@ public class Unit extends Thing {
 	
 	private MoveHandler moveHandler;
 	
+	private ConflictHandler handler;
 	/**
 	 * 
 	 */
@@ -52,6 +54,7 @@ public class Unit extends Thing {
 		task.addDestination("factory");
 		resourceContainer = new ResourceContainer();
 		state= UnitState.IDLE;
+		handler = new WorkerConflictHandler(this);
 		
 		setImageName("builder");
 	}
@@ -119,6 +122,13 @@ public class Unit extends Thing {
 	 */
 	public void setComplexOrder(ComplexOrder order) {
 		this.complexOrder = order;
+	}
+
+	/**
+	 * 
+	 */
+	public void checkConflict(Node node) {
+		handler.checkConflict(node);
 	}
 
 }

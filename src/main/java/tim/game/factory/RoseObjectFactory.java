@@ -82,10 +82,10 @@ public class RoseObjectFactory {
 		return unit;
 	}
 	
-	public Building getBuilding(String name, Unit source) {
+	public Building getBuilding(String name, Point location) {
 		Building building = new Building(name, name);
-		building.setLocation(source.getLocation());
-		scanEnvironmentForStorage(source.getLocation(), building);
+		building.setLocation(location);
+		scanEnvironmentForStorage(location, building);
 		return building;
 	}
 	

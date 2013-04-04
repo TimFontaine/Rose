@@ -83,7 +83,7 @@ public class Logic {
 			System.out.println("event is right");
 		}
 		if (actionMap.get("nextStep").getAmount() > 0) {
-			back.nextStep();
+			//back.nextStep();
 		}
 //		if (actionMap.get("space").getAmount() > 0) {
 ////			back.putThing();

@@ -30,13 +30,17 @@ public class Node implements Serializable{
 	
 	private Player owner;
 	
-	private Resource resource;
+	private Resource resource;//oil, iron
+	private Terrain terrain; 
 	
 	public Node(int x, int y) {
 		this.x = x;
 		this.y = y;
 		
 		units = new ArrayList<Unit>();
+		terrain = Terrain.PLAIN;
+		resource = Resource.NONE;
+		
 	}
 	
 	public int getX() {
@@ -228,6 +232,14 @@ public class Node implements Serializable{
 
 	public void setResource(Resource resource) {
 		this.resource = resource;
+	}
+	
+	public Terrain getTerrain() {
+		return terrain;
+	}
+
+	public void setTerrain(Terrain terrain) {
+		this.terrain = terrain;
 	}
 	
 }

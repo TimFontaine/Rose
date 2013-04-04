@@ -52,12 +52,8 @@ public class Back {
 	private Unit activeUnit;
 	private Building activeBuilding;
 	Iterator<Player> playerIterator;
-	private InterfaceTranslator trans;
-
-	public static final int defaultSpeed = 10;
 
 	private Point bounderies;
-	
 	
 	private int itemId;
 	
@@ -83,15 +79,6 @@ public class Back {
 		aStar.resetMap();
 		Path path = aStar.findShortestPath(startX, startY, endX, endY);
 		return path;
-	}
-	
-	@Deprecated
-	public void moveUnit(int x, int y) {
-		Unit unit = activeUnit;
-		Point location = unit.getLocation();
-		map.removeUnit(unit, location.x, location.y);
-		map.addUnit(unit, x, y);
-		unit.setLocation(new Point(x, y));
 	}
 	
 	public void moveUnit(Unit unit, int x, int y) {
@@ -135,6 +122,7 @@ public class Back {
 		unit.setLocation(location);
 	}
 	
+	@Deprecated
 	public void addUnit(Unit unit, Point location) {
 		addUnit(activePlayer, unit, location);
 	}
@@ -151,7 +139,6 @@ public class Back {
 	
 	public void addBuilding(Player player, Building item, Point location) {
 		map.addItem(item, location.x, location.y);
-		player.addBuilding(item);
 		item.setLocation(location);
 		mapItems.add(item);
 	}
@@ -160,18 +147,6 @@ public class Back {
 		return map.getNode(x, y);
 	}
 
-	public InterfaceTranslator getTrans() {
-		return trans;
-	}
-
-	public void setTrans(InterfaceTranslator trans) {
-		this.trans = trans;
-	}
-	
-	public void addHumam(InterfaceTranslator trans) {
-		this.trans = trans;
-	}
-	
 	public Point getBounderies() {
 		return map.getBounderies();
 	}
@@ -247,13 +222,15 @@ public class Back {
 	}
 
 	/**
-	 * add a building on the position of the activeunit
+	 * add a building on the position given
+	 * if required add global interaction for fuel
 	 * TODO, use resources 
 	 */
-	public void addBuilding(String type) {
-		Building building = RoseObjectFactory.getInstance().getBuilding(type, activeUnit);
+	public Building addBuilding(String type, Point location) {
+		Building building = RoseObjectFactory.getInstance().getBuilding(type, location);
 		addBuilding(building, building.getLocation());
 		System.out.println("building added on" + building.getLocation());
+		return building;
 	}
 
 	/**
@@ -271,6 +248,15 @@ public class Back {
 		return activeBuilding;
 	}
 
-	
+	public List<Player> getPlayers() {
+		return playerList;
+	}
+
+	/**
+	 * @param playerList2
+	 */
+	public void setPlayerList(List<Player> playerList) {
+		this.playerList = playerList;
+	}
 
 }

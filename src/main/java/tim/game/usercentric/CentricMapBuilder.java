@@ -66,7 +66,7 @@ public class CentricMapBuilder {
 		world.setMap(map);
 		world.setAStar(aStar);
 		RoseRules r =  GameApplicationFactory.getInstance().getRoseRules();
-		r.setPlayerList(playerList);
+		world.setPlayerList(playerList);
 	}
 	
 	public void init() {
