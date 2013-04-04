@@ -11,10 +11,13 @@ import tim.data.back.Item;
 import tim.data.back.MapItem;
 import tim.data.back.Mine;
 import tim.data.back.Oilwell;
+import tim.data.back.ResourceItem;
 import tim.data.unit.Unit;
 import tim.game.Back;
 import tim.game.Map;
 import tim.game.Player;
+import tim.game.RoseRules;
+import tim.game.ai.data.MutableResource.Resource;
 import tim.game.factory.GameApplicationFactory;
 import tim.game.factory.RoseObjectFactory;
 import tim.pathfinding.AStar;
@@ -62,7 +65,8 @@ public class CentricMapBuilder {
 	public void assemble() {
 		world.setMap(map);
 		world.setAStar(aStar);
-		world.setPlayerList(playerList);
+		RoseRules r =  GameApplicationFactory.getInstance().getRoseRules();
+		r.setPlayerList(playerList);
 	}
 	
 	public void init() {
@@ -160,23 +164,27 @@ public class CentricMapBuilder {
 	public void constructMap() {
 		map = new Map(sizeX, sizeY);
 		//allocate resources;
-		Item mine = new Mine("mine");
-		Item oilwell = new Oilwell("oilwell");
-		mine.setImageName("mine");
-		mine.setX(2);
-		mine.setY(2);
-		mine.setType("mine");
+//		Item mine = new Mine("mine");
+//		Item oilwell = new Oilwell("oilwell");
+//		mine.setImageName("mine");
+//		mine.setX(2);
+//		mine.setY(2);
+//		mine.setType("mine");
 		
-		map.addItem(mine, 2,2);
+		ResourceItem mine = new ResourceItem("mine", Resource.IRON);
+		mine.setLocation(new Point(2, 2));
+		map.getNode(2, 2).setResource(Resource.IRON);
+		map.getNode(6, 8).setResource(Resource.OIL);
+//		map.addItem(mine, 2,2);
 	
-		oilwell.setType("oilwell");
-		oilwell.setImageName("oilwell");
-		oilwell.setX(6);
-		oilwell.setY(8);
-		
-		map.addItem(oilwell, 6,8);
+//		oilwell.setType("oilwell");
+//		oilwell.setImageName("oilwell");
+//		oilwell.setX(6);
+//		oilwell.setY(8);
+//		
+//		map.addItem(oilwell, 6,8);
 		mapItems.add(mine);
-		mapItems.add(oilwell);
+//		mapItems.add(oilwell);
 		
 	}
 	
@@ -203,7 +211,8 @@ public class CentricMapBuilder {
 	}
 	
 	private void startGame() {
-		world.startGame();
+		RoseRules r =  GameApplicationFactory.getInstance().getRoseRules();
+		r.startGame();
 	}
 
 	/**

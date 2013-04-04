@@ -38,6 +38,8 @@ public class Unit extends Thing {
 	
 	private ResourceContainer resourceContainer;
 	
+	private MoveHandler moveHandler;
+	
 	/**
 	 * 
 	 */
@@ -85,14 +87,6 @@ public class Unit extends Thing {
 
 	public void setMoves(int moves) {
 		this.moves = moves;
-	}
-
-	public UnitState getDefaultState() {
-		return defaultState;
-	}
-
-	public void setDefaultState(UnitState defaultState) {
-		this.defaultState = defaultState;
 	}
 
 	public Job getJob() {

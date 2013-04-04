@@ -11,7 +11,7 @@ import tim.game.usercentric.ResourceEntity;
  * @author tfontaine
  *
  */
-public class Mine extends Item implements TransferResource, ResourceEntity {
+public class Mine extends ResourceItem implements TransferResource, ResourceEntity {
 	
 	private Resource provides;
 	int storage = 100;

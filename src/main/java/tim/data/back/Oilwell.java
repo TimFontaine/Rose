@@ -9,7 +9,7 @@ import tim.data.unit.TransferResource;
  * @author tfontaine
  *
  */
-public class Oilwell extends Item implements TransferResource {
+public class Oilwell extends ResourceItem implements TransferResource {
 
 	/**
 	 * @param name

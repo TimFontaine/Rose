@@ -10,6 +10,7 @@ import java.util.List;
 
 import tim.data.unit.Unit;
 import tim.game.Player;
+import tim.game.ai.data.MutableResource.Resource;
 import tim.game.usercentric.Actor;
 import tim.pathfinding.AStarNode;
 
@@ -21,23 +22,21 @@ public class Node implements Serializable{
 	int x;
 	int y;
 	private transient Node previousNode = null;
-	private boolean visited;
 	
 	private List<Unit> units;
 	private Item item;
 	private Road road;
 	
-	private int travelWeight = 50;
-	private static final int default_travelWeight= 10;
 	
 	private Player owner;
+	
+	private Resource resource;
 	
 	public Node(int x, int y) {
 		this.x = x;
 		this.y = y;
 		
 		units = new ArrayList<Unit>();
-		travelWeight = default_travelWeight;
 	}
 	
 	public int getX() {
@@ -145,6 +144,13 @@ public class Node implements Serializable{
     	return false;
     }
     
+    public boolean containsResource() {
+    	if (resource != null) {
+    		return true;
+    	}
+    	return false;
+    }
+    
     public Unit getFirstUnitOfType(String name) {
     	for (Unit unit: units) {
     		if (unit.getType().equals(name)) {
@@ -170,23 +176,6 @@ public class Node implements Serializable{
 		}
 	}
 
-
-	public int getTravelWeight() {
-		return travelWeight;
-	}
-
-	public void setTravelWeight(int travelWeight) {
-		this.travelWeight = 1000/ travelWeight;
-	}
-
-	public boolean isVisited() {
-		return visited;
-	}
-
-	public void setVisited(boolean visited) {
-		this.visited = visited;
-	}
-
 	public Item getItem() {
 		return item;
 	}
@@ -209,7 +198,6 @@ public class Node implements Serializable{
 
 	public void setRoad(Road road) {
 		this.road = road;
-		updateTravelWeight();
 	}
 	
 	public boolean containsRoad() {
@@ -217,16 +205,6 @@ public class Node implements Serializable{
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * 
-	 */
-	private void updateTravelWeight() {
-		travelWeight = default_travelWeight;
-		if (road != null) {
-			travelWeight = default_travelWeight / Road.EXTRA_SPEED;
-		}
 	}
 
 	/**
@@ -243,7 +221,13 @@ public class Node implements Serializable{
 	public void setOwner(Player owner) {
 		this.owner = owner;
 	}
-	
 
+	public Resource getResource() {
+		return resource;
+	}
+
+	public void setResource(Resource resource) {
+		this.resource = resource;
+	}
 	
 }

@@ -88,7 +88,7 @@ public class InterfaceTranslator extends BasicPlayer {
 		}
 		
 		boolean containsEnemy = roseRules.containsEnemy(newLocation);
-		Unit activeUnit = back.getActiveUnit();
+		Unit activeUnit = roseRules.getActiveUnit();
 		if (activeUnit.canAttack() && containsEnemy) {
 			roseRules.attack(newLocation);
 		} else {
@@ -118,8 +118,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	 * move to bridge pattern
 	 */
 	private Point translateMove(Direction direction) {
-		Unit unit = back.getActiveUnit();
-		Point newLocation = new Point(unit.getLocation());
+		Point newLocation = roseRules.getCurrentLocation();
 		switch (direction) {
 		case DOWN:
 			newLocation.y++;
@@ -191,7 +190,7 @@ public class InterfaceTranslator extends BasicPlayer {
 	
 	private void selectUnit(Point location) {
 		Node node = back.getNode(location.x, location.y);
-		back.switchSelectedUnit(node.getUnits().get(0));
+		roseRules.selectUnit(node.getUnits().get(0));
 	}
 	
 	private void selectBuilding(Point location) {

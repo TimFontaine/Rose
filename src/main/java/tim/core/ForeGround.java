@@ -58,6 +58,13 @@ public class ForeGround {
 		
 	}
 
+	/**
+	 * @param g
+	 */
+	private void drawResources(Graphics2D g) {
+		
+	}
+
 	private void drawEvents(Graphics2D g) {
 		List<Event> events = back.getEvents();
 //		int x = screenWidth /2;
@@ -95,10 +102,9 @@ public class ForeGround {
 			if (image == null) {
 				System.out.println("no image for:" + name);
 			}
-			ImageIcon thingImageIcon = new ImageIcon(image);
 			int x = mapItem.getX() * 50;
 			int y = mapItem.getY() * 50;
-			g.drawImage(thingImageIcon.getImage(), x, y, null);
+			g.drawImage(image, x, y, null);
 			
 		}
 	}

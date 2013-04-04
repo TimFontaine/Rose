@@ -74,28 +74,6 @@ public class Back {
 		playerList = new ArrayList<Player>();
 		mapItems = new ArrayList<MapItem>();
 	}
-	
-	/**
-	 * 
-	 */
-	public void startGame() {
-		//assert builder has all configuration			
-//		CentricMapBuilder builder = new CentricMapBuilder();
-//		builder.constructMap();
-//		builder.constructPlayers();
-//		map = builder.getMap();
-//		playerList = builder.getPlayerList();
-//		builder.constructUnits();
-//		mapItems = builder.getMapItems();
-		
-		
-		playerIterator = playerList.listIterator();
-		nextPlayer();//take the first plaer from the list
-		nextStep();
-		
-		applicationFactory = GameApplicationFactory.getInstance();
-	}
-	
 
 	public List<MapItem> getMapItems() {
 		return mapItems;
@@ -107,8 +85,16 @@ public class Back {
 		return path;
 	}
 	
+	@Deprecated
 	public void moveUnit(int x, int y) {
 		Unit unit = activeUnit;
+		Point location = unit.getLocation();
+		map.removeUnit(unit, location.x, location.y);
+		map.addUnit(unit, x, y);
+		unit.setLocation(new Point(x, y));
+	}
+	
+	public void moveUnit(Unit unit, int x, int y) {
 		Point location = unit.getLocation();
 		map.removeUnit(unit, location.x, location.y);
 		map.addUnit(unit, x, y);
@@ -133,37 +119,10 @@ public class Back {
 		Path path = dijkstra.findClosestItem(startX, startY, map, itemName);
 		return path;
 	}
-		
-	public void nextPlayer() {
-		events.clear();
-		if (playerIterator.hasNext()) {
-			activePlayer = playerIterator.next();
-		} else {
-			playerIterator = playerList.iterator();
-			activePlayer = playerIterator.next();
-		}
-		activePlayer.initTurn();
-	}
-	
-	public void nextStep() {
-		activePlayer.doLogic();
-	}
-	
-	public void nextTurn() {
-		playerIterator = playerList.iterator();
-	}
-	
-	public void addPlayer(Player player) {
-		playerList.add(player);
-	}
 	
 	public List<Event> getEvents() {
 		return events;
 	}	
-
-	public List<Player> getPlayerList() {
-		return playerList;
-	}
 
 	//for the mapbuilder
 	public void addUnit(Player player, Unit unit, Point location) {
@@ -280,18 +239,6 @@ public class Back {
 		return activeUnit;
 	}
 
-	public Player getActivePlayer() {
-		return activePlayer;
-	}
-
-	public void setActivePlayer(Player activePlayer) {
-		this.activePlayer = activePlayer;
-	}
-
-	public void setPlayerList(List<Player> playerList) {
-		this.playerList = playerList;
-	}
-
 	/**
 	 * 
 	 */
@@ -314,13 +261,6 @@ public class Back {
 	 */
 	public void setAStar(AStar aStar) {
 		this.aStar = aStar;
-	}
-
-	/**
-	 * 
-	 */
-	public void switchSelectedUnit(Unit unit) {
-		this.activeUnit = unit;
 	}
 	
 	public void switchSelectedBuilding(Building building) {

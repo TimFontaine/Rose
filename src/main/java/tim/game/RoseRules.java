@@ -4,6 +4,8 @@
 package tim.game;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import tim.data.back.Node;
@@ -23,6 +25,10 @@ public class RoseRules {
 	
 	Back back;
 	ResourceInfo resourceInfo;
+	Unit activeUnit;
+	private Player activePlayer;
+	private List<Player> playerList;
+	Iterator<Player> playerIterator;
 
 	/**
 	 * 
@@ -31,10 +37,37 @@ public class RoseRules {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		back = applicationFactory.getBack();
 		resourceInfo = applicationFactory.getResourceInfo();
+		
+		playerList = new ArrayList<Player>();
+	}
+	
+	/**
+	 * 
+	 */
+	public void startGame() {
+		//assert builder has all configuration			
+//		CentricMapBuilder builder = new CentricMapBuilder();
+//		builder.constructMap();
+//		builder.constructPlayers();
+//		map = builder.getMap();
+//		playerList = builder.getPlayerList();
+//		builder.constructUnits();
+//		mapItems = builder.getMapItems();
+		
+		
+		playerIterator = playerList.listIterator();
+		nextPlayer();//take the first plaer from the list
+		nextStep();
+		
 	}
 	
 	public void moveUnit(Point location) {
-		back.moveUnit(location.x, location.y);
+		back.moveUnit(activeUnit, location.x, location.y);
+//		Unit unit = back.getActiveUnit();
+//		Node node = back.getNode(unit.getLocation().x, unit.getLocation().y);
+//		if (node.containsItem()) {
+//			
+//		}
 	}
 	
 	public void attack(Point location) {
@@ -55,8 +88,8 @@ public class RoseRules {
 	}
 	
 	public TileInfo getTileInfo(Point location) {
-		TileInfo tileInfo = new TileInfo();
 		Node node = back.getNode(location.x, location.y);
+		TileInfo tileInfo = new TileInfo(node);
 		if (node.containsUnit()) {
 			tileInfo.setSelection(Selection.UNIT);
 			tileInfo.setUnits(node.getUnits());
@@ -80,6 +113,56 @@ public class RoseRules {
 	
 	public void specialAction(SpecialAction action) {
 		back.getActiveBuilding().specialAction(action);
+	}
+	
+	public void nextPlayer() {
+		if (playerIterator.hasNext()) {
+			activePlayer = playerIterator.next();
+		} else {
+			playerIterator = playerList.iterator();
+			activePlayer = playerIterator.next();
+		}
+		activePlayer.initTurn();
+	}
+	
+	public void nextStep() {
+		activePlayer.doLogic();
+	}
+	
+	public void nextTurn() {
+		playerIterator = playerList.iterator();
+	}
+	
+	public void addPlayer(Player player) {
+		playerList.add(player);
+	}
+
+	/**
+	 * @param playerList2
+	 */
+	public void setPlayerList(List<Player> playerList) {
+		this.playerList = playerList;
+	}
+
+	/**
+	 * @return
+	 */
+	public Point getCurrentLocation() {
+		return activeUnit.getLocation();
+	}
+
+	/**
+	 * @param unit
+	 */
+	public void selectUnit(Unit unit) {
+		activeUnit = unit;
+	}
+
+	/**
+	 * @return
+	 */
+	public Unit getActiveUnit() {
+		return activeUnit;
 	}
 
 }

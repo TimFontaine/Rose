@@ -40,15 +40,21 @@ public class TileInfo {
 	private Building building;
 	
 	private List<String> possibleActions;
+	
+	private ResourceItem resourceItem;
+	
+	Node node;
 	//transport
 	//node info
 
 	/**
+	 * @param node 
 	 * 
 	 */
-	public TileInfo() {
+	public TileInfo(Node node) {
 		GameApplicationFactory applicationFactory = GameApplicationFactory.getInstance();
 		resourceInfo = applicationFactory.getResourceInfo();
+		this.node = node;
 	}
 
 	public List<Unit> getUnits() {
@@ -79,7 +85,9 @@ public class TileInfo {
 
 	public List<String> getPossibleActions() {
 		if (selection == Selection.UNIT) {
-			return resourceInfo.getUnitActions(selection.getSelected().getType());
+			List<String> actions;
+			actions = resourceInfo.getUnitActions(selection.getSelected().getType());
+			return actions;
 		} else {
 			return resourceInfo.getBuildingActions(selection.getSelected().getType());
 		}
