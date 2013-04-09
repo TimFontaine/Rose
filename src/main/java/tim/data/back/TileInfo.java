@@ -21,6 +21,7 @@ public class TileInfo {
 	
 	public enum Selection {
 		UNIT,
+		UNIT_MULTIPLE,
 		BUILDING,
 		NONE;
 		
