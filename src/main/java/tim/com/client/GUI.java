@@ -6,6 +6,7 @@ package tim.com.client;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.omg.CORBA.FREE_MEM;
@@ -20,6 +21,10 @@ public class GUI {
 	GraphicsDevice gd;
 	
 	RoseClient roseClient;
+	
+	MapViewer mapViewer;
+	
+	Canvas canvas;
 
 	/**
 	 * 
@@ -43,9 +48,31 @@ public class GUI {
 	
 	public void startGUI(Dimension size) {
 		gd = getDefaultScreenDevice();
-		Canvas canvas = new Canvas(roseClient, size);
+		mapViewer = new MapViewer(roseClient);
+		canvas = new Canvas(roseClient, mapViewer, size);
 		FullScreenFrame f = new FullScreenFrame(gd);
 		f.setCanvas(canvas);
+		f.setVisible(true);
+		
+		canvas.createKeyBindings();
+	}
+
+	/**
+	 * @return
+	 */
+	public Unit getActiveUnit() {
+		return mapViewer.getActiveUnit();
+	}
+	
+	public void setActiveUnit(Unit unit) {
+		mapViewer.setActiveUnit(unit);
+	}
+
+	/**
+	 * 
+	 */
+	public void fullRefresh() {
+		canvas.repaint();
 	}
 	
 	

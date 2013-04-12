@@ -117,4 +117,22 @@ public class Map {
 		return new Point(nodes.length, nodes[0].length);
 	}
 
+	/**
+	 * @return
+	 */
+	public int getWidth() {
+		return nodes.length;
+	}
+
+	/**
+	 * @return
+	 */
+	public int getHeight() {
+		return nodes[0].length;
+	}
+	
+	public boolean isValid(int x, int y) {
+		return x >=0 && x < getWidth() && y >= 0 && y < getHeight(); 
+	}
+
 }

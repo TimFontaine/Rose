@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import tim.data.unit.Unit;
+import tim.com.client.Locatable;
+import tim.com.client.Location;
+import tim.com.client.Unit;
 import tim.game.Player;
 import tim.game.ai.data.MutableResource.Resource;
 import tim.game.usercentric.Actor;
@@ -18,7 +20,7 @@ import tim.pathfinding.AStarNode;
  * @author tim
  *
  */
-public class Node implements Serializable{
+public class Node implements Location, Serializable{
 	int x;
 	int y;
 	private transient Node previousNode = null;
@@ -240,6 +242,39 @@ public class Node implements Serializable{
 
 	public void setTerrain(Terrain terrain) {
 		this.terrain = terrain;
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.com.client.Location#add(tim.com.client.Locatable)
+	 */
+	@Override
+	public void add(Locatable locatable) {
+		units.add((Unit) locatable);
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.com.client.Location#remove(tim.com.client.Locatable)
+	 */
+	@Override
+	public void remove(Locatable locatable) {
+		units.remove(locatable);
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.com.client.Location#contains(tim.com.client.Locatable)
+	 */
+	@Override
+	public boolean contains(Locatable locatable) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.com.client.Location#getPosition()
+	 */
+	@Override
+	public Point getPosition() {
+		return new Point(x, y);
 	}
 	
 }

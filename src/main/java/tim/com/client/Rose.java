@@ -3,8 +3,6 @@
  */
 package tim.com.client;
 
-import org.omg.CORBA.FREE_MEM;
-
 /**
  * @author tfontaine
  *

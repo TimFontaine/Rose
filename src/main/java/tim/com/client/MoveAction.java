@@ -16,11 +16,13 @@ public class MoveAction extends RoseAction {
 	public static final String id = "moveAction.";
 	
 	Direction direction;
+	InGameController inGameController;
 
 	/**
 	 * 
 	 */
-	public MoveAction(Direction d) {
+	public MoveAction(InGameController inGameController, Direction d) {
+		this.inGameController = inGameController;
 		this.direction = d;
 	}
 
@@ -29,7 +31,8 @@ public class MoveAction extends RoseAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("move launched");
+		System.out.println("left");
+		inGameController.move(direction);
 	}
 
 	/* (non-Javadoc)

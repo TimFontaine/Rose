@@ -4,6 +4,8 @@
 package tim.com.client;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
@@ -16,13 +18,17 @@ import javax.swing.JDesktopPane;
 public class Canvas extends JDesktopPane {
 	
 	RoseClient roseClient;
+	
+	MapViewer mapViewer;
 
 	/**
+	 * @param mapViewer 
 	 * 
 	 */
-	public Canvas(RoseClient roseClient, Dimension size) {
+	public Canvas(RoseClient roseClient, MapViewer mapViewer, Dimension size) {
 		
 		this.roseClient = roseClient;
+		this.mapViewer = mapViewer;
 		setLocation(0, 0);
         setSize(size);
 
@@ -30,13 +36,25 @@ public class Canvas extends JDesktopPane {
         setOpaque(false);
         setLayout(null);
         
-        createKeyBindings();
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
+//        requestFocusInWindow();
         
 	}
 	
-	private void createKeyBindings() {
+	/* (non-Javadoc)
+	 * @see java.awt.Container#paintComponents(java.awt.Graphics)
+	 */
+	@Override
+	public void paintComponent(Graphics g) {
+		System.out.println("painting");
+		Graphics2D g2d = (Graphics2D) g;
+		mapViewer.display(g2d);
+	}
+	
+	void createKeyBindings() {
 		for (RoseAction action : roseClient.getActionManager().getActions().values()) {
-			getInputMap().put(action.getAccelerator(), action.getId());
+			getInputMap(WHEN_IN_FOCUSED_WINDOW).put(action.getAccelerator(), action.getId());
 			getActionMap().put(action.getId(), action);
 		}
 	}

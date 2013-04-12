@@ -24,9 +24,9 @@ public class ActionManager {
 		actions = new HashMap<String, RoseAction>();
 	}
 
-	public void initializeActions() {
+	public void initializeActions(InGameController inGameController) {
 		for (Direction d : Direction.values()) {
-			add(new MoveAction(d));
+			add(new MoveAction(inGameController, d));
 		}
 	}
 	
