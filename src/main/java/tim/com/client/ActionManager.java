@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tim.data.back.Direction;
+import tim.rose.buttons.actions.BuildAction;
 
 /**
  * @author tfontaine
@@ -25,6 +26,7 @@ public class ActionManager {
 	}
 
 	public void initializeActions(InGameController inGameController) {
+		add(new BuildAction(inGameController));
 		for (Direction d : Direction.values()) {
 			add(new MoveAction(inGameController, d));
 		}

@@ -21,10 +21,12 @@ public abstract class RoseAction extends AbstractAction {
 	/**
 	 * 
 	 */
-	public RoseAction() {
-		setAccelerator(KeyStroke.getKeyStroke("LEFT"));
+	public RoseAction(String id) {
+		String acceleratorKey = id + ".accelerator";
+		String accelerator = Messages.message(acceleratorKey);
+		setAccelerator(KeyStroke.getKeyStroke(accelerator));
 	}
-	
+
 	public abstract String getId();
 
 	/**

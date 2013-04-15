@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import tim.com.client.City;
 import tim.com.client.Locatable;
 import tim.com.client.Location;
 import tim.com.client.Unit;
@@ -33,7 +34,8 @@ public class Node implements Location, Serializable{
 	private Player owner;
 	
 	private Resource resource;//oil, iron
-	private Terrain terrain; 
+	private Terrain terrain;
+	private City city; 
 	
 	public Node(int x, int y) {
 		this.x = x;
@@ -275,6 +277,21 @@ public class Node implements Location, Serializable{
 	@Override
 	public Point getPosition() {
 		return new Point(x, y);
+	}
+
+	/**
+	 * @param city
+	 */
+	public void setCity(City city) {
+		this.city = city;
+		
+	}
+
+	/**
+	 * @return
+	 */
+	public City getCity() {
+		return city;
 	}
 	
 }

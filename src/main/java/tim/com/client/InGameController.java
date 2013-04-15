@@ -8,6 +8,7 @@ import java.awt.Point;
 import tim.data.back.Direction;
 import tim.data.back.Node;
 import tim.data.back.TileInfo.Selection;
+import tim.game.Player;
 
 /**
  * @author tfontaine
@@ -48,6 +49,28 @@ public class InGameController {
 	}
 	
 	/**
+	 * do basic user checks
+	 */
+	public void buildCity() {
+		Unit unit = gui.getActiveUnit();
+		buildCity(unit);
+		
+		gui.fullRefresh();
+	}
+	
+	/**
+	 * @TODO move to server layer
+	 * @param unit
+	 */
+	private void buildCity(Unit unit) {
+		Node tile = unit.getTile();
+		Player player = client.getPlayer();
+		City city = new City(player, tile);
+		city.placeCity();
+	}
+
+	/**
+	 * @TODO move to class unit
 	 * @param newLocation
 	 * @return
 	 */

@@ -107,4 +107,11 @@ public class Unit implements Locatable, Location {
 		this.type = type;
 	}
 
+	/**
+	 * @return
+	 */
+	public Node getTile() {
+		return (Node) location;
+	}
+
 }
