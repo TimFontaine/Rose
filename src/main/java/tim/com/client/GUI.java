@@ -48,13 +48,17 @@ public class GUI {
 	
 	public void startGUI(Dimension size) {
 		gd = getDefaultScreenDevice();
-		mapViewer = new MapViewer(roseClient);
+		mapViewer = new MapViewer(roseClient, this);
 		canvas = new Canvas(roseClient, mapViewer, size);
 		FullScreenFrame f = new FullScreenFrame(gd);
 		f.setCanvas(canvas);
 		f.setVisible(true);
 		
 		canvas.createKeyBindings();
+	}
+	
+	public void setupMouseListenersForCanvas() {
+		canvas.addMouseListener(new CanvasMouseListener(roseClient, canvas, mapViewer));
 	}
 
 	/**
@@ -73,6 +77,13 @@ public class GUI {
 	 */
 	public void fullRefresh() {
 		canvas.repaint();
+	}
+
+	/**
+	 * 
+	 */
+	public Canvas getCanvas() {
+		return canvas;
 	}
 	
 	

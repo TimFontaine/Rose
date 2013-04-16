@@ -9,6 +9,11 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
+
 import tim.core.ResourceManager;
 import tim.data.back.Node;
 import tim.game.Map;
@@ -23,7 +28,9 @@ public class MapViewer {
 	
 	private static int tile_size = 50;
 	
-	RoseClient roseClient;
+	private RoseClient roseClient;
+	
+	private GUI gui;
 	
 	ResourceManager resourceManager;
 	
@@ -32,8 +39,9 @@ public class MapViewer {
 	/**
 	 * 
 	 */
-	public MapViewer(RoseClient roseClient) {
+	public MapViewer(RoseClient roseClient, GUI gui) {
 		this.roseClient = roseClient;
+		this.gui = gui;
 		resourceManager = ResourceManager.getInstance();
 	}
 
@@ -117,6 +125,34 @@ public class MapViewer {
 
 	public void setActiveUnit(Unit activeUnit) {
 		this.activeUnit = activeUnit;
+	}
+
+	/**
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public Node convertToMapTile(int x, int y) {
+		int tileX = x / tile_size;
+		int tileY = y / tile_size;
+		Node node = roseClient.getGame().getMap().getNode(tileX, tileY);
+		return node;
+	}
+
+	/**
+	 * @param tile
+	 */
+	public void setSelectedTile(Node tile) {
+		if (noActiveUnitAt(tile)) {
+			if (tile.getCity() != null) {
+				//open city window
+				gui.getCanvas().showCity(tile.getCity());
+			}
+		}
+	}
+	
+	public boolean noActiveUnitAt(Node tile) {
+		return activeUnit == null || activeUnit.getTile() != tile;
 	}
 	
 }

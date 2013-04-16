@@ -9,7 +9,12 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
+import javax.swing.JButton;
 import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * @author tfontaine
@@ -57,6 +62,23 @@ public class Canvas extends JDesktopPane {
 			getInputMap(WHEN_IN_FOCUSED_WINDOW).put(action.getAccelerator(), action.getId());
 			getActionMap().put(action.getId(), action);
 		}
+	}
+
+	/**
+	 * @param city
+	 */
+	public void showCity(City city) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new MigLayout());
+		panel.add(new JButton("factory"));
+		panel.add(new JButton("farm"));
+		JInternalFrame iFrame = new JInternalFrame();
+		iFrame.getContentPane().add(panel);
+		iFrame.setVisible(true);
+		iFrame.setLocation(100, 100);
+//		iFrame.setSize(100, 100);
+		iFrame.pack();
+		add(iFrame);
 	}
 
 }
