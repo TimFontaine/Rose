@@ -62,13 +62,4 @@ public class BuildAction extends RoseAction {
 		inGameController.buildCity();
 	}
 
-	/* (non-Javadoc)
-	 * @see tim.com.client.RoseAction#getId()
-	 */
-	@Override
-	public String getId() {
-		return "buildAction";
-	}
-	
-
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Rose-types>
+	<tileimprovement-types>
+		<tileimprovement id="buildRoad"/>
+		<tileimprovement id="buildRailRoad"/>
+	</tileimprovement-types>
+	<building-types>
+		<building id="factory"/>
+		<building id="house"/>
+	</building-types>
+</Rose-types>

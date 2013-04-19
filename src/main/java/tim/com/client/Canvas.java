@@ -25,15 +25,18 @@ public class Canvas extends JDesktopPane {
 	RoseClient roseClient;
 	
 	MapViewer mapViewer;
+	
+	private GUI gui;
 
 	/**
 	 * @param mapViewer 
 	 * 
 	 */
-	public Canvas(RoseClient roseClient, MapViewer mapViewer, Dimension size) {
+	public Canvas(RoseClient roseClient, GUI gui, MapViewer mapViewer, Dimension size) {
 		
 		this.roseClient = roseClient;
 		this.mapViewer = mapViewer;
+		this.gui = gui;
 		setLocation(0, 0);
         setSize(size);
 
@@ -68,10 +71,7 @@ public class Canvas extends JDesktopPane {
 	 * @param city
 	 */
 	public void showCity(City city) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new MigLayout());
-		panel.add(new JButton("factory"));
-		panel.add(new JButton("farm"));
+		JPanel panel = new CityPanel(roseClient, gui, city);
 		JInternalFrame iFrame = new JInternalFrame();
 		iFrame.getContentPane().add(panel);
 		iFrame.setVisible(true);

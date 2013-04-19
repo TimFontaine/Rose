@@ -25,6 +25,8 @@ public class GUI {
 	MapViewer mapViewer;
 	
 	Canvas canvas;
+	
+	MapControls mapControls;
 
 	/**
 	 * 
@@ -49,12 +51,21 @@ public class GUI {
 	public void startGUI(Dimension size) {
 		gd = getDefaultScreenDevice();
 		mapViewer = new MapViewer(roseClient, this);
-		canvas = new Canvas(roseClient, mapViewer, size);
+		canvas = new Canvas(roseClient, this, mapViewer, size);
 		FullScreenFrame f = new FullScreenFrame(gd);
 		f.setCanvas(canvas);
 		f.setVisible(true);
 		
 		canvas.createKeyBindings();
+		
+		showMapControls();
+	}
+	
+	public void showMapControls() {
+		if (mapControls == null) {
+			mapControls = new MapControls(roseClient);
+			mapControls.addToCanvas(canvas);
+		}
 	}
 	
 	public void setupMouseListenersForCanvas() {

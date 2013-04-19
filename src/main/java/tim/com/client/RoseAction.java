@@ -25,9 +25,12 @@ public abstract class RoseAction extends AbstractAction {
 		String acceleratorKey = id + ".accelerator";
 		String accelerator = Messages.message(acceleratorKey);
 		setAccelerator(KeyStroke.getKeyStroke(accelerator));
+		putValue("id", id);
 	}
 
-	public abstract String getId();
+	public String getId() {
+		return (String) getValue("id");
+	}
 
 	/**
 	 * @return

@@ -28,4 +28,11 @@ public class City {
 		tile.setCity(this);
 	}
 
+	/**
+	 * 
+	 */
+	public void contstructBuilding(String buildingName) {
+		System.out.println("city has order to build:" + buildingName);
+	}
+
 }

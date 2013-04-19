@@ -103,4 +103,11 @@ public class InGameController {
 		return newLocation;
 	}
 
+	/**
+	 * @param string
+	 */
+	public void buildingOrder(City city, String buildingName) {
+		city.contstructBuilding(buildingName);
+	}
+
 }
