@@ -22,7 +22,7 @@ import tim.game.usercentric.SpecialAction;
  */
 public class BuildAction extends RoseAction {
 	
-	public static final String id = "buildAction";
+	public static final String id = "buildCityAction";
 	
 	private String item;
 	private InGameController inGameController;

@@ -37,7 +37,7 @@ public class CityPanel extends JPanel implements ActionListener {
 		
 		Specification specification = roseClient.getGame().getSpecification();
 		for (BuildingType buildingType : specification.getBuildingTypeList()) {
-			JButton buildingButtuon = new JButton(buildingType.getName());
+			JButton buildingButtuon = new JButton(buildingType.getId());
 			buildingButtuon.addActionListener(this);
 			add(buildingButtuon);
 		}
