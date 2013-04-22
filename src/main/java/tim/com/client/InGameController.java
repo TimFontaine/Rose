@@ -7,6 +7,8 @@ import java.awt.Point;
 
 import tim.data.back.Direction;
 import tim.data.back.Node;
+import tim.data.back.TileImprovement;
+import tim.data.back.TileImprovementType;
 import tim.data.back.TileInfo.Selection;
 import tim.game.Player;
 
@@ -108,6 +110,20 @@ public class InGameController {
 	 */
 	public void buildingOrder(City city, String buildingName) {
 		city.contstructBuilding(buildingName);
+	}
+
+	/**
+	 * @param type
+	 */
+	public void buildTileImprovement(TileImprovementType type) {
+		Unit unit = gui.getActiveUnit();
+		Node tile = unit.getTile();
+		//test can improvement be build
+		
+		//test unit has resource....
+		TileImprovement tileImprovement = new TileImprovement(type);
+		tile.addImprovement(tileImprovement);
+		
 	}
 
 }

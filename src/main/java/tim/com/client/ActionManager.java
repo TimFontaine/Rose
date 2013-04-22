@@ -33,13 +33,13 @@ public class ActionManager {
 		for (Direction d : Direction.values()) {
 			add(new MoveAction(inGameController, d));
 		}
-		initializeSpecialActions(roseClient, inGameController);
+		//initializeSpecialActions(roseClient, inGameController);
 		
 	}
 	
-	private void initializeSpecialActions(RoseClient roseClient, InGameController inGameController) {
+	public void initializeSpecialActions(RoseClient roseClient,GUI gui, InGameController inGameController) {
 		for (TileImprovementType tileImprovementType : roseClient.getGame().getSpecification().getTileImprovementTypeList()) {
-			add(new TileImprovementAction(inGameController, tileImprovementType));
+			add(new TileImprovementAction(inGameController, gui, tileImprovementType));
 		}
 	}
 	

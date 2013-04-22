@@ -34,6 +34,8 @@ public class Specification {
 	
 	private Map<String, Reader<? extends RoseTypeObject>> readerMap;
 	
+	private List<TerrainType> terrainTypesList;
+	
 	private List<TileImprovementType> tileImprovementTypeList;
 	
 	private List<BuildingType> buildingTypeList;
@@ -47,8 +49,10 @@ public class Specification {
 	public Specification() {
 		tileImprovementTypeList = new ArrayList<TileImprovementType>();
 		buildingTypeList = new ArrayList<BuildingType>();
+		terrainTypesList = new ArrayList<TerrainType>();
 		
 		readerMap = new HashMap<String, Reader<? extends RoseTypeObject>>();
+		readerMap.put("terrain-types", new Reader<TerrainType>(TerrainType.class, terrainTypesList));
 		readerMap.put("tileimprovement-types", new Reader<TileImprovementType>(TileImprovementType.class , tileImprovementTypeList));
 		readerMap.put("building-types", new Reader<BuildingType>(BuildingType.class , buildingTypeList));
 		
@@ -103,7 +107,6 @@ public class Specification {
 				reader.readChildren(xsr);
 			}
 //			xsr.nextTag();//goto end tag
-			System.out.println("size:" + tileImprovementTypeList.size());
 		}
 	}
 	
@@ -172,6 +175,29 @@ public class Specification {
 
 	public List<BuildingType> getBuildingTypeList() {
 		return buildingTypeList;
+	}
+
+
+
+
+	public List<TerrainType> getTerrainTypesList() {
+		return terrainTypesList;
+	}
+
+
+
+
+	/**
+	 * @param string
+	 * @return
+	 */
+	public TerrainType getTerrainType(String id) {
+		for (TerrainType t : terrainTypesList) {
+			if (t.getId().equals(id)) {
+				return t;
+			}
+		}
+		return null;
 	}
 
 }

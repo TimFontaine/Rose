@@ -3,6 +3,7 @@
  */
 package tim.com.client;
 
+import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -23,18 +24,25 @@ public class MapControls extends JPanel {
 	 * 
 	 */
 	public MapControls(RoseClient client) {
+		this.setFocusable(false);
 		ActionManager actionManager = client.getActionManager();
 		
 		setLayout(new MigLayout());
-		JButton button = new JButton("hello");
-		add(button);
+		this.setSize(this.getPreferredSize());
+		JButton button = new JButton();
 		button.setAction(new BuildAction(client.getInGameController()));
+		button.setSize(button.getPreferredSize());
+		button.setText("city");
+		add(button);
+		
 		List<TileImprovementType> improvementList = client.getGame().getSpecification().getTileImprovementTypeList();
 		for (TileImprovementType type : improvementList) {
-			JButton b = new JButton("boe");
+			JButton b = new JButton();
 			String id = type.getId();
 			RoseAction action = actionManager.getRoseAction(id);
 			b.setAction(action);
+			b.setSize(b.getPreferredSize());
+			b.setText(type.getId());
 			add(b); 
 		}
 		

@@ -8,4 +8,9 @@
 		<building id="factory"/>
 		<building id="house"/>
 	</building-types>
+	<terrain-types>
+		<terrain id="plain"/>
+		<terrain id="mountain"/>
+		<terrain id="hills"/>
+	</terrain-types>
 </Rose-types>

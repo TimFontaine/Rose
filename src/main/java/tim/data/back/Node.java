@@ -31,11 +31,16 @@ public class Node implements Location, Serializable{
 	private Road road;
 	
 	
+	
 	private Player owner;
 	
 	private Resource resource;//oil, iron
+	
+	private TerrainType terrainType;
 	private Terrain terrain;
-	private City city; 
+	private City city;
+	
+	private TileItemContainer itemContainer;
 	
 	public Node(int x, int y) {
 		this.x = x;
@@ -44,6 +49,8 @@ public class Node implements Location, Serializable{
 		units = new ArrayList<Unit>();
 		terrain = Terrain.PLAIN;
 		resource = Resource.NONE;
+		
+		itemContainer = new TileItemContainer();
 		
 	}
 	
@@ -292,6 +299,25 @@ public class Node implements Location, Serializable{
 	 */
 	public City getCity() {
 		return city;
+	}
+
+	/**
+	 * @param tileImprovement
+	 */
+	public void addImprovement(TileImprovement tileImprovement) {
+		itemContainer.addTileItem(tileImprovement);
+	}
+
+	public TileItemContainer getItemContainer() {
+		return itemContainer;
+	}
+
+	public TerrainType getTerrainType() {
+		return terrainType;
+	}
+
+	public void setTerrainType(TerrainType terrainType) {
+		this.terrainType = terrainType;
 	}
 	
 }

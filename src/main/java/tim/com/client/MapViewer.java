@@ -16,6 +16,8 @@ import net.miginfocom.swing.MigLayout;
 
 import tim.core.ResourceManager;
 import tim.data.back.Node;
+import tim.data.back.TerrainType;
+import tim.data.back.TileItemContainer;
 import tim.game.Map;
 import tim.game.ai.data.MutableResource.Resource;
 import tim.game.factory.GameApplicationFactory;
@@ -75,6 +77,8 @@ public class MapViewer {
 				if (!explored) {
 					g.drawImage(resourceManager.getImage("unexplored"), 0, 0, null);
 				} else {
+					drawTerrain(g, node);
+					drawTileItems(node);
 					if (node.getCity() != null) {
 						drawCity(g, node);
 					}
@@ -82,6 +86,7 @@ public class MapViewer {
 					if (unit != null) {
 						drawUnit(g, unit);
 					}
+					
 				}
 				g.translate(0, tile_size);
 				
@@ -93,6 +98,28 @@ public class MapViewer {
 		
 	}
 	
+	/**
+	 * @param node
+	 */
+	private void drawTerrain(Graphics2D g, Node node) {
+		TerrainType type = node.getTerrainType();
+		if (type != null) {
+			String id = type.getId();
+			Image image = resourceManager.getImage(id);
+			g.drawImage(image, 0, 0, null);
+			
+		}
+	}
+
+	/**
+	 * @param node
+	 */
+	private void drawTileItems(Node node) {
+		TileItemContainer container = node.getItemContainer();
+		if (!container.isEmpty()) {
+		}
+	}
+
 	/**
 	 * @param g
 	 * @param node

@@ -28,5 +28,9 @@ public class TileItemContainer {
 	public boolean contains(TileItem tileItem) {
 		return items.contains(tileItem);
 	}
+	
+	public boolean isEmpty() {
+		return items.isEmpty();
+	}
 
 }

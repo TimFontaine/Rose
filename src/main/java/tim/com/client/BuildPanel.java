@@ -31,7 +31,7 @@ public class BuildPanel extends JPanel {
 		
 		Specification specification = roseClient.getGame().getSpecification();
 		for (BuildingType buildingType : specification.getBuildingTypeList()) {
-			JButton buildingButtuon = new JButton(buildingType.getName());
+			JButton buildingButtuon = new JButton(buildingType.getId());
 			add(buildingButtuon);
 		}
 	}

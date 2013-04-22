@@ -3,6 +3,7 @@
  */
 package tim.com.client;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +19,7 @@ public class Messages {
 	
 	public static void loadMessages() throws IOException {
 		messageBundle = new Properties();
-		InputStream is = new FileInputStream("data\\actions.properties");
+		InputStream is = new FileInputStream("data" + File.separator + "actions.properties");
 		messageBundle.load(is);
 	}
 

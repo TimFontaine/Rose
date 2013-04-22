@@ -40,6 +40,7 @@ public class RoseClient {
 		inGameController = new InGameController(this, gui);
 		
 		actionManager.initializeActions(this);
+		actionManager.initializeSpecialActions(this, gui, inGameController);
 		gui.startGUI(GUI.determineFullScreenSize());
 		gui.setupMouseListenersForCanvas();
 		gui.setActiveUnit(unit);
