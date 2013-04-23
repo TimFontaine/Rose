@@ -24,7 +24,7 @@ public class TileImprovementAction extends RoseAction {
 	 * @param id
 	 */
 	public TileImprovementAction(InGameController inGameController, GUI gui, TileImprovementType tileImprovementType) {
-		super(tileImprovementType.getId());
+		super(tileImprovementType.getId() + "Action");
 		this.inGameController = inGameController;
 		this.type = tileImprovementType;
 		this.gui = gui;
