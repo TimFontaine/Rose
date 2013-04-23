@@ -32,5 +32,9 @@ public class TileItemContainer {
 	public boolean isEmpty() {
 		return items.isEmpty();
 	}
+	
+	public List<TileItem> getTileItems() {
+		return items;
+	}
 
 }

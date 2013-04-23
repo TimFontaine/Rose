@@ -10,12 +10,14 @@ import tim.com.client.Location;
  *
  */
 public class TileImprovement extends TileItem {
+	
+	TileImprovementType type;
 
 	/**
 	 * 
 	 */
 	public TileImprovement(TileImprovementType type) {
-		// TODO Auto-generated constructor stub
+		this.type = type;
 	}
 
 	/* (non-Javadoc)
@@ -34,6 +36,15 @@ public class TileImprovement extends TileItem {
 	public void setLocation(Location newLocation) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/* (non-Javadoc)
+	 * @see tim.data.back.TileItem#getId()
+	 */
+	@Override
+	public String getId() {
+		return type.getId();
+		
 	}
 
 }

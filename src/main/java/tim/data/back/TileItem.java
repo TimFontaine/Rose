@@ -10,12 +10,13 @@ import tim.com.client.Locatable;
  *
  */
 public abstract class TileItem implements Locatable {
-
+	
 	/**
 	 * 
 	 */
 	public TileItem() {
-		
 	}
+	
+	public abstract String getId();
 
 }

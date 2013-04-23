@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -17,6 +18,7 @@ import net.miginfocom.swing.MigLayout;
 import tim.core.ResourceManager;
 import tim.data.back.Node;
 import tim.data.back.TerrainType;
+import tim.data.back.TileItem;
 import tim.data.back.TileItemContainer;
 import tim.game.Map;
 import tim.game.ai.data.MutableResource.Resource;
@@ -78,7 +80,7 @@ public class MapViewer {
 					g.drawImage(resourceManager.getImage("unexplored"), 0, 0, null);
 				} else {
 					drawTerrain(g, node);
-					drawTileItems(node);
+					drawTileItems(g, node);
 					if (node.getCity() != null) {
 						drawCity(g, node);
 					}
@@ -114,13 +116,27 @@ public class MapViewer {
 	/**
 	 * @param node
 	 */
-	private void drawTileItems(Node node) {
+	private void drawTileItems(Graphics2D g, Node node) {
 		TileItemContainer container = node.getItemContainer();
 		if (!container.isEmpty()) {
+			List<TileItem> tileItems = container.getTileItems();
+			for (TileItem tileItem : tileItems) {
+				drawTileItem(g, tileItem);
+			}
 		}
 	}
 
 	/**
+	 * @param g
+	 * @param tileItem
+	 */
+	private void drawTileItem(Graphics2D g, TileItem tileItem) {
+		String id = tileItem.getId();
+		Image image =resourceManager.getImage(id);
+		g.drawImage(image, 0, 0, null);
+	}
+
+	/** 
 	 * @param g
 	 * @param node
 	 */
