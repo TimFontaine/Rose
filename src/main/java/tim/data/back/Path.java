@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
 
+import tim.com.client.shared.Node;
+
 /**
  * @author tim
  *

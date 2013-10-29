@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import tim.com.client.shared.Node;
 import tim.data.back.Item;
 import tim.data.back.MapItem;
-import tim.data.back.Node;
-import tim.data.building.Building;
-import tim.data.unit.Unit;
 import tim.pathfinding.AStarNode;
 import tim.pathfinding.PathfindingMap;
 
@@ -75,22 +73,22 @@ public class Map {
 //	}
 
 
-	/**
-	 * @param unit
-	 * @param location
-	 */
-	public void addUnit(Unit unit, int x, int y) {
-		nodes[x][y].addUnit(unit);
-	}
-
-	/**
-	 * @param unit
-	 * @param x
-	 * @param y
-	 */
-	public void removeUnit(Unit unit, int x, int y) {
-		nodes[x][y].removeUnit(unit);
-	}
+//	/**
+//	 * @param unit
+//	 * @param location
+//	 */
+//	public void addUnit(Unit unit, int x, int y) {
+//		nodes[x][y].addUnit(unit);
+//	}
+//
+//	/**
+//	 * @param unit
+//	 * @param x
+//	 * @param y
+//	 */
+//	public void removeUnit(Unit unit, int x, int y) {
+//		nodes[x][y].removeUnit(unit);
+//	}
 
 	/**
 	 * @param item

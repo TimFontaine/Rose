@@ -3,7 +3,7 @@
  */
 package tim.data.back;
 
-import tim.com.client.Location;
+import tim.com.client.shared.Location;
 
 /**
  * @author tfontaine

@@ -13,7 +13,6 @@ public class TileImprovementType extends RoseTypeObject {
 	 * 
 	 */
 	public TileImprovementType(String id) {
-		super(id);
 	}
 
 }

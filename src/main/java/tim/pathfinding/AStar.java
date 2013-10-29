@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import tim.data.back.Node;
+import tim.com.client.shared.Node;
 import tim.data.back.Path;
 
 /**

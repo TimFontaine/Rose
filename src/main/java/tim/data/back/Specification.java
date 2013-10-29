@@ -6,6 +6,7 @@ package tim.data.back;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -17,14 +18,25 @@ import java.util.Map;
 
 import javax.sql.rowset.spi.XmlReader;
 import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stream.StreamSource;
 
-import org.xml.sax.XMLReader;
+import tim.namespacetest.types.GameType;
+import tim.namespacetest.types.ResourceType;
+import tim.namespacetest.types.RoseObjects;
+import tim.namespacetest.types.Source;
+import tim.namespacetest.types.TerrainType;
+import tim.namespacetest.types.BuildingType;
+import tim.namespacetest.types.TileItem;
+import tim.namespacetest.types.UnitType;
 
-import tim.rose.buttons.actions.LoadAction;
 
 /**
  * @author tfontaine
@@ -32,13 +44,21 @@ import tim.rose.buttons.actions.LoadAction;
  */
 public class Specification {
 	
-	private Map<String, Reader<? extends RoseTypeObject>> readerMap;
-	
 	private List<TerrainType> terrainTypesList;
 	
 	private List<TileImprovementType> tileImprovementTypeList;
 	
 	private List<BuildingType> buildingTypeList;
+	
+	private List<UnitType> unitTypesList;
+	
+	private List<ResourceType> resourceTypeList;
+	
+	private List<TileItem> tileItemList;
+	
+	private List<Source> sourceTypeList;
+	
+	private Map<String, Object> roseObjects;
 	
 	
 	
@@ -47,24 +67,50 @@ public class Specification {
 	 * 
 	 */
 	public Specification() {
+		roseObjects = new HashMap<String, Object>();
 		tileImprovementTypeList = new ArrayList<TileImprovementType>();
 		buildingTypeList = new ArrayList<BuildingType>();
 		terrainTypesList = new ArrayList<TerrainType>();
-		
-		readerMap = new HashMap<String, Reader<? extends RoseTypeObject>>();
-		readerMap.put("terrain-types", new Reader<TerrainType>(TerrainType.class, terrainTypesList));
-		readerMap.put("tileimprovement-types", new Reader<TileImprovementType>(TileImprovementType.class , tileImprovementTypeList));
-		readerMap.put("building-types", new Reader<BuildingType>(BuildingType.class , buildingTypeList));
-		
-		File file = new File("test.xml");
+		unitTypesList = new ArrayList<UnitType>();
 		try {
-			InputStream is = new FileInputStream(file);
-			load(is);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			JAXBContext context = JAXBContext.newInstance(RoseObjects.class);
+		
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		File file = new File("test.xml");
+		JAXBElement<RoseObjects> spec = unmarshaller.unmarshal(new StreamSource(file), RoseObjects.class);
+		terrainTypesList=spec.getValue().getTerrainType();
+		buildingTypeList =spec.getValue().getBuildingType();
+		unitTypesList =spec.getValue().getUnitType();
+		setTileItemList(spec.getValue().getTileItem());
+		resourceTypeList = spec.getValue().getResourceType();
+		sourceTypeList = spec.getValue().getSourceType();
+		tileItemList = spec.getValue().getTileItem();
+		addGameTypes(tileItemList);
+		
+//		tileItemList = spec.getValue().get
+		} catch (JAXBException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+//		readerMap = new HashMap<String, Reader<? extends RoseTypeObject>>();
+//		readerMap.put("terrain-types", new Reader<TerrainType>(TerrainType.class, terrainTypesList));
+//		readerMap.put("tileimprovement-types", new Reader<TileImprovementType>(TileImprovementType.class , tileImprovementTypeList));
+//		readerMap.put("building-types", new Reader<BuildingType>(BuildingType.class , buildingTypeList));
+//		
+//		File file = new File("test.xml");
+//		try {
+//			InputStream is = new FileInputStream(file);
+//			load(is);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
 	}
 
+	public void addGameTypes(List<? extends GameType> gameTypeList) {
+		for (GameType gameType : gameTypeList) {
+			roseObjects.put(gameType.getName(), gameType);
+		}
+	}
 
 
 
@@ -74,103 +120,11 @@ public class Specification {
 	
 	
 	public static void main(String args[]) throws FileNotFoundException, XMLStreamException {
-		new Specification();
-	}
-	
-	public void load(InputStream is) {
-		XMLInputFactory  inputFactory = XMLInputFactory.newInstance();
-		try {
-			XMLStreamReader xsr = inputFactory.createXMLStreamReader(is);
-			xsr.nextTag();
-			load(xsr); 
-			
-		} catch (XMLStreamException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-
-
-
-	/**
-	 * @param xsr
-	 * @throws XMLStreamException 
-	 */
-	private void load(XMLStreamReader xsr) throws XMLStreamException {
-
-		while (xsr.nextTag() != XMLStreamConstants.END_ELEMENT) {
-			String name = xsr.getLocalName();
-			Reader<? extends RoseTypeObject> reader = readerMap.get(name);
-			System.out.println(xsr.getLocalName());
-			if (reader != null) {
-				reader.readChildren(xsr);
-			}
-//			xsr.nextTag();//goto end tag
-		}
-	}
-	
-	
-	private class Reader<T> {
-		private List<T> typeList;
-		Class<T> classType;
 		
-		public Reader(Class<T> classType, List<T> typeList) {
-			this.typeList = typeList;
-			this.classType = classType;
-		}
-		
-		public void readChildren(XMLStreamReader xsr) throws XMLStreamException {
-			while (xsr.nextTag() != XMLStreamConstants.END_ELEMENT) {
-				if (xsr.getEventType() == XMLStreamConstants.START_ELEMENT) {
-					T roseTypeObject = getType(xsr, classType);
-					typeList.add(roseTypeObject);
-				}
-				if (xsr.getEventType() == XMLStreamConstants.END_ELEMENT) {
-					System.out.println("end" + xsr.getEventType() + xsr.getLocalName());
-				}
-				xsr.nextTag();//goto end tag
-			}
-		}
 	}
 	
 	
-
-	/**
-	 * @param <T>
-	 * @param xsr
-	 * @return 
-	 * @throws XMLStreamException 
-	 */
-	private <T> T getType(XMLStreamReader xsr, Class<T> classType) throws XMLStreamException {
-		String id = xsr.getAttributeValue(null, "id");
-		try {
-			Constructor<T> constructor = classType.getConstructor(String.class);
-			T t = constructor.newInstance(id);
-			return t;
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-
+	
 
 
 	public List<BuildingType> getBuildingTypeList() {
@@ -184,8 +138,37 @@ public class Specification {
 		return terrainTypesList;
 	}
 
+	/**
+	 * @param string
+	 * @return
+	 */
+	public Source getSourceType(String name) {
+		for (Source t : sourceTypeList) {
+			if (t.getName().equals(name)) {
+				return t;
+			}
+		}
+		return null;
+	}
+	
+	
+	public <T> T getType(String name, Class<T> type) {
+		return null;
+	}
 
-
+	/**
+	 * @param string
+	 * @return
+	 */
+	public UnitType getUnitType(String name) {
+		for (UnitType t : unitTypesList) {
+			if (t.getName().equals(name)) {
+				return t;
+			}
+		}
+		return null;
+	}
+	
 
 	/**
 	 * @param string
@@ -193,11 +176,79 @@ public class Specification {
 	 */
 	public TerrainType getTerrainType(String id) {
 		for (TerrainType t : terrainTypesList) {
-			if (t.getId().equals(id)) {
+			if (t.getName().equals(id)) {
 				return t;
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * @param string
+	 * @return
+	 */
+	public TileItem getTileItem(String name) {
+		for (TileItem t : tileItemList) {
+			if (t.getName().equals(name)) {
+				return t;
+			}
+		}
+		return null;
+	}
+
+
+
+
+
+	public List<UnitType> getUnitTypesList() {
+		return unitTypesList;
+	}
+
+
+
+
+	public List<ResourceType> getResourceTypeList() {
+		return resourceTypeList;
+	}
+
+
+
+
+	/**
+	 * @return the tileItemList
+	 */
+	public List<TileItem> getTileItemList() {
+		return tileItemList;
+	}
+
+
+
+
+	/**
+	 * @param tileItemList the tileItemList to set
+	 */
+	public void setTileItemList(List<TileItem> tileItemList) {
+		this.tileItemList = tileItemList;
+	}
+
+
+
+
+	/**
+	 * @return the sourceTypeList
+	 */
+	public List<Source> getSourceTypeList() {
+		return sourceTypeList;
+	}
+
+
+
+
+	/**
+	 * @param sourceTypeList the sourceTypeList to set
+	 */
+	public void setSourceTypeList(List<Source> sourceTypeList) {
+		this.sourceTypeList = sourceTypeList;
 	}
 
 }

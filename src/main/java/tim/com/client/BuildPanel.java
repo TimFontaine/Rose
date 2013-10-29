@@ -7,8 +7,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-import tim.data.back.BuildingType;
+import tim.com.client.controller.GUI;
 import tim.data.back.Specification;
+import tim.namespacetest.types.BuildingType;
 
 /**
  * @author tfontaine
@@ -31,8 +32,8 @@ public class BuildPanel extends JPanel {
 		
 		Specification specification = roseClient.getGame().getSpecification();
 		for (BuildingType buildingType : specification.getBuildingTypeList()) {
-			JButton buildingButtuon = new JButton(buildingType.getId());
-			add(buildingButtuon);
+//			JButton buildingButtuon = new JButton(buildingType.getId());
+//			add(buildingButtuon);
 		}
 	}
 

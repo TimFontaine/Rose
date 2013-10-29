@@ -5,7 +5,7 @@ package tim.pathfinding;
 
 import java.util.List;
 
-import tim.data.back.Node;
+import tim.com.client.shared.Node;
 
 /**
  * @author tfontaine

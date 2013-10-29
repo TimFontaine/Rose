@@ -3,7 +3,7 @@
  */
 package tim.pathfinding;
 
-import tim.data.back.Node;
+import tim.com.client.shared.Node;
 
 /**
  * @author tfontaine

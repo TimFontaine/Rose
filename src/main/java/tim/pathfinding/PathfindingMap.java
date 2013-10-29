@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import tim.com.client.shared.Node;
 import tim.data.back.MapItem;
-import tim.data.back.Node;
 import tim.game.Map;
 
 /**
@@ -72,8 +72,9 @@ public class PathfindingMap implements Serializable {
 
 	public int getDistanceBetween(Node node1, Node node2) {
 //		return Math.abs(node1.getX() - node2.getX()) + Math.abs(node1.getY() - node2.getY());
-		int k =  1 * node2.getTravelWeight();
-		return k;
+//		int k =  1 * node2.getTravelWeight();
+//		return k;
+		return 0;
 		
 	}
 	
@@ -138,7 +139,7 @@ public class PathfindingMap implements Serializable {
 		for (int i = 0; i< x; i++) {
 			for (int j=0; j< y; j++) {
 				nodes[i][j] = new AStarNode(i, j);;
-				nodes[i][j].setTravelWeight(defaultSpeed);
+//				nodes[i][j].setTravelWeight(defaultSpeed);
 			}
 		}
 		

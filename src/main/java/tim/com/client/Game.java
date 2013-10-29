@@ -6,9 +6,9 @@ package tim.com.client;
 import java.util.List;
 
 import tim.data.back.Specification;
-import tim.data.back.TerrainType;
 import tim.game.Map;
 import tim.game.Player;
+import tim.namespacetest.types.TerrainType;
 
 /**
  * @author tfontaine
@@ -28,10 +28,9 @@ public class Game {
 	 * 
 	 */
 	public Game() {
-		setMap(new Map(50, 50));
 		specification = new Specification();
-		TerrainType mountain = specification.getTerrainType("mountain");
-		map.getNode(10, 10).setTerrainType(mountain);
+		MapBuilder mapBuilder = new MapBuilder();
+		setMap(mapBuilder.build(specification));
 		
 	}
 

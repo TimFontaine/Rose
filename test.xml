@@ -1,16 +1,62 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Rose-types>
-	<tileimprovement-types>
-		<tileimprovement id="road"/>
-		<tileimprovement id="railRoad"/>
-	</tileimprovement-types>
-	<building-types>
-		<building id="factory"/>
-		<building id="house"/>
-	</building-types>
-	<terrain-types>
-		<terrain id="plain"/>
-		<terrain id="mountain"/>
-		<terrain id="hills"/>
-	</terrain-types>
-</Rose-types>
+<root xmlns="http://NamespaceTest.tim/Types" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://NamespaceTest.tim/Types src/main/resources/test.xsd">
+  <resourceType>
+  		<name>oil</name>
+  	</resourceType>
+  	  <resourceType>
+  		<name>iron</name>
+  	</resourceType>
+  	
+  	<unitType>
+  		<name>builder</name>
+  		<cost>
+  			<resourceType>iron</resourceType>
+  			<amount>2</amount>
+  		</cost>
+  		<ability>
+  				<abilityType>build</abilityType>  
+				<turnsToComplete>1</turnsToComplete>
+  		</ability>
+  	</unitType>
+  	<unitType>
+  		<name>soldier</name>
+  		<cost>
+  			<resourceType>iron</resourceType>
+  			<amount>5</amount>
+  		</cost>
+  	</unitType>
+  	
+  	<buildingType>
+  		<name>factory</name>
+  		<cost>
+  			<resourceType>iron</resourceType>
+  			<amount>30</amount>
+  		</cost>
+  	</buildingType>
+  	
+  	<sourceType>
+  		<name>oilwell</name>
+  		<resource>
+  			<resourceType>oil</resourceType>
+  			<amount>30</amount>
+  		</resource>
+  	</sourceType>
+  	
+  	<terrainType>
+  		<name>plain</name>
+  	</terrainType>
+  	<terrainType>
+  		<name>mountain</name>
+  	</terrainType>
+  	
+  	
+  	<tileItem>
+  		<name>city</name>
+  		<space>100000</space>
+  	</tileItem>
+  	
+	<abilityType>
+		<name>build</name>
+	</abilityType>  	
+</root>

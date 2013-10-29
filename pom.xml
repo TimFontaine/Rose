@@ -21,6 +21,22 @@
           <target/>
         </configuration>
       </plugin>
+      <plugin>
+		<groupId>org.jvnet.jaxb2.maven2</groupId>
+		<artifactId>maven-jaxb2-plugin</artifactId>
+		<version>0.7.2</version>
+			<executions>
+				<execution>
+					<goals>
+						<goal>generate</goal>
+					</goals>
+				</execution>
+			</executions>
+			<configuration>
+				<forceRegenerate>true</forceRegenerate>
+				<verbose>true</verbose>
+			</configuration>
+		</plugin>
     </plugins>
   </build>
   <dependencies>
@@ -35,4 +51,5 @@
   		<version>4.2</version>
   	</dependency>
   </dependencies>
+  
 </project>
