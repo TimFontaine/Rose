@@ -1,0 +1,156 @@
+ <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+xmlns:tns="http://NamespaceTest.tim/Types"
+targetNamespace="http://NamespaceTest.tim/Types"
+elementFormDefault="qualified" >
+    
+    <xsd:element name="root" type="tns:roseObjects">
+    	<xsd:unique name="resourceType_unique">
+    		<xsd:selector xpath="tns:resourceType"/>
+    		<xsd:field xpath="tns:name"/>
+    	</xsd:unique>
+    	
+    	<xsd:unique name="unit_unique">
+    		<xsd:selector xpath="tns:unitType"/>
+    		<xsd:field xpath="tns:name"/>
+    	</xsd:unique>
+    	
+    	<xsd:unique name="buildingType_unique">
+    		<xsd:selector xpath="tns:buildingType" />
+			<xsd:field xpath="tns:name" />    	
+    	</xsd:unique>
+    	
+    	<xsd:unique name="ability_unique">
+    		<xsd:selector xpath="tns:ability" />
+			<xsd:field xpath="tns:name" />    	
+    	</xsd:unique>
+    	
+<!--     	<xsd:unique name="unit_ability_unique"> -->
+<!--     		<xsd:selector xpath="tns:unitType" /> -->
+<!-- 			<xsd:field xpath="tns:ability" />    	 -->
+<!--     	</xsd:unique> -->
+    	
+    	<xsd:key name="resourceType_key">
+    		<xsd:selector xpath="tns:resourceType" />
+    		<xsd:field xpath="tns:name" />
+    	</xsd:key>
+    	<xsd:key name="abiltiy_key">
+    		<xsd:selector xpath="tns:abilityType" />
+    		<xsd:field xpath="tns:name" />
+    	</xsd:key>
+    	
+    	<xsd:keyref name="unit_resouceType_keyRef" refer="tns:resourceType_key">
+    		<xsd:selector xpath="tns:unitType/tns:cost" />
+    		<xsd:field xpath="tns:resourceType" />
+    	</xsd:keyref>
+    	
+    	<xsd:keyref name="buildingType_resouceType_keyRef" refer="tns:resourceType_key">
+    		<xsd:selector xpath="tns:building/tns:cost" />
+    		<xsd:field xpath="tns:resourceType" />
+    	</xsd:keyref>
+    	
+    	<xsd:keyref name="unitType_ability_keyRef" refer="tns:abiltiy_key">
+    		<xsd:selector xpath="tns:unitType/tns:ability" />
+    		<xsd:field xpath="tns:abilityType" />
+    	</xsd:keyref>
+    </xsd:element>
+    
+    <xsd:complexType name="roseObjects">
+   		<xsd:sequence minOccurs="1">
+   			<xsd:element name="resourceType" type="tns:resourceType"  minOccurs="1" maxOccurs="unbounded" />
+			<xsd:element name="unitType" type="tns:unitType" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="buildingType" type="tns:buildingType" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="sourceType" type="tns:source" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="terrainType" type="tns:terrainType" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="tileItem" type="tns:tileItem" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="abilityType" type="tns:abilityType" minOccurs="0" maxOccurs="unbounded"/>
+   		</xsd:sequence>
+   	</xsd:complexType>
+   	
+   	<xsd:complexType name="gameType" abstract="true">
+   		<xsd:sequence>
+   			<xsd:element name="name" type="string" />
+   		</xsd:sequence>
+   	</xsd:complexType>
+   	
+   	<xsd:complexType name="resourceType">
+		<xsd:sequence minOccurs="1">
+			<xsd:element name="name" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="producableType" abstract="true" >
+		<xsd:complexContent>
+			<xsd:extension base="tns:gameType">
+				<xsd:sequence>
+					<xsd:element name="cost" type="tns:resource" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+		<!-- 			<xsd:element name="upkeep" type="tns:resource" minOccurs="0" maxOccurs="unbounded" nillable="true"/> -->
+				</xsd:sequence>
+		</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="unitType">
+		<xsd:complexContent >
+			<xsd:extension base="tns:producableType">
+				<xsd:sequence>
+<!-- 					<xsd:element name="moves" type="int" minOccurs="0" nillable="true"/> -->
+<!-- 					<xsd:element name="strenth" type="xsd:string" minOccurs="0" nillable="true"/> -->
+					<xsd:element name="ability" type="tns:ability" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="buildingType">
+		<xsd:all>
+			<xsd:element name="name" type="xsd:string" nillable="true"/>
+			<xsd:element name="cost" type="tns:resource" minOccurs="0" nillable="true" />
+		</xsd:all>
+	</xsd:complexType>
+   	
+   	<xsd:complexType name="resource">
+   		<xsd:sequence>
+   			<xsd:element name="resourceType" type="xsd:string"/>
+   			<xsd:element name="amount" type="int"/>
+   		</xsd:sequence>
+   	</xsd:complexType>
+   	
+   	<xsd:complexType name="ability">
+   		<xsd:all>
+   			<xsd:element name="abilityType" type="xsd:string"/>
+   			<xsd:element name="turnsToComplete" type="xsd:int"/>
+   		</xsd:all>
+   	</xsd:complexType>
+   	
+   	<xsd:complexType name="source">
+   		<xsd:all>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="resource" type="tns:resource"/>		
+   		</xsd:all>
+   	</xsd:complexType>
+   	
+   	<xsd:complexType name="terrainType">
+   		<xsd:all>
+   			<xsd:element name="name" type="string"/>
+   		</xsd:all>
+   	</xsd:complexType>
+   	
+   	<xsd:complexType name="tileItem">
+   		<xsd:complexContent>
+   		<xsd:extension base="tns:gameType">
+	   		<xsd:sequence>
+	   			<xsd:element name="space" type="xsd:int"/>
+	   			<xsd:element name="allowTiles" type="tns:terrainType" minOccurs="0" maxOccurs="unbounded"/>
+	   		</xsd:sequence>
+   		</xsd:extension>
+   		</xsd:complexContent>
+   	</xsd:complexType>
+   	
+   	<xsd:complexType name="abilityType">
+   		<xsd:all>
+   			<xsd:element name="name" type="xsd:string" />
+   		</xsd:all>
+   	</xsd:complexType>
+   	
+</xsd:schema>  
