@@ -65,7 +65,7 @@ public class MapControls {
 	public void addToComponent(Canvas canvas){
 		
 		unitControls = new UnitControls(client);
-		unitControls.setSize(100,100);
+		unitControls.setSize(canvas.getWidth(),100);
 		unitControls.setLocation(0, canvas.getHeight() - unitControls.getHeight());
 		unitControls.setOpaque(true);
 		canvas.add(unitControls);

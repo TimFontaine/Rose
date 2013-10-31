@@ -59,7 +59,8 @@ public class Canvas extends JPanel {
 	}
 	
     public Component addToCanvas(JComponent comp) {
-        addAsFrame(comp);
+//        addAsFrame(comp);
+        add(comp);
         return comp;
     }
 	
@@ -112,23 +113,19 @@ public class Canvas extends JPanel {
 	
 	private void addAsFrame(JComponent comp) {
 		JInternalFrame iFrame = new JInternalFrame();
-//		iFrame.setBorder(comp.getBorder());
 		iFrame.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		comp.setVisible(true);
 		
 		if (iFrame.getContentPane() instanceof JComponent) {
-//			((JComponent)iFrame.getContentPane()).setOpaque(false);
 		}
 		iFrame.getContentPane().add(comp);
 		
 		
 		
-//		iFrame.setBackground(Color.GREEN);
 		iFrame.setVisible(true);
 		
 		iFrame.setSize(comp.getSize());
 		
-//		iFrame.setOpaque(false);
 		iFrame.pack();
 		
 		iFrame.setLocation(100,100);
@@ -138,10 +135,6 @@ public class Canvas extends JPanel {
 //		add(iFrame, JLayeredPane.MODAL_LAYER);
 		add(comp);
 		
-		System.out.println("after pack comp has size:" + comp.getSize());
-		System.out.println("comp is on loacation:" + comp.getLocation());
-		System.out.println("iframe has location:" + iFrame.getLocation());
-		System.out.println("iframe has size:" + iFrame.getSize());
 		repaint();
 	}
 	

@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import tim.com.client.RoseClient;
 import tim.com.client.actions.BuildAction;
+import tim.com.client.actions.DummyAction;
 import tim.com.client.actions.MapControlsAction;
 import tim.com.client.actions.MoveAction;
 import tim.com.client.actions.RoseAction;
@@ -38,6 +39,7 @@ public class ActionManager {
 	public void initializeActions(RoseClient roseClient) {
 		InGameController inGameController = roseClient.getInGameController();
 		add(new BuildAction(inGameController, gui));
+		add(new DummyAction(gui));
 		for (Direction d : Direction.values()) {
 			add(new MoveAction(inGameController, d, gui));
 		}

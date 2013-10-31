@@ -17,6 +17,15 @@ xsi:schemaLocation="http://NamespaceTest.tim/Types src/main/resources/test.xsd">
   		<ability>
   				<abilityType>build</abilityType>  
 				<turnsToComplete>1</turnsToComplete>
+				<properties>
+					<key>action</key>
+					<value>dummy</value>
+				</properties>
+				
+  		</ability>
+  		<ability>
+  			<abilityType>default</abilityType>
+  			<turnsToComplete>0</turnsToComplete>
   		</ability>
   	</unitType>
   	<unitType>
@@ -54,9 +63,25 @@ xsi:schemaLocation="http://NamespaceTest.tim/Types src/main/resources/test.xsd">
   	<tileItem>
   		<name>city</name>
   		<space>100000</space>
+  		<properties>
+  			<key>action</key>
+  			<value>buildCityAction</value>
+  		</properties>
   	</tileItem>
   	
 	<abilityType>
 		<name>build</name>
 	</abilityType>  	
+	<abilityType>
+		<name>genie</name>
+	</abilityType>  	
+	<abilityType>
+		<name>default</name>
+	</abilityType>
+	<abilityType>
+		<name>shortRange</name>
+	</abilityType>
+	<abilityType>
+		<name>LongRange</name>
+	</abilityType>  	  	
 </root>
