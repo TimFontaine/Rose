@@ -33,7 +33,6 @@ public class RoseButton extends JButton {
 		
 		setSize(50, 50);
 		
-		repaint();
 	}
 	
 }

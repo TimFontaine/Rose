@@ -15,7 +15,7 @@ xsi:schemaLocation="http://NamespaceTest.tim/client src/main/resources/client.xs
 <gameActionProps>
 	<name>buildRoadAction</name>
 	<gameType>build</gameType>
-	<actionObject>builRoadAction</actionObject>
+	<actionObject>buildRoadAction</actionObject>
 	<image>road</image>
 </gameActionProps>
 

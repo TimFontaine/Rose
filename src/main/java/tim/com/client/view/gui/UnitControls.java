@@ -51,6 +51,7 @@ public class UnitControls extends JPanel {
 	
 	public void update(Unit unit) {
 		System.out.println("update unitcontrols");
+		removeAll();
 		if (unit != null) {
 	
 			ClientSpecification clientSpecification = specification.getClientSpecification();
@@ -71,8 +72,8 @@ public class UnitControls extends JPanel {
 				add(button);
 			}
 		}
-//		revalidate();
-//        repaint();
+		revalidate();
+        repaint();
 	}
 	
 	public String findProperty(List<PropertiesList> propertiesList, String name) {
@@ -85,7 +86,6 @@ public class UnitControls extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g) {
-		System.out.println("painting unitcontrols");
 		super.paintComponent(g);
 	}
 

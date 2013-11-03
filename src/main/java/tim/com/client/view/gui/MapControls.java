@@ -43,12 +43,6 @@ public class MapControls {
 		ActionManager actionManager = client.getActionManager();
 		this.gui = gui;
 		
-		button = new JButton();
-		button.setAction(new BuildAction(client.getInGameController(), gui));
-		button.setSize(button.getPreferredSize());
-		button.setText("city mapcontrols");
-		
-		
 //		List<TileImprovementType> improvementList = client.getGame().getSpecification().getTileImprovementTypeList();
 //		for (TileImprovementType type : improvementList) {
 //			JButton b = new JButton();
