@@ -120,7 +120,7 @@ elementFormDefault="qualified" >
    		<xsd:sequence>
    			<xsd:element name="abilityType" type="xsd:string"/>
    			<xsd:element name="turnsToComplete" type="xsd:int"/>
-   			<xsd:element name="properties" type="tns:propertiesList" minOccurs="0" maxOccurs="unbounded" />
+   			<xsd:element name="properties" type="tns:simpleEntry" minOccurs="0" maxOccurs="unbounded" />
    		</xsd:sequence>
    	</xsd:complexType>
    	
@@ -143,7 +143,7 @@ elementFormDefault="qualified" >
 	   		<xsd:sequence>
 	   			<xsd:element name="space" type="xsd:int"/>
 	   			<xsd:element name="allowTiles" type="tns:terrainType" minOccurs="0" maxOccurs="unbounded"/>
-	   			<xsd:element name="properties" type="tns:propertiesList" minOccurs="0" maxOccurs="unbounded" />
+	   			<xsd:element name="properties" type="tns:simpleEntry" minOccurs="0" maxOccurs="unbounded" />
 	   			
 	   		</xsd:sequence>
    		</xsd:extension>
@@ -156,7 +156,7 @@ elementFormDefault="qualified" >
    		</xsd:all>
    	</xsd:complexType>
    	
-   	<xsd:complexType name="propertiesList">
+   	<xsd:complexType name="simpleEntry">
    		<xsd:all>
    			<xsd:element name="key" type="xsd:string"/>
    			<xsd:element name="value" type="xsd:string"/>

@@ -28,6 +28,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
 
+import tim.namespacetest.client.ClientConfig;
+import tim.namespacetest.client.GameActionProp;
+import tim.namespacetest.client.GameActionProps;
 import tim.namespacetest.types.GameType;
 import tim.namespacetest.types.ResourceType;
 import tim.namespacetest.types.RoseObjects;
@@ -43,6 +46,8 @@ import tim.namespacetest.types.UnitType;
  *
  */
 public class Specification {
+	
+	//Game
 	
 	private List<TerrainType> terrainTypesList;
 	
@@ -60,7 +65,9 @@ public class Specification {
 	
 	private Map<String, Object> roseObjects;
 	
+	private ClientSpecification clientSpecification;
 	
+	//Client
 	
 
 	/**
@@ -72,6 +79,27 @@ public class Specification {
 		buildingTypeList = new ArrayList<BuildingType>();
 		terrainTypesList = new ArrayList<TerrainType>();
 		unitTypesList = new ArrayList<UnitType>();
+		clientSpecification = new ClientSpecification();
+		clientSpecification.setGameActionProps(new ArrayList<GameActionProp>());
+		clientSpecification.setGameActionAbilityProps(new HashMap<String, List<GameActionProp>>());
+		loadGameSpecification();
+		loadClientSpecification();
+
+//		readerMap = new HashMap<String, Reader<? extends RoseTypeObject>>();
+//		readerMap.put("terrain-types", new Reader<TerrainType>(TerrainType.class, terrainTypesList));
+//		readerMap.put("tileimprovement-types", new Reader<TileImprovementType>(TileImprovementType.class , tileImprovementTypeList));
+//		readerMap.put("building-types", new Reader<BuildingType>(BuildingType.class , buildingTypeList));
+//		
+//		File file = new File("test.xml");
+//		try {
+//			InputStream is = new FileInputStream(file);
+//			load(is);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+	}
+	
+	private void loadGameSpecification() {
 		try {
 			JAXBContext context = JAXBContext.newInstance(RoseObjects.class);
 		
@@ -92,18 +120,48 @@ public class Specification {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-//		readerMap = new HashMap<String, Reader<? extends RoseTypeObject>>();
-//		readerMap.put("terrain-types", new Reader<TerrainType>(TerrainType.class, terrainTypesList));
-//		readerMap.put("tileimprovement-types", new Reader<TileImprovementType>(TileImprovementType.class , tileImprovementTypeList));
-//		readerMap.put("building-types", new Reader<BuildingType>(BuildingType.class , buildingTypeList));
-//		
-//		File file = new File("test.xml");
-//		try {
-//			InputStream is = new FileInputStream(file);
-//			load(is);
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
+	}
+	
+	private void loadClientSpecification() {
+		try {
+			JAXBContext context = JAXBContext.newInstance(ClientConfig.class);
+		
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		File file = new File("client.xml");
+		JAXBElement<ClientConfig> spec = unmarshaller.unmarshal(new StreamSource(file), ClientConfig.class);
+		List<GameActionProp> gameActionProps = spec.getValue().getGameActionProps();
+		
+//		tileItemList = spec.getValue().get
+		List<String> defaultActions = spec.getValue().getUnitDefaultAbility();
+		clientSpecification.setDefaultUnitActions(defaultActions);
+
+		handleGameActionProps(gameActionProps);
+		clientSpecification.setGameActionProps(gameActionProps);
+		} catch (JAXBException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	/**
+	 * @param gameActionProps
+	 */
+	private void handleGameActionProps(List<GameActionProp> gameActionProps) {
+		for (GameActionProp prop : gameActionProps) {
+			if ("other".equals(prop.getGameType())) { 
+				//single item
+				clientSpecification.getGameActionProps().add(prop);
+			} else {
+				//grouped item
+				String type = prop.getGameType();
+				List<GameActionProp> props =  clientSpecification.getGameActionAbilityProps().get(type);
+				if (props == null) {
+					props = new ArrayList<GameActionProp>();
+					clientSpecification.getGameActionAbilityProps().put(prop.getGameType(), props);
+				}
+				props.add(prop);
+			}
+		}
 	}
 
 	public void addGameTypes(List<? extends GameType> gameTypeList) {
@@ -119,14 +177,6 @@ public class Specification {
 	}
 	
 	
-	public static void main(String args[]) throws FileNotFoundException, XMLStreamException {
-		
-	}
-	
-	
-	
-
-
 	public List<BuildingType> getBuildingTypeList() {
 		return buildingTypeList;
 	}
@@ -249,6 +299,10 @@ public class Specification {
 	 */
 	public void setSourceTypeList(List<Source> sourceTypeList) {
 		this.sourceTypeList = sourceTypeList;
+	}
+
+	public ClientSpecification getClientSpecification() {
+		return clientSpecification;
 	}
 
 }

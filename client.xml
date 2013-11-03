@@ -1,0 +1,36 @@
+<root xmlns="http://NamespaceTest.tim/client" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://NamespaceTest.tim/client src/main/resources/client.xsd">
+
+<unitDefaultAbility>destroy</unitDefaultAbility>
+<unitDefaultAbility>skip</unitDefaultAbility>
+
+	
+<gameActionProps>
+	<name>buildCityAction</name>
+	<gameType>build</gameType>
+	<actionObject>buildCityAction</actionObject>
+	<image>dot</image>
+</gameActionProps>
+<gameActionProps>
+	<name>buildRoadAction</name>
+	<gameType>build</gameType>
+	<actionObject>builRoadAction</actionObject>
+	<image>road</image>
+</gameActionProps>
+
+<gameActionProps>
+	<name>destroy</name>
+	<gameType>other</gameType>
+	<actionObject>destroyAction</actionObject>
+	<image>mountain</image>
+</gameActionProps>		
+
+<gameActionProps>
+	<name>skip</name>
+	<gameType>other</gameType>
+	<actionObject>skipAction</actionObject>
+	<image>mountain</image>
+</gameActionProps>		
+
+</root>

@@ -20,7 +20,10 @@ import tim.com.client.network.Client;
 import tim.com.client.shared.Node;
 import tim.com.client.shared.Unit;
 import tim.com.client.view.RoseButton;
+import tim.data.back.ClientSpecification;
 import tim.data.back.Specification;
+import tim.namespacetest.client.GameActionProp;
+import tim.namespacetest.types.Ability;
 import tim.namespacetest.types.PropertiesList;
 import tim.namespacetest.types.Source;
 import tim.namespacetest.types.TileItem;
@@ -50,20 +53,22 @@ public class UnitControls extends JPanel {
 		System.out.println("update unitcontrols");
 		if (unit != null) {
 	
-			Node node = unit.getTile();
-			if (unit.hasAbility("build")) {
-				for (TileItem tileItem : specification.getTileItemList()) {
-					List<PropertiesList> list = tileItem.getProperties();
-					String actionName = findProperty(list, "action");
-					RoseButton button = new RoseButton(actionName, client.getActionManager() );
-					add(button);
-				}
-				
-	//			if (node.getSource() != null) {
-	//				
-	//				JButton button = new JButton("build source");
-	//				add(button);
-	//			}
+			ClientSpecification clientSpecification = specification.getClientSpecification();
+			//default, load the name of the default unit buttons
+			List<String> defaults = specification.getClientSpecification().getDefaultUnitActions();
+			
+			for (String defaultAction : defaults) {
+				GameActionProp prop = clientSpecification.findGameActionProp(defaultAction);
+				RoseButton button = new RoseButton(prop, client.getActionManager() );
+				add(button);
+			}
+			
+			List<Ability> abilities = unit.getUnitType().getAbility();
+			Ability ab = abilities.get(0);
+			List<GameActionProp> props = clientSpecification.getGameActionAbilityProps().get(ab.getAbilityType());
+			for (GameActionProp prop: props) {
+				RoseButton button = new RoseButton(prop, client.getActionManager() );
+				add(button);
 			}
 		}
 //		revalidate();

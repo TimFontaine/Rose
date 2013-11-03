@@ -9,10 +9,13 @@ import java.util.Map.Entry;
 
 import tim.com.client.RoseClient;
 import tim.com.client.actions.BuildAction;
+import tim.com.client.actions.BuildRoadAction;
+import tim.com.client.actions.DestroyAction;
 import tim.com.client.actions.DummyAction;
 import tim.com.client.actions.MapControlsAction;
 import tim.com.client.actions.MoveAction;
 import tim.com.client.actions.RoseAction;
+import tim.com.client.actions.SkipAction;
 import tim.com.client.actions.TileImprovementAction;
 import tim.com.client.game.InGameController;
 import tim.data.back.Direction;
@@ -45,6 +48,9 @@ public class ActionManager {
 		}
 		initializeSpecialActions(roseClient, gui, inGameController);
 		add(new MapControlsAction(gui));
+		add(new DestroyAction(gui));
+		add(new SkipAction(gui));
+		add(new BuildRoadAction(gui));
 		
 	}
 	
