@@ -6,21 +6,30 @@ package tim.com.client.actions;
 import java.awt.event.ActionEvent;
 
 import tim.com.client.controller.GUI;
+import tim.com.client.game.InGameController;
+import tim.namespacetest.client.GameActionProp;
 
 /**
  * @author tim
  *
  */
-public class SkipAction extends RoseAction {
+public class SkipAction extends GameAction {
 
-	private static final String name  = "skipAction";
 	
+//	/**
+//	 * @param id
+//	 * @param gui
+//	 */
+//	public SkipAction(GUI gui) {
+//		super(name, gui);
+//	}
+
 	/**
 	 * @param id
 	 * @param gui
 	 */
-	public SkipAction(GUI gui) {
-		super(name, gui);
+	public SkipAction(GameActionProp gameActionProp, InGameController inGameController, GUI gui) {
+		super(gameActionProp, inGameController, gui);
 	}
 
 	/* (non-Javadoc)

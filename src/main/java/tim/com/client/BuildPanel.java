@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import tim.com.client.controller.GUI;
+import tim.data.back.GameSpecification;
 import tim.data.back.Specification;
 import tim.namespacetest.types.BuildingType;
 
@@ -30,10 +31,10 @@ public class BuildPanel extends JPanel {
 		
 		setLayout(new MigLayout());
 		
-		Specification specification = roseClient.getGame().getSpecification();
+		GameSpecification specification = roseClient.getGame().getGameSpecification();
 		for (BuildingType buildingType : specification.getBuildingTypeList()) {
-//			JButton buildingButtuon = new JButton(buildingType.getId());
-//			add(buildingButtuon);
+			JButton buildingButtuon = new JButton(buildingType.getName());
+			add(buildingButtuon);
 		}
 	}
 

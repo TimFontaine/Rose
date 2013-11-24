@@ -5,6 +5,7 @@ package tim.com.client;
 
 import java.util.List;
 
+import tim.data.back.GameSpecification;
 import tim.data.back.Specification;
 import tim.game.Map;
 import tim.game.Player;
@@ -22,15 +23,15 @@ public class Game {
 	
 	private Player currentPlayer;
 	
-	private Specification specification;
+	private GameSpecification gameSpecification;
 
 	/**
 	 * 
 	 */
-	public Game() {
-		specification = new Specification();
+	public Game(GameSpecification gameSpecification) {
+		this.gameSpecification = gameSpecification;
 		MapBuilder mapBuilder = new MapBuilder();
-		setMap(mapBuilder.build(specification));
+		setMap(mapBuilder.build(gameSpecification));
 		
 	}
 
@@ -50,8 +51,13 @@ public class Game {
 		this.players = players;
 	}
 
-	public Specification getSpecification() {
-		return specification;
+	public void setGameSpecification(GameSpecification gameSpecification) {
+		this.gameSpecification = gameSpecification;
 	}
+	
+	public GameSpecification getGameSpecification() {
+		return gameSpecification;
+	}
+
 
 }

@@ -18,12 +18,13 @@ elementFormDefault="qualified" >
 		
 
 	<xsd:complexType name="gameActionProp">
-		<xsd:all>
+		<xsd:sequence>
 			<xsd:element name="name" type="xsd:string"/>
 			<xsd:element name="gameType" type="xsd:string"/>
 			<xsd:element name="actionObject" type="xsd:string" />
-			<xsd:element name="accelerator" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="actionClass" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="accelerator" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="image" type="xsd:string" minOccurs="0"/>
-		</xsd:all>
+		</xsd:sequence>
 	</xsd:complexType>
 </xsd:schema>

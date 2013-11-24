@@ -176,7 +176,7 @@ public class MapViewer {
 		return null;
 	}
 
-	public tim.com.client.shared.Unit getActiveUnit() {
+	public Unit getActiveUnit() {
 		return activeUnit;
 	}
 

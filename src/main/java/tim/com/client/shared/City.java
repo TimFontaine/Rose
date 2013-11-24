@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tim.com.client.Game;
+import tim.data.back.GameSpecification;
 import tim.game.Player;
 import tim.namespacetest.types.Resource;
+import tim.namespacetest.types.TileItem;
 import tim.namespacetest.types.UnitType;
 
 /**
@@ -27,6 +29,9 @@ public class City implements Location {
 	private Cargo cargo;
 	
 	private Game game;
+	
+	private TileItem tileItem;
+	
 
 	/**
 	 * @param player
@@ -39,7 +44,9 @@ public class City implements Location {
 		this.tile = tile;
 		this.game = game;
 		cargo = new Cargo();
-		cargo.setMaxStorage(game.getSpecification().getTileItem("city").getSpace());
+		String cityName = GameSpecification.TileType.CITY.toString().toLowerCase();
+		tileItem = ((TileItem) game.getGameSpecification().getGameSpecificType(cityName, TileItem.class));
+		cargo.setMaxStorage(tileItem.getSpace());
 		
 		
 		//init resources
@@ -107,8 +114,8 @@ public class City implements Location {
 		buildings.add(building);
 	}
 	
-	public boolean orderUnit(String unitName) {
-		UnitType type = game.getSpecification().getUnitType(unitName);
+	public boolean orderUnit(UnitType type) {
+//		UnitType type = game.getGameSpecification().getUnitType(unitName);
 		List<Resource> resources = type.getCost();
 		int spaceUsage = 0;
 		for (Resource resource : resources) {
@@ -154,6 +161,14 @@ public class City implements Location {
 
 	public void setCargo(Cargo cargo) {
 		this.cargo = cargo;
+	}
+
+	public TileItem getTileItem() {
+		return tileItem;
+	}
+
+	public void setTileItem(TileItem tileItem) {
+		this.tileItem = tileItem;
 	}
 	
 

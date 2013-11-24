@@ -12,7 +12,12 @@ import tim.com.client.shared.Node;
 import tim.com.client.shared.RosePlayer;
 import tim.com.client.shared.Unit;
 import tim.com.server.Server;
+import tim.data.back.ClientConfiguration;
+import tim.data.back.ClientSpecification;
+import tim.data.back.GameSpecification;
+import tim.data.back.Specification;
 import tim.game.Player;
+import tim.namespacetest.client.ClientConfig;
 import tim.namespacetest.types.Source;
 import tim.namespacetest.types.UnitType;
 
@@ -32,17 +37,29 @@ public class RoseClient {
 	private ServerLogic serverLogic;
 	
 	private Server server;
+	
+	private GUI gui;
+	
+	private Specification specification;
+	
+	private ClientSpecification clientSpecification;
 
 	/**
 	 * 
 	 */
 	public RoseClient() {	
-		game = new Game();
+		Specification specification = new Specification();
+		GameSpecification gameSpecification = specification.loadGameSpecification();
+		game = new Game(gameSpecification);
 		player= new RosePlayer(game);
 		server = new Server();
+		
+		clientSpecification = specification.loadClientSpecification();
+		game.setGameSpecification(gameSpecification);
+//		ClientConfiguration clientConfiguration = loadClientConfigution();
 		new Thread(server).start();
 		serverLogic = new ServerLogic(new Client());
-		UnitType builderType = game.getSpecification().getUnitTypesList().get(0);
+		UnitType builderType = gameSpecification.getUnitTypesList().get(0);
 		Unit unit = new Unit(builderType, player);
 		Node node = game.getMap().getNode(5, 5);
 		Source source = new Source();
@@ -53,9 +70,9 @@ public class RoseClient {
 		unit.setOwner(player);
 		unit.setLocation(node);
 		((RosePlayer)player).explore(node);
-		GUI gui = new GUI(this);
+		gui = new GUI(this);
 		
-		actionManager = new ActionManager(gui);
+		actionManager = new ActionManager(clientSpecification, gui);
 		inGameController = new InGameController(this, gui);
 		
 		actionManager.initializeActions(this);
@@ -64,6 +81,19 @@ public class RoseClient {
 		gui.setupMouseListenersForCanvas();
 		gui.setActiveUnit(unit);
 	}
+
+//	/**
+//	 * @return
+//	 */
+//	private ClientConfiguration loadClientConfigution() {
+//		ClientConfiguration clientConfiguration = new ClientConfiguration();
+//		Specification specification = new Specification();
+//		ClientSpecification clientSpecification = specification.loadClientSpecification();
+//		clientConfiguration.setClientSpecification(clientSpecification);
+//		clientConfiguration.setGui(gui);
+//		clientConfiguration.setGui(gui);
+//		return clientConfiguration;
+//	}
 
 	public ActionManager getActionManager() {
 		return actionManager;
@@ -99,5 +129,18 @@ public class RoseClient {
 	public ServerLogic getServer() {
 		return serverLogic;
 	}
+
+	public Specification getSpecification() {
+		return specification;
+	}
+
+	/**
+	 * @return the clientSpecification
+	 */
+	public ClientSpecification getClientSpecification() {
+		return clientSpecification;
+	}
+
+	
 
 }

@@ -6,12 +6,14 @@ package tim.com.client.actions;
 import java.awt.event.ActionEvent;
 
 import tim.com.client.controller.GUI;
+import tim.com.client.game.InGameController;
+import tim.namespacetest.client.GameActionProp;
 
 /**
  * @author tim
  *
  */
-public class DummyAction extends RoseAction {
+public class DummyAction extends GameAction {
 	
 	private static final String id = "dummy";
 
@@ -19,8 +21,8 @@ public class DummyAction extends RoseAction {
 	 * @param id
 	 * @param gui
 	 */
-	public DummyAction(GUI gui) {
-		super(id, gui);
+	public DummyAction(GameActionProp gameActionProp, InGameController inGameController, GUI gui) {
+		super(gameActionProp, inGameController, gui);
 	}
 
 	/* (non-Javadoc)

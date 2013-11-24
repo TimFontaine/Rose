@@ -6,6 +6,8 @@ package tim.com.client.actions;
 import java.awt.event.ActionEvent;
 
 import tim.com.client.controller.GUI;
+import tim.com.client.game.InGameController;
+import tim.namespacetest.client.GameActionProp;
 
 /**
  * @author tim
@@ -21,8 +23,8 @@ public class MapControlsAction extends RoseAction {
 	/**
 	 * @param id
 	 */
-	public MapControlsAction(GUI gui) {
-		super(ID, gui);
+	public MapControlsAction(GameActionProp gameActionProp, InGameController inGameController, GUI gui) {
+		super(gameActionProp, gui);
 	}
 
 	@Override

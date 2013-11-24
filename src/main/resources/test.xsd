@@ -149,7 +149,7 @@ elementFormDefault="qualified" >
    		</xsd:extension>
    		</xsd:complexContent>
    	</xsd:complexType>
-   	
+ 	
    	<xsd:complexType name="abilityType">
    		<xsd:all>
    			<xsd:element name="name" type="xsd:string" />

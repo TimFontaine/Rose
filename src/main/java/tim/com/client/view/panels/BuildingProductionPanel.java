@@ -23,7 +23,7 @@ public class BuildingProductionPanel extends JPanel {
 		JList<String> buildingList = new JList<String>();
 		buildingList.setModel(model);
 		
-		for (BuildingType type : client.getGame().getSpecification().getBuildingTypeList()) {
+		for (BuildingType type : client.getGame().getGameSpecification().getBuildingTypeList()) {
 			model.addElement(type.getName());
 		}
 	}

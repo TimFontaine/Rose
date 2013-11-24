@@ -8,22 +8,22 @@ import java.awt.event.ActionEvent;
 import tim.com.client.controller.GUI;
 import tim.com.client.game.InGameController;
 import tim.data.back.TileImprovementType;
+import tim.namespacetest.client.GameActionProp;
 
 /**
  * @author tfontaine
  *
  */
-public class TileImprovementAction extends RoseAction {
+public class TileImprovementAction extends GameAction  {
 	
-	InGameController inGameController;
 	TileImprovementType type;
 	GUI gui;
 
 	/**
 	 * @param id
 	 */
-	public TileImprovementAction(InGameController inGameController, GUI gui, TileImprovementType tileImprovementType) {
-		super(tileImprovementType.getId() + "Action", gui);
+	public TileImprovementAction(GameActionProp gameActionProp, InGameController inGameController, GUI gui, TileImprovementType tileImprovementType) {
+		super(gameActionProp, inGameController, gui);
 		this.inGameController = inGameController;
 		this.type = tileImprovementType;
 		this.gui = gui;

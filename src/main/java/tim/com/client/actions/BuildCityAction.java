@@ -5,20 +5,18 @@ package tim.com.client.actions;
 
 import java.awt.event.ActionEvent;
 
+import tim.com.client.RoseClient;
 import tim.com.client.controller.GUI;
 import tim.com.client.game.InGameController;
+import tim.namespacetest.client.GameActionProp;
 
 /**
  * @author tfontaine
  *
  */
-public class BuildAction extends RoseAction {
-	
-	public static final String id = "buildCityAction";
+public class BuildCityAction extends GameAction {
 	
 	private String item;
-	private InGameController inGameController;
-
 //	/**
 //	 * 
 //	 */
@@ -29,9 +27,8 @@ public class BuildAction extends RoseAction {
 	/**
 	 * @param inGameController
 	 */
-	public BuildAction(InGameController inGameController, GUI gui) {
-		super(id, gui);
-		this.inGameController = inGameController;
+	public BuildCityAction(GameActionProp gameActionProp, InGameController inGameController, GUI gui) {
+		super(gameActionProp, inGameController, gui);
 	}
 
 //	/* (non-Javadoc)

@@ -34,12 +34,9 @@ import tim.namespacetest.types.TileItem;
  */
 public class UnitControls extends JPanel {
 	
-	Specification specification;
-	
 	RoseClient client;
 	
 	public UnitControls(RoseClient client) {
-		specification = client.getGame().getSpecification();
 		this.client = client;
 		setLayout(new MigLayout());
 		setBackground(Color.red); 
@@ -54,9 +51,9 @@ public class UnitControls extends JPanel {
 		removeAll();
 		if (unit != null) {
 	
-			ClientSpecification clientSpecification = specification.getClientSpecification();
+			ClientSpecification clientSpecification = client.getClientSpecification();
 			//default, load the name of the default unit buttons
-			List<String> defaults = specification.getClientSpecification().getDefaultUnitActions();
+			List<String> defaults = clientSpecification.getDefaultUnitActions();
 			
 			for (String defaultAction : defaults) {
 				GameActionProp prop = clientSpecification.findGameActionProp(defaultAction);

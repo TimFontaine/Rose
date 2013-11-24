@@ -49,37 +49,24 @@ public class Specification {
 	
 	//Game
 	
-	private List<TerrainType> terrainTypesList;
+	private GameSpecification gameSpecification;
 	
-	private List<TileImprovementType> tileImprovementTypeList;
 	
-	private List<BuildingType> buildingTypeList;
-	
-	private List<UnitType> unitTypesList;
-	
-	private List<ResourceType> resourceTypeList;
-	
-	private List<TileItem> tileItemList;
-	
-	private List<Source> sourceTypeList;
-	
-	private Map<String, Object> roseObjects;
-	
-	private ClientSpecification clientSpecification;
 	
 	//Client
+	private ClientSpecification clientSpecification;
 	
-
 	/**
 	 * 
 	 */
 	public Specification() {
-		roseObjects = new HashMap<String, Object>();
-		tileImprovementTypeList = new ArrayList<TileImprovementType>();
-		buildingTypeList = new ArrayList<BuildingType>();
-		terrainTypesList = new ArrayList<TerrainType>();
-		unitTypesList = new ArrayList<UnitType>();
+//		roseObjects = new HashMap<String, Object>();
+//		tileImprovementTypeList = new ArrayList<TileImprovementType>();
+//		buildingTypeList = new ArrayList<BuildingType>();
+//		terrainTypesList = new ArrayList<TerrainType>();
+//		unitTypesList = new ArrayList<UnitType>();
 		clientSpecification = new ClientSpecification();
+		gameSpecification = new GameSpecification();
 		clientSpecification.setGameActionProps(new ArrayList<GameActionProp>());
 		clientSpecification.setGameActionAbilityProps(new HashMap<String, List<GameActionProp>>());
 		loadGameSpecification();
@@ -99,30 +86,39 @@ public class Specification {
 //		}
 	}
 	
-	private void loadGameSpecification() {
+	public GameSpecification loadGameSpecification() {
 		try {
 			JAXBContext context = JAXBContext.newInstance(RoseObjects.class);
 		
 		Unmarshaller unmarshaller = context.createUnmarshaller();
 		File file = new File("test.xml");
 		JAXBElement<RoseObjects> spec = unmarshaller.unmarshal(new StreamSource(file), RoseObjects.class);
-		terrainTypesList=spec.getValue().getTerrainType();
-		buildingTypeList =spec.getValue().getBuildingType();
-		unitTypesList =spec.getValue().getUnitType();
-		setTileItemList(spec.getValue().getTileItem());
-		resourceTypeList = spec.getValue().getResourceType();
-		sourceTypeList = spec.getValue().getSourceType();
-		tileItemList = spec.getValue().getTileItem();
-		addGameTypes(tileItemList);
+		List<TerrainType> terrainTypesList=spec.getValue().getTerrainType();
+		List<BuildingType> buildingTypeList =spec.getValue().getBuildingType();
+		List<UnitType> unitTypesList =spec.getValue().getUnitType();
+		List<TileItem> tileItemList = (spec.getValue().getTileItem());
+		List<ResourceType> resourceTypeList =  spec.getValue().getResourceType();
+		List<Source> sourceTypeList = spec.getValue().getSourceType();
+		
+		gameSpecification.setTerrainTypesList(terrainTypesList);
+		gameSpecification.setBuildingTypeList(buildingTypeList);
+		gameSpecification.setUnitTypesList(unitTypesList);
+		gameSpecification.setTileItemList(tileItemList);
+		gameSpecification.setResourceTypeList(resourceTypeList);
+		gameSpecification.setSourceTypeList(sourceTypeList);
+		
+//		addGameTypes(tileItemList);
 		
 //		tileItemList = spec.getValue().get
 		} catch (JAXBException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		return gameSpecification;
 	}
 	
-	private void loadClientSpecification() {
+	public ClientSpecification loadClientSpecification() {
 		try {
 			JAXBContext context = JAXBContext.newInstance(ClientConfig.class);
 		
@@ -141,6 +137,7 @@ public class Specification {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		return clientSpecification;
 	}
 
 	/**
@@ -164,42 +161,42 @@ public class Specification {
 		}
 	}
 
-	public void addGameTypes(List<? extends GameType> gameTypeList) {
-		for (GameType gameType : gameTypeList) {
-			roseObjects.put(gameType.getName(), gameType);
-		}
-	}
+//	public void addGameTypes(List<? extends GameType> gameTypeList) {
+//		for (GameType gameType : gameTypeList) {
+//			roseObjects.put(gameType.getName(), gameType);
+//		}
+//	}
 
 
 
-	public List<TileImprovementType> getTileImprovementTypeList() {
-		return tileImprovementTypeList;
-	}
-	
-	
-	public List<BuildingType> getBuildingTypeList() {
-		return buildingTypeList;
-	}
+//	public List<TileImprovementType> getTileImprovementTypeList() {
+//		return tileImprovementTypeList;
+//	}
+//	
+//	
+//	public List<BuildingType> getBuildingTypeList() {
+//		return buildingTypeList;
+//	}
+//
+//
+//
+//
+//	public List<TerrainType> getTerrainTypesList() {
+//		return terrainTypesList;
+//	}
 
-
-
-
-	public List<TerrainType> getTerrainTypesList() {
-		return terrainTypesList;
-	}
-
-	/**
-	 * @param string
-	 * @return
-	 */
-	public Source getSourceType(String name) {
-		for (Source t : sourceTypeList) {
-			if (t.getName().equals(name)) {
-				return t;
-			}
-		}
-		return null;
-	}
+//	/**
+//	 * @param string
+//	 * @return
+//	 */
+//	public Source getSourceType(String name) {
+//		for (Source t : sourceTypeList) {
+//			if (t.getName().equals(name)) {
+//				return t;
+//			}
+//		}
+//		return null;
+//	}
 	
 	
 	public <T> T getType(String name, Class<T> type) {
@@ -209,100 +206,79 @@ public class Specification {
 	/**
 	 * @param string
 	 * @return
-	 */
-	public UnitType getUnitType(String name) {
-		for (UnitType t : unitTypesList) {
-			if (t.getName().equals(name)) {
-				return t;
-			}
-		}
-		return null;
-	}
+//	 */
+//	public UnitType getUnitType(String name) {
+//		for (UnitType t : unitTypesList) {
+//			if (t.getName().equals(name)) {
+//				return t;
+//			}
+//		}
+//		return null;
+//	}
 	
 
-	/**
-	 * @param string
-	 * @return
-	 */
-	public TerrainType getTerrainType(String id) {
-		for (TerrainType t : terrainTypesList) {
-			if (t.getName().equals(id)) {
-				return t;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * @param string
-	 * @return
-	 */
-	public TileItem getTileItem(String name) {
-		for (TileItem t : tileItemList) {
-			if (t.getName().equals(name)) {
-				return t;
-			}
-		}
-		return null;
-	}
 
 
 
 
 
-	public List<UnitType> getUnitTypesList() {
-		return unitTypesList;
-	}
+//	public List<UnitType> getUnitTypesList() {
+//		return unitTypesList;
+//	}
+//
+//
+//
+//
+//	public List<ResourceType> getResourceTypeList() {
+//		return resourceTypeList;
+//	}
 
 
 
 
-	public List<ResourceType> getResourceTypeList() {
-		return resourceTypeList;
-	}
+//	/**
+//	 * @return the tileItemList
+//	 */
+//	public List<TileItem> getTileItemList() {
+//		return tileItemList;
+//	}
+//
+//
+//
+//
+//	/**
+//	 * @param tileItemList the tileItemList to set
+//	 */
+//	public void setTileItemList(List<TileItem> tileItemList) {
+//		this.tileItemList = tileItemList;
+//	}
 
 
 
 
-	/**
-	 * @return the tileItemList
-	 */
-	public List<TileItem> getTileItemList() {
-		return tileItemList;
-	}
-
-
-
-
-	/**
-	 * @param tileItemList the tileItemList to set
-	 */
-	public void setTileItemList(List<TileItem> tileItemList) {
-		this.tileItemList = tileItemList;
-	}
-
-
-
-
-	/**
-	 * @return the sourceTypeList
-	 */
-	public List<Source> getSourceTypeList() {
-		return sourceTypeList;
-	}
-
-
-
-
-	/**
-	 * @param sourceTypeList the sourceTypeList to set
-	 */
-	public void setSourceTypeList(List<Source> sourceTypeList) {
-		this.sourceTypeList = sourceTypeList;
-	}
+//	/**
+//	 * @return the sourceTypeList
+//	 */
+//	public List<Source> getSourceTypeList() {
+//		return sourceTypeList;
+//	}
+//
+//
+//
+//
+//	/**
+//	 * @param sourceTypeList the sourceTypeList to set
+//	 */
+//	public void setSourceTypeList(List<Source> sourceTypeList) {
+//		this.sourceTypeList = sourceTypeList;
+//	}
 
 	public ClientSpecification getClientSpecification() {
 		return clientSpecification;
+	}
+
+	public GameSpecification getGameSpecification() {
+		return gameSpecification;
 	}
 
 }

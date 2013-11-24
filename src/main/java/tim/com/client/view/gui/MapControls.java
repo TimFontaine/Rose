@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.RepaintManager;
 
 import tim.com.client.RoseClient;
-import tim.com.client.actions.BuildAction;
+import tim.com.client.actions.BuildCityAction;
 import tim.com.client.controller.ActionManager;
 import tim.com.client.controller.GUI;
 import tim.com.client.view.Canvas;

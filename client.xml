@@ -10,12 +10,15 @@ xsi:schemaLocation="http://NamespaceTest.tim/client src/main/resources/client.xs
 	<name>buildCityAction</name>
 	<gameType>build</gameType>
 	<actionObject>buildCityAction</actionObject>
+	<actionClass>BuildCityAction</actionClass>
+	<accelerator>B</accelerator>
 	<image>dot</image>
 </gameActionProps>
 <gameActionProps>
 	<name>buildRoadAction</name>
 	<gameType>build</gameType>
 	<actionObject>buildRoadAction</actionObject>
+	<actionClass>DummyAction</actionClass>
 	<image>road</image>
 </gameActionProps>
 
@@ -23,6 +26,7 @@ xsi:schemaLocation="http://NamespaceTest.tim/client src/main/resources/client.xs
 	<name>destroy</name>
 	<gameType>other</gameType>
 	<actionObject>destroyAction</actionObject>
+	<actionClass>DummyAction</actionClass>
 	<image>mountain</image>
 </gameActionProps>		
 
@@ -30,7 +34,30 @@ xsi:schemaLocation="http://NamespaceTest.tim/client src/main/resources/client.xs
 	<name>skip</name>
 	<gameType>other</gameType>
 	<actionObject>skipAction</actionObject>
+	<actionClass>DummyAction</actionClass>
 	<image>mountain</image>
 </gameActionProps>		
+
+<gameActionProps>
+	<name>move</name>
+	<gameType>basicAction</gameType>
+	<actionObject>move</actionObject>
+	<actionClass>MoveAction</actionClass>
+	<accelerator>left.LEFT</accelerator>
+	<accelerator>right.RIGHT</accelerator>
+	<accelerator>up.UP</accelerator>
+	<accelerator>down.DOWN</accelerator>
+	<image></image>
+</gameActionProps>
+
+<gameActionProps>
+	<name>mapControls</name>
+	<gameType>mapControlsAction</gameType>
+	<actionObject>mapControls</actionObject>
+	<actionClass>MapControlsAction</actionClass>
+	<image></image>
+</gameActionProps>
+
+
 
 </root>

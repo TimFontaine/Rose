@@ -3,6 +3,7 @@
  */
 package tim.com.client;
 
+import tim.data.back.GameSpecification;
 import tim.data.back.Specification;
 import tim.game.Map;
 import tim.namespacetest.types.TerrainType;
@@ -13,7 +14,7 @@ import tim.namespacetest.types.TerrainType;
  */
 public class MapBuilder {
 	
-	public Map build(Specification specification) {
+	public Map build(GameSpecification specification) {
 		TerrainType plain = specification.getTerrainType("plain");
 		TerrainType mountain = specification.getTerrainType("mountain");
 		Map map = new Map(50,50);

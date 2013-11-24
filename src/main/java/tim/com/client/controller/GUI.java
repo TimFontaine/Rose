@@ -24,7 +24,7 @@ import tim.com.client.view.gui.MapControls;
 
 /**
  * @author tfontaine
- * this class contains tools for the OS gui
+ * Root for the GUI, contains graphics, listeners and animations
  *
  */
 public class GUI {

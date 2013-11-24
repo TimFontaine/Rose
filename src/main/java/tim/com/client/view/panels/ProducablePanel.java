@@ -22,6 +22,7 @@ import javax.swing.event.ListSelectionListener;
 import tim.com.client.RoseClient;
 import tim.com.client.shared.City;
 import tim.com.client.shared.Unit;
+import tim.data.back.GameSpecification;
 import tim.data.back.Specification;
 import tim.namespacetest.types.BuildingType;
 import tim.namespacetest.types.Resource;
@@ -51,7 +52,7 @@ public class ProducablePanel extends JPanel implements ActionListener {
 		this.client = client;
 		this.city = city;
 		productionPane = new JTabbedPane();
-		final Specification specification = client.getGame().getSpecification();
+		final GameSpecification specification = client.getGame().getGameSpecification();
 		
 		JPanel unitTab = constructUnitTab();
 		JPanel resourceTab = constructResourcesTab();
@@ -96,7 +97,7 @@ public class ProducablePanel extends JPanel implements ActionListener {
 		final JList<String> unitList = new JList<String>();
 		
 		DefaultListModel<String> unitModel = new DefaultListModel<String>();
-		for (UnitType type : client.getGame().getSpecification().getUnitTypesList()) {
+		for (UnitType type : client.getGame().getGameSpecification().getUnitTypesList()) {
 			unitModel.addElement(type.getName());
 		}
 		
@@ -133,8 +134,8 @@ unitList.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
 				System.out.println("mouse clicked");
 				int index = unitList.getSelectedIndex();
-				UnitType type = client.getGame().getSpecification().getUnitTypesList().get(index);
-				city.orderUnit(type.getName());
+				UnitType type = client.getGame().getGameSpecification().getUnitTypesList().get(index);
+				city.orderUnit(type);
 				cityPanel.updateProduction();
 			}
 		});
@@ -150,7 +151,7 @@ unitList.addMouseListener(new MouseListener() {
 		final JList<String> resourceList = new JList<String>();
 		
 		DefaultListModel<String> resourceModel = new DefaultListModel<String>();
-		for (ResourceType type : client.getGame().getSpecification().getResourceTypeList()) {
+		for (ResourceType type : client.getGame().getGameSpecification().getResourceTypeList()) {
 			resourceModel.addElement(type.getName());
 		}
 		
