@@ -9,7 +9,6 @@ import java.util.List;
 
 import tim.com.client.Game;
 import tim.data.back.GameSpecification;
-import tim.game.Player;
 import tim.namespacetest.types.Resource;
 import tim.namespacetest.types.TileItem;
 import tim.namespacetest.types.UnitType;
@@ -135,7 +134,7 @@ public class City implements Location {
 			cargo.useResource(resource);
 		}
 		
-		Unit unit = new Unit(type, owner);
+		Unit unit = new Unit(type, owner, game);
 		unit.setLocation(getPosition());
 //		city.addUnit(unit);
 		

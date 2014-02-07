@@ -12,7 +12,6 @@ import tim.data.back.Item;
 import tim.data.back.Road;
 import tim.data.back.TileImprovement;
 import tim.data.back.TileItemContainer;
-import tim.game.Player;
 import tim.game.ai.data.MutableResource.Resource;
 import tim.namespacetest.types.Source;
 import tim.namespacetest.types.TerrainType;

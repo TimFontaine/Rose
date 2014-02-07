@@ -7,15 +7,18 @@ import java.awt.Point;
 
 import tim.com.client.RoseClient;
 import tim.com.client.controller.GUI;
+import tim.com.client.network.EventMessage;
 import tim.com.client.network.ServerLogic;
 import tim.com.client.shared.City;
+import tim.com.client.shared.EventSet;
 import tim.com.client.shared.Location;
 import tim.com.client.shared.Node;
+import tim.com.client.shared.Player;
 import tim.com.client.shared.Unit;
+import tim.com.client.shared.eventState.MoveState;
 import tim.data.back.Direction;
 import tim.data.back.TileImprovement;
 import tim.data.back.TileImprovementType;
-import tim.game.Player;
 
 /**
  * @author tfontaine
@@ -45,21 +48,36 @@ public class InGameController {
 	}
 	
 	public void move(Unit unit, Direction direction) {
-		Point newLocation = translateMove(direction);
-		boolean legal = testMoveLegal(newLocation);
-		if (!legal) {
-			return;
-		}
-		Node node = client.getGame().getMap().getNode(newLocation.x, newLocation.y);
-		unit.setLocation(node);
-		if (node.getCity() != null) {
-			//add unit to city
-//			node.getCity().addUnit(unit);
-		}
+//		Point newLocation = translateMove(direction);
+//		boolean legal = testMoveLegal(newLocation);
+//		if (!legal) {
+//			return;
+//		}
+//		Node node = client.getGame().getMap().getNode(newLocation.x, newLocation.y);
+//		unit.setLocation(node);
+//		if (node.getCity() != null) {
+//			//add unit to city
+////			node.getCity().addUnit(unit);
+//		}
 		
+		//ask the server that the move is legal
+		EventSet eventSet = client.getServer().move(unit, direction);
+		MoveState moveState = MoveState.valueOf(eventSet.getResponse());
+		if (moveState == MoveState.OK) {
+			//do the move
+			//get the newTile
+			eventSet.getGameEvents().get("newLocaction");
+//			Node node = client.getGame().getMap().getNode(newLocation.x, newLocation.y);
+//			unit.setLocation(node);
+		}
 		//move done, refesh screen
 		gui.refresh();
 		client.updateActions();
+		
+	}
+	
+	public void doMove() {
+		Unit unit = gui.getActiveUnit();
 		
 	}
 	
@@ -96,33 +114,6 @@ public class InGameController {
 	 */
 	private boolean testMoveLegal(Point location) {
 		return client.getGame().getMap().isValid(location.x, location.y);
-	}
-
-	/**
-	 *@TODO move this function to unit or node/tile class
-	 */
-	private Point translateMove(Direction direction) {
-		Unit activUnit = gui.getActiveUnit();
-		Location location = activUnit.getLocation();
-		Point newLocation = gui.getActiveUnit().getLocation().getPosition().getPoint();
-		switch (direction) {
-		case DOWN:
-			newLocation.y++;
-			break;
-		case UP:
-			newLocation.y--;
-			break;
-		case LEFT:
-			newLocation.x--;
-			break;
-		case RIGHT:
-			newLocation.x++;
-			break;
-		default:
-			break;
-		}
-		
-		return newLocation;
 	}
 
 	/**

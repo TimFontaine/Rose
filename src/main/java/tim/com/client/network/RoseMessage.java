@@ -3,17 +3,55 @@
  */
 package tim.com.client.network;
 
-import tim.com.server.InGameController;
+import java.io.Serializable;
+
+import tim.com.client.network.command.RoseCommand;
 
 /**
  * @author tim
  *
  */
-public interface RoseMessage {
+public class RoseMessage implements Serializable {
+	
+	
+	private String messageId;
+	private RoseCommand roseCommand;
+	
 
 	/**
-	 * @param controller
+	 * 
 	 */
-	void handle(InGameController controller);
-	
+	public RoseMessage() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+	public RoseCommand getRoseCommand() {
+		return roseCommand;
+	}
+
+
+	public void setRoseCommand(RoseCommand roseCommand) {
+		this.roseCommand = roseCommand;
+	}
+
+
+
+	/**
+	 * @return the messageId
+	 */
+	public String getMessageId() {
+		return messageId;
+	}
+
+
+
+	/**
+	 * @param messageId the messageId to set
+	 */
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
+	}
+
 }

@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import tim.com.client.RoseClient;
 import tim.com.client.controller.GUI;
-import tim.com.client.network.Client;
+import tim.com.client.network.ClientConnection;
 import tim.com.client.shared.Node;
 import tim.com.client.shared.Unit;
 import tim.com.client.view.RoseButton;

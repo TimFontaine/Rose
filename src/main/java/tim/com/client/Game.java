@@ -5,10 +5,10 @@ package tim.com.client;
 
 import java.util.List;
 
+import tim.com.client.shared.Player;
 import tim.data.back.GameSpecification;
 import tim.data.back.Specification;
 import tim.game.Map;
-import tim.game.Player;
 import tim.namespacetest.types.TerrainType;
 
 /**
@@ -25,6 +25,10 @@ public class Game {
 	
 	private GameSpecification gameSpecification;
 
+	public Game() {
+		
+	}
+	
 	/**
 	 * 
 	 */
@@ -57,6 +61,20 @@ public class Game {
 	
 	public GameSpecification getGameSpecification() {
 		return gameSpecification;
+	}
+
+	/**
+	 * @return the currentPlayer
+	 */
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	/**
+	 * @param currentPlayer the currentPlayer to set
+	 */
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
 	}
 
 

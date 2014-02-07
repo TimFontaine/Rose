@@ -3,7 +3,7 @@
  */
 package tim.data.back;
 
-import tim.game.Player;
+import tim.com.client.shared.Player;
 
 
 /**

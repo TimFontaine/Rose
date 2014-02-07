@@ -5,6 +5,14 @@ package tim.com.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
+import tim.com.client.Game;
+import tim.com.client.shared.Player;
+import tim.data.back.GameSpecification;
+import tim.data.back.Specification;
 
 /**
  * @author tim
@@ -12,13 +20,25 @@ import java.net.ServerSocket;
  */
 public class Server implements Runnable{
 
-	ServerSocket socket = null;
+	ServerSocket serverSocket = null;
+	
+	Specification specification = new Specification();
+	GameSpecification gameSpecification = specification.loadGameSpecification();
+	Game game = new Game(gameSpecification);
+	private List<Player> playerList;
+	InGameController inGameController;
+	ServerGameEventHandler eventHandler;
 	
 	public Server()  {
+		inGameController = new InGameController();
+		eventHandler = new ServerGameEventHandler(game);
+		
+		playerList = new ArrayList<Player>();
+		
 		
 		try {
 		
-			 socket = new ServerSocket(4444);
+			 serverSocket = new ServerSocket(4444);
 			// TODO Auto-generated catch block
 		
 		
@@ -32,20 +52,7 @@ public class Server implements Runnable{
 	 */
 	@Override
 	public void run() {
-		boolean listening = true;
-		while (listening) {
-			try {
-				new Thread(new ServerThread(socket.accept())).start();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		try {
-			socket.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
+	
 }
